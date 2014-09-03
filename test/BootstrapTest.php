@@ -1,17 +1,14 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use PHPUnit_Framework_TestCase as TestCase;
+
 /**
- * class Bootstrap - create global functions to emulate the calendar extension in PHP.
+ * Test harness for the class French
  *
- * Some PHP installations do not include the ext-calendar extension, which provides
- * functions for working with, and converting between, various calendars such as
- * Gregorian, Julian and Jewish.
- *
- * If you are writing applications that may be installed on such a system,
- *
+ * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 Greg Roach
+ * @copyright (c) 2014 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
@@ -25,10 +22,10 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class Bootstrap {
-	public static function init() {
-		if (!function_exists('cal_info')) {
-			require __DIR__ . '/shims.php';
-		}
+
+class BootstrapTest extends TestCase {
+	public function testInit() {
+		Bootstrap::init();
+			$this->assertTrue(defined('CAL_JEWISH'));
 	}
 }

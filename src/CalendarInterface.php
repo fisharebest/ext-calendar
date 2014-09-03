@@ -2,13 +2,8 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * class Bootstrap - create global functions to emulate the calendar extension in PHP.
- *
- * Some PHP installations do not include the ext-calendar extension, which provides
- * functions for working with, and converting between, various calendars such as
- * Gregorian, Julian and Jewish.
- *
- * If you are writing applications that may be installed on such a system,
+ * interface CalendarInterface - each calendar implementation needs to provide
+ * these methods.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -25,10 +20,9 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class Bootstrap {
-	public static function init() {
-		if (!function_exists('cal_info')) {
-			require __DIR__ . '/shims.php';
-		}
-	}
+interface CalendarInterface {
+	public function jdToYmd($jd);
+	public function leapYear($year);
+	public function monthNames();
+	public function ymdToJd($year, $month, $day);
 }

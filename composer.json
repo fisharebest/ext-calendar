@@ -1,20 +1,17 @@
 {
 	"name": "fisharebest/ext-calendar",
-	"description": "PHP shim for the calendar extension",
+	"description": "PHP shim for the ext/calendar extension",
 	"type": "library",
 	"keywords": [
-		"calendar", "ext-calendar",
-		"jdtogregorian"
-		],
+		"calendar", "ext-calendar", "gregorian", "julian", "jewish", "hebrew", "french", "julian day", "julian day number"
+	],
 	"homepage": "https://github.com/fisharebest/ext-calendar",
 	"license": "GPL-3.0+",
-	"authors": [
-		{
+	"authors": [{
 			"name": "Greg Roach",
 			"email": "fisharebest@gmail.com",
-						"role": "Developer"
-		}
-	],
+			"role": "Developer"
+	}],
 	"support": {
 			"issues": "https://github.com/fisharebest/ext-calendar/issues"
 	},
@@ -22,15 +19,20 @@
 		"php": ">=5.3.0"
 	},
 	"require-dev": {
+		"ext-calendar": "*",
+		"ext-mbstring": "*",
 		"phpunit/phpunit": "*",
 		"satooshi/php-coveralls": "dev-master"
+	},
+	"suggest": {
+		"patchwork/utf8": "ext/mb_string support is required to generate dates using Hebrew text."
 	},
 	"autoload": {
 		"psr-4": {
 			"Fisharebest\\ExtCalendar\\": "src/"
 		}
 	},
-	"scripts" : {
+	"scripts": {
 		"post-install-cmd": [
 			"composer dump-autoload --optimize"
 		],
