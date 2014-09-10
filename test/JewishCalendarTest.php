@@ -24,6 +24,20 @@ use PHPUnit_Framework_TestCase as TestCase;
  */
 class JewishCalendarTest extends TestCase {
 	/**
+	 * Test the class constants.
+	 *
+	 * @coversNone
+	 *
+	 * @return void
+	 */
+	public function testConstants() {
+		$jewish = new JewishCalendar;
+
+		$this->assertSame($jewish::PHP_CALENDAR_NAME, 'Jewish');
+		$this->assertSame($jewish::PHP_CALENDAR_NUMBER, CAL_JEWISH);
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::leapYear
@@ -219,13 +233,13 @@ class JewishCalendarTest extends TestCase {
 	/**
 	 * Test the implementation of Jewish::calInfo() against \cal_info()
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calInfo
+	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
 	 *
 	 * @return void
 	 */
 	public function testCalInfo() {
 		$jewish = new JewishCalendar;
 
-		$this->assertSame($jewish->calInfo(), cal_info(CAL_JEWISH));
+		$this->assertSame($jewish->phpCalInfo(), cal_info(CAL_JEWISH));
 	}
 }

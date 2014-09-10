@@ -20,6 +20,15 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class JulianCalendar extends Calendar implements CalendarInterface {
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NAME = 'Julian';
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NUMBER = 1;
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_SYMBOL = 'CAL_JULIAN';
+
 	/**
 	 * Month lengths for regular years.
 	 *

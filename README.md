@@ -7,9 +7,13 @@
 PHP calendar functions
 ======================
 
-This package provides [shims](https://en.wikipedia.org/wiki/Shim_%28computing%29)
-for the calendar [functions](https://php.net/ref.calendar)
-and [constants](https://php.net/calendar.constants)
+This package provides an implementation of the
+[Gregorian](https://en.wikipedia.org/wiki/Gregorian_calendar),
+[Julian](https://en.wikipedia.org/wiki/Julian_calendar),
+[French Republican](https://en.wikipedia.org/wiki/French_Republican_Calendar) and
+[Jewish calendars](https://en.wikipedia.org/wiki/Hebrew_calendar) calendars, plus
+[shims](https://en.wikipedia.org/wiki/Shim_%28computing%29) for the
+[functions](https://php.net/ref.calendar) and [constants](https://php.net/calendar.constants)
 in PHP‘s [ext/calendar](https://php.net/calendar) extension.
 It allows you to use these functions on servers that do not have the extension installed.
 
@@ -47,14 +51,24 @@ Bootstrap the package:
     require 'vendor/autoload.php';
     \Fisharebest\ExtCalendar\Bootstrap::init();
 
-Use the functions:
+Use the PHP functions, whether the extension is loaded or not:
 
     print_r(cal_info(CAL_GREGORIAN));
+
+Use the calendar classes directly:
+
+    $cal = new JewishCalendar;
+    $jd = $cal->ymdToJd($year, $month, $day);
+    list($year, $month, $day) = $cal->jdToYmd($jd);
+    $is_leap_year = $cal->leapYear($year);
+    $day_of_week = $cal->dayOfWeek($jd);
+    $month_length = $cal->daysInMonth($year, $month);
+    // See the source for more…
 
 Known restrictions and limitations
 ==================================
 
-When faced with invalid inputs, these functions trigger `E_USER_WARNING` instead of `E_WARNING`.  The text of the error messages is the same.
+When faced with invalid inputs, the shim functions trigger `E_USER_WARNING` instead of `E_WARNING`.  The text of the error messages is the same.
 
 The functions `easterdate()` and `jdtounixtime()` use PHP‘s timezone, instead of the operating system‘s timezone.  These may be different.
 

@@ -25,6 +25,20 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class JulianCalendarTest extends TestCase {
 	/**
+	 * Test the class constants.
+	 *
+	 * @coversNone
+	 *
+	 * @return void
+	 */
+	public function testConstants() {
+		$julian = new JulianCalendar;
+
+		$this->assertSame($julian::PHP_CALENDAR_NAME, 'Julian');
+		$this->assertSame($julian::PHP_CALENDAR_NUMBER, CAL_JULIAN);
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::leapYear
@@ -201,14 +215,14 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the implementation of Julian::calInfo() against \cal_info()
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calInfo
+	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
 	 *
 	 * @return void
 	 */
 	public function testCalInfo() {
 		$julian = new JulianCalendar;
 
-		$this->assertSame($julian->calInfo(), cal_info(CAL_JULIAN));
+		$this->assertSame($julian->phpCalInfo(), cal_info(CAL_JULIAN));
 	}
 
 /////////////////////////////////////////////////////////

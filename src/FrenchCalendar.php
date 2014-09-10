@@ -20,6 +20,15 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class FrenchCalendar extends Calendar implements CalendarInterface {
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NAME = 'French';
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NUMBER = 3;
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_SYMBOL = 'CAL_FRENCH';
+
 	/** The earliest Julian Day number that can be converted into this calendar. */
 	const JD_START = 2375840;
 

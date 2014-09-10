@@ -25,6 +25,20 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class FrenchCalendarTest extends TestCase {
 	/**
+	 * Test the class constants.
+	 *
+	 * @coversNone
+	 *
+	 * @return void
+	 */
+	public function testConstants() {
+		$french = new FrenchCalendar;
+
+		$this->assertSame($french::PHP_CALENDAR_NAME, 'French');
+		$this->assertSame($french::PHP_CALENDAR_NUMBER, CAL_FRENCH);
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::leapYear
@@ -163,13 +177,13 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the implementation of French::calInfo() against \cal_info()
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calInfo
+	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
 	 *
 	 * @return void
 	 */
 	public function testCalInfo() {
 		$french = new FrenchCalendar;
 
-		$this->assertSame($french->calInfo(), cal_info(CAL_FRENCH));
+		$this->assertSame($french->phpCalInfo(), cal_info(CAL_FRENCH));
 	}
 }

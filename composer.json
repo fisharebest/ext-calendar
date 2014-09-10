@@ -1,6 +1,6 @@
 {
 	"name": "fisharebest/ext-calendar",
-	"description": "PHP shim for the ext/calendar extension",
+	"description": "Implementation of various calendars, plus PHP shims for the ext/calendar extension",
 	"type": "library",
 	"keywords": [
 		"calendar", "ext-calendar", "gregorian", "julian", "jewish", "hebrew", "french", "julian day", "julian day number"

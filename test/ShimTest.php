@@ -378,7 +378,7 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testCalInfoAll() {
-		$this->assertSame(Shim::calInfo(), \cal_info());
+		$this->assertSame(Shim::calInfo(-1), \cal_info(-1));
 	}
 
 	/**
@@ -435,6 +435,8 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testEasterDate() {
+		$this->assertSame(Shim::easterDate(), \easter_date());
+		$this->assertSame(Shim::easterDate(2013), \easter_date(2013));
 		$this->assertSame(Shim::easterDate(2014), \easter_date(2014));
 	}
 
@@ -494,8 +496,6 @@ class ScriptTest extends TestCase {
 		$this->assertSame(Shim::easterDays(-4, CAL_EASTER_ALWAYS_JULIAN), \easter_days(-4, CAL_EASTER_ALWAYS_JULIAN));
 
 		for ($year = 1295; $year <= 2500; ++$year) {
-			$this->assertSame(Shim::easterDays(), \easter_days());
-			$this->assertSame(Shim::easterDays($year), \easter_days($year));
 			$this->assertSame(Shim::easterDays($year, 999), \easter_days($year, 999));
 			$this->assertSame(Shim::easterDays($year, CAL_EASTER_DEFAULT), \easter_days($year, CAL_EASTER_DEFAULT));
 			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ROMAN), \easter_days($year, CAL_EASTER_ROMAN));
@@ -541,6 +541,8 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testGregorianToJD() {
+		$this->assertSame(Shim::gregorianToJd(1, 1, 0), \GregorianToJD(1, 1, 0));
+
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
@@ -561,14 +563,12 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekSunday() {
 		$jd = \GregorianToJD(8, 31, 2014);
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 0);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), 'Sunday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), 'Sun');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 0);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Sun' : 'Sunday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Sunday' : 'Sun');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -584,12 +584,10 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekMonday() {
 		$jd = \GregorianToJD(9, 1, 2014); // 2456902
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 1);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 1);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Mon' : 'Monday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Monday' : 'Mon');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -605,12 +603,10 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekTuesday() {
 		$jd = \GregorianToJD(9, 2, 2014); // 2456903
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 2);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 2);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Tue' : 'Tuesday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Tuesday' : 'Tue');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -626,12 +622,10 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekWednesday() {
 		$jd = \GregorianToJD(9, 3, 2014); // 2456904
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 3);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 3);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Wed' : 'Wednesday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Wednesday' : 'Wed');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -647,12 +641,10 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekThursday() {
 		$jd = \GregorianToJD(9, 4, 2014); // 2456905
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 4);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 4);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Thu' : 'Thursday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Thursday' : 'Thu');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -668,12 +660,10 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekFriday() {
 		$jd = \GregorianToJD(9, 5, 2014); // 2456906
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 5);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 5);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Fri' : 'Friday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Friday' : 'Fri');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -689,12 +679,10 @@ class ScriptTest extends TestCase {
 	public function testJdDayOfWeekSaturday() {
 		$jd = \GregorianToJD(9, 6, 2014); // 2456907
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), 6);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 6);
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Sat' : 'Saturday');
 		$this->assertEquals(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Saturday' : 'Sat');
 
-		$this->assertEquals(Shim::jdDayOfWeek($jd), \JDDayOfWeek($jd));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
 		$this->assertEquals(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
@@ -706,7 +694,7 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testJdDayOfWeekNegative() {
-		$this->assertEquals(Shim::jdDayOfWeek(-2), 6);
+		$this->assertEquals(Shim::jdDayOfWeek(-2, 0), 6);
 	}
 
 	/**
@@ -835,6 +823,23 @@ class ScriptTest extends TestCase {
 	}
 
 	/**
+	 * Test the implementation of Shim::jdToJewish() against \JDToJewish()
+	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 *
+	 * @large
+	 *
+	 * @return void
+	 */
+	public function testJdToJewish() {
+		for ($n = 0; $n < static::ITERATIONS; ++$n) {
+			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
+
+			$this->assertEquals(Shim::jdToJewish($jd), \JDToJewish($jd));
+			$this->assertEquals(Shim::calFromJd($jd, CAL_JEWISH), \cal_from_jd($jd, CAL_JEWISH));
+		}
+	}
+
+	/**
 	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
 	 * Test the implementation of Shim::jdToJulian() against \JDToJulian()
 	 *
@@ -893,6 +898,8 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testJewishToJd() {
+		$this->assertSame(Shim::jewishToJD(1, 1, 0), \JewishToJD(1, 1, 0));
+
 		for ($n=0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(1, 9999);
 			$month = mt_rand(1, 13);
@@ -904,7 +911,7 @@ class ScriptTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::julianToJd() against \julianToJd()
+	 * Test the implementation of Shim::julianToJd() against \JulianToJd()
 	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
 	 *
 	 * @large
@@ -912,12 +919,14 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testJulianToJd() {
+		$this->assertSame(Shim::julianToJd(1, 1, 0), \JulianToJd(1, 1, 0));
+
 		for ($n=0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
 			$day = mt_rand(1, 30);
 
-			$this->assertSame(Shim::julianToJd($month, $day, $year), \julianToJd($month, $day, $year));
+			$this->assertSame(Shim::julianToJd($month, $day, $year), \JulianToJd($month, $day, $year));
 			$this->assertSame(Shim::calToJd(CAL_JULIAN, $month, $day, $year), \cal_to_jd(CAL_JULIAN, $month, $day, $year));
 		}
 	}
@@ -928,8 +937,6 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testUnixToJd() {
-		$this->assertSame(Shim::unixToJd(), \unixtojd());
-
 		for ($unix = 0; $unix > 0 && $unix <= 2147483647; $unix += 232323) {
 			$this->assertSame(Shim::unixToJd($unix), \unixtojd($unix));
 		}
@@ -943,9 +950,6 @@ class ScriptTest extends TestCase {
 	public function testUnixToJdEdgeCases() {
 		$this->assertSame(Shim::unixToJd(-1), false);
 		$this->assertSame(Shim::unixToJd(-1), \unixtojd(-1));
-
-		$this->assertSame(Shim::unixToJd(0), Shim::unixToJd(time()));
-		$this->assertSame(Shim::unixToJd(0), \unixtojd(0));
 
 		$this->assertSame(Shim::unixToJd(2147483647), 2465443);
 		$this->assertSame(Shim::unixToJd(2147483647), \unixtojd(2147483647));

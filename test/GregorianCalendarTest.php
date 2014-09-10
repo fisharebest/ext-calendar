@@ -25,6 +25,20 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class GregorianCalendarTest extends TestCase {
 	/**
+	 * Test the class constants.
+	 *
+	 * @coversNone
+	 *
+	 * @return void
+	 */
+	public function testConstants() {
+		$gregorian = new GregorianCalendar;
+
+		$this->assertSame($gregorian::PHP_CALENDAR_NAME, 'Gregorian');
+		$this->assertSame($gregorian::PHP_CALENDAR_NUMBER, CAL_GREGORIAN);
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::leapYear
@@ -201,14 +215,14 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the implementation of Gregorian::calInfo() against \cal_info()
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calInfo
+	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
 	 *
 	 * @return void
 	 */
 	public function testCalInfo() {
 		$gregorian = new GregorianCalendar;
 
-		$this->assertSame($gregorian->calInfo(), cal_info(CAL_GREGORIAN));
+		$this->assertSame($gregorian->phpCalInfo(), cal_info(CAL_GREGORIAN));
 	}
 
 ///////////////////////////////////////////////////////

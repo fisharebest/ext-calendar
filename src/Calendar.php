@@ -20,6 +20,15 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 abstract class Calendar {
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NAME = 'Undefined';
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NUMBER = -1;
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_SYMBOL = 'CAL_UNDEFINED';
+
 	/** The earliest Julian Day number that can be converted into this calendar. */
 	const JD_START = 1;
 
@@ -40,6 +49,28 @@ abstract class Calendar {
 	 * @return string[]
 	 */
 	protected abstract function monthNames();
+
+	/**
+	 * English names for the days of the week.
+	 *
+	 * @return string[]
+	 */
+	protected function dayNames() {
+		return array(
+			'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+		);
+	}
+
+	/**
+	 * Abbreviated English names for the days of the week.
+	 *
+	 * @return string[]
+	 */
+	protected function dayNamesAbbreviated() {
+		return array(
+			'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+		);
+	}
 
 	/**
 	 * The concrete class needs to provide the implementation.
@@ -102,16 +133,13 @@ abstract class Calendar {
 	 *
 	 * @return array
 	 */
-	public function calInfo() {
-		$class = substr(strrchr(get_called_class(), '\\'), 1);
-		$class = str_replace('Calendar', '', $class);
-
+	public function phpCalInfo() {
 		return array(
 			'months' => $this->monthNames(),
 			'abbrevmonths' => $this->monthNamesAbbreviated(),
 			'maxdaysinmonth' => static::MAX_DAYS_IN_MONTH,
-			'calname' => $class,
-			'calsymbol' => 'CAL_' . strtoupper($class),
+			'calname' => static::PHP_CALENDAR_NAME,
+			'calsymbol' => static::PHP_CALENDAR_SYMBOL,
 		);
 	}
 
@@ -155,28 +183,6 @@ abstract class Calendar {
 		$days = $this->dayNamesAbbreviated();
 
 		return $days[$dow];
-	}
-
-	/**
-	 * English names for the days of the week.
-	 *
-	 * @return string[]
-	 */
-	protected function dayNames() {
-		return array(
-			'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
-		);
-	}
-
-	/**
-	 * Abbreviated English names for the days of the week.
-	 *
-	 * @return string[]
-	 */
-	protected function dayNamesAbbreviated() {
-		return array(
-			'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-		);
 	}
 
 	/**

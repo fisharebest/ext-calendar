@@ -20,6 +20,15 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class GregorianCalendar extends JulianCalendar implements CalendarInterface {
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NAME = 'Gregorian';
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_NUMBER = 0;
+
+	/** Same as PHP’s ext/calendar extension */
+	const PHP_CALENDAR_SYMBOL = 'CAL_GREGORIAN';
+
 	/**
 	 * Determine whether a year is a leap year.
 	 *

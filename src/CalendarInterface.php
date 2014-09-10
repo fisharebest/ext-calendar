@@ -21,8 +21,9 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 interface CalendarInterface {
+	public function daysInMonth($year, $month);
+	public function dayOfWeek($jd);
 	public function jdToYmd($jd);
 	public function leapYear($year);
-	public function monthNames();
 	public function ymdToJd($year, $month, $day);
 }
