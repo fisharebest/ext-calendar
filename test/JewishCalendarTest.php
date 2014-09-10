@@ -151,6 +151,8 @@ class JewishCalendarTest extends TestCase {
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::yToJd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::ymdToJd
 	 *
+	 * @medium This test may take several seconds to run.
+	 *
 	 * @return void
 	 */
 	public function testYmdToJdYears() {

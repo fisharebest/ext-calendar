@@ -61,21 +61,6 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	/** A year that is one day longer than normal. */
 	const COMPLETE_YEAR  = 1;
 
-	/** The conversion functions need to refer to specific years. */
-	const TISHRI = 1;
-	const HESHVAN = 2;
-	const KISLEV = 3;
-	const TEVET = 4;
-	const SHEVAT = 5;
-	const ADAR_1 = 6;
-	const ADAR_2 = 7;
-	const NISAN = 8;
-	const IYAR = 9;
-	const SIVAN = 10;
-	const TAMMUZ = 11;
-	const AV = 12;
-	const ELUL = 13;
-
 	/**
 	 * Hebrew numbers are represented by letters, similar to roman numerals.
 	 *
@@ -133,6 +118,49 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 		20 => 'כ',
 		10 => 'י',
 	);
+
+	/**
+	 * These months have fixed lengths.  Others are variable.
+	 *
+	 * @var int[]
+	 */
+	private static $fixed_month_lengths = array(
+		1 => 30, 4 => 29, 5 => 30, 7 => 29, 8 => 30, 9 => 29, 10 => 30, 11 => 29, 12 => 30, 13 => 29
+	);
+
+	/**
+	 * Cumulative number of days for each month in each type of year.
+	 * First index is false/true (non-leap year, leap year)
+	 * Second index is year type (-1, 0, 1)
+	 * Third index is month number (1 ... 13)
+	 *
+	 * @var int[][][]
+	 */
+	private static $cumulative_days = array(
+		0 => array( // Non-leap years
+			-1 => array( // Deficient years
+				1 => 0, 30, 59, 88, 117, 147, 147, 176, 206, 235, 265, 294, 324
+			),
+			0 =>  array( // Regular years
+				1 => 0, 30, 59, 89, 118, 148, 148, 177, 207, 236, 266, 295, 325
+			),
+			1 => array( // Complete years
+				1 => 0, 30, 60, 90, 119, 149, 149, 178, 208, 237, 267, 296, 326
+			),
+		),
+		1 => array( // Leap years
+			-1 => array( // Deficient years
+				1 => 0, 30, 59, 88, 117, 147, 177, 206, 236, 265, 295, 324, 354
+			),
+			0 =>  array( // Regular years
+				1 => 0, 30, 59, 89, 118, 148, 178, 207, 237, 266, 296, 325, 355
+			),
+			1 => array( // Complete years
+				1 => 0, 30, 60, 90, 119, 149, 179, 208, 238, 267, 297, 326, 356
+			),
+		),
+	);
+
 
 	/**
 	 * Determine whether a year is a leap year.
@@ -233,51 +261,10 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	 * @return int
 	 */
 	public function ymdToJd($year, $month, $day) {
-		// Assume each month has 29 days, and then add extra day for each 30 day month.
-		$jd = $this->yToJd($year) + 29 * ($month - 1);
-		if ($month > self::TISHRI) {
-			// Tishri has 30 days.
-			$jd++;
-			if ($month > self::HESHVAN) {
-				$year_type = $this->yearType($year);
-				// Heshvan has 30 days in complete years.
-				if ($year_type === self::COMPLETE_YEAR) {
-					$jd++;
-				}
-				if ($month > self::KISLEV) {
-					// Kislev has 30 days in regular and complete years.
-					if ($year_type !== self::DEFECTIVE_YEAR) {
-						$jd++;
-					}
-					if ($month > self::SHEVAT) {
-						// Shevat has 30 days.
-						$jd++;
-						if ($month > 6) {
-							// Adar I has 30 days, but exists only in leap years.
-							if ($this->leapYear($year)) {
-								$jd++;
-							} else {
-								$jd -= 29;
-							}
-							if ($month > self::NISAN) {
-								// Nisan has 30 days.
-								$jd++;
-								if ($month > self::SIVAN) {
-									// Sivan has 30 days.
-									$jd++;
-									if ($month > self::AV) {
-										// Av has 30 days.
-										$jd++;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return $jd + $day - 1;
+		return
+			$this->yToJd($year) +
+			self::$cumulative_days[$this->leapYear($year)][$this->yearType($year)][$month] +
+			$day - 1;
 	}
 
 	/**
@@ -355,16 +342,14 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	public function daysInMonth($year, $month) {
 		if ($year === 0 || $month < 1 || $month > 13) {
 			return trigger_error('invalid date.', E_USER_WARNING);
-		} elseif ($month === 1 || $month === 5 || $month === 8 || $month === 10 || $month === 12) {
-			return 30;
-		} elseif ($month === 4 || $month === 7 || $month === 9 || $month === 11 || $month === 13) {
-			return 29;
-		} elseif ($month === 6) {
-			return $this->daysInMonthAdarI($year);
 		} elseif ($month === 2) {
 			return $this->daysInMonthHeshvan($year);
-		} else { // $month === 3
+		} elseif ($month === 3) {
 			return $this->daysInMonthKislev($year);
+		} elseif ($month === 6) {
+			return $this->daysInMonthAdarI($year);
+		} else {
+			return self::$fixed_month_lengths[$month];
 		}
 	}
 

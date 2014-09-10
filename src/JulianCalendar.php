@@ -30,21 +30,13 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	const PHP_CALENDAR_SYMBOL = 'CAL_JULIAN';
 
 	/**
-	 * Month lengths for regular years.
+	 * Month lengths for regular years and leap-years.
 	 *
-	 * @var int[]
+	 * @var int[][]
 	 */
-	protected static $DAYS_IN_MONTH_REGULAR_YEAR = array(
-		1 => 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
-	);
-
-	/**
-	 * Month lengths for leap years.
-	 *
-	 * @var int[]
-	 */
-	protected static $DAYS_IN_MONTH_LEAP_YEAR = array(
-		1 => 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
+	protected static $DAYS_IN_MONTH = array(
+		0 => array(1 => 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
+		1 => array(1 => 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
 	);
 
 	/**
@@ -99,7 +91,7 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 		$day = $e - (int)((153 * $m + 2) / 5) + 1;
 		$month = $m + 3 - 12 * (int)($m / 10);
 		$year = $d - 4800 + (int)($m / 10);
-		if ($year<1) {
+		if ($year < 1) {
 			// 0=1BC, -1=2BC, etc.
 			$year--;
 		}
@@ -139,10 +131,8 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	public function daysInMonth($year, $month) {
 		if ($year == 0 || $month < 1 || $month > 12) {
 			return trigger_error('invalid date.', E_USER_WARNING);
-		} elseif ($this->leapYear($year)) {
-			return static::$DAYS_IN_MONTH_LEAP_YEAR[$month];
 		} else {
-			return static::$DAYS_IN_MONTH_REGULAR_YEAR[$month];
+			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
 		}
 	}
 

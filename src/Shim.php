@@ -23,18 +23,6 @@ namespace Fisharebest\ExtCalendar;
  */
 class Shim {
 	/**
-	 * Month names for the Jewish calendar (PHP 5.3 and 5.4).
-	 *
-	 * Note the lack of space in “AdarI” and “AdarII”
-	 *
-	 * @var string[]
-	 */
-	protected static $JEWISH_MONTH_NAMES_BUG_54254 = array(
-		1 => 'Tishri', 'Heshvan', 'Kislev', 'Tevet', 'Shevat', 'AdarI',
-		'AdarII', 'Nisan', 'Iyyar', 'Sivan', 'Tammuz', 'Av', 'Elul',
-	);
-
-	/**
 	 * Do we need to emulate PHP bug #54254?
 	 *
 	 * This bug relates to the names used for months 6 and 7 in the Jewish calendar.
