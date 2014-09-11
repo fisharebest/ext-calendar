@@ -234,10 +234,8 @@ class JewishCalendarTest extends TestCase {
 							foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 								$ours = $jewish->jdToHebrew($jd, false, false, false);
 								$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
-								$ours .= bin2hex($ours);
 								$theirs = \jdtojewish($jd, true);
 								$theirs = mb_convert_encoding($theirs, 'UTF-8', 'ISO-8859-8');
-								$theirs .= bin2hex($theirs);
 								$this->assertSame($ours, $theirs);
 							}
 						}

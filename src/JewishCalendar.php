@@ -416,8 +416,8 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 
 		return array(
 			1 => 'תשרי', 'חשון', 'כסלו', 'טבת', 'שבט',
-			$leap_year ? 'אדר א׳' : '',
-			$leap_year ? 'אדר ב׳' : 'אדר',
+			$leap_year ? (Shim::emulateBug54254() ? 'אדר' : 'אדר א׳') : 'אדר',
+			$leap_year ? (Shim::emulateBug54254() ? '\'אדר ב' : 'אדר ב׳') : 'אדר',
 			'ניסן', 'אייר', 'סיון', 'תמוז', 'אב', 'אלול',
 		);
 	}
