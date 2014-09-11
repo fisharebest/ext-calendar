@@ -438,8 +438,10 @@ class Shim {
 
 		if ($hebrew) {
 			$hebrew = $jewish->jdToHebrew($juliandaycount, $fl & CAL_JEWISH_ADD_ALAFIM_GERESH, $fl & CAL_JEWISH_ADD_ALAFIM, $fl & CAL_JEWISH_ADD_GERESHAYIM);
+			// Our code generates Hebrew punctuation.  PHP uses ASCII punctuation.
 			$hebrew = strtr($hebrew, array(JewishCalendar::GERESH => "'", JewishCalendar::GERSHAYIM => '"'));
-			$hebrew = mb_convert_encoding($hebrew, 'UTF-8', 'ISO-8859-8');
+			// Our code generates UTF-8.  PHP generates ISO-8859=8
+			$hebrew = mb_convert_encoding($hebrew, 'ISO-8859-8', 'UTF-8');
 
 			return $hebrew;
 		} else {

@@ -23,7 +23,7 @@ use PHPUnit_Framework_TestCase as TestCase;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ScriptTest extends TestCase {
+class ShimTest extends TestCase {
 	// Use this many random dates to test date conversion functions.
 	const ITERATIONS = 512;
 	/**
@@ -50,7 +50,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -62,7 +62,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -74,7 +74,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -86,7 +86,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -98,7 +98,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -110,7 +110,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -139,7 +139,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -151,7 +151,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -163,7 +163,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -175,7 +175,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -219,7 +219,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -231,7 +231,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -243,7 +243,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -255,7 +255,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -267,7 +267,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -279,7 +279,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -291,7 +291,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -303,7 +303,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
@@ -315,7 +315,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999.
 	 * @return                   void
@@ -327,7 +327,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999.
 	 * @return                   void
@@ -339,7 +339,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
@@ -351,7 +351,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
@@ -384,7 +384,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calInfo() against \cal_info()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
@@ -396,7 +396,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calInfo() against \cal_info()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
@@ -408,7 +408,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
@@ -420,7 +420,7 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
 	 *
-	 * @expectedException        PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
@@ -443,7 +443,9 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against \easter_date()
 	 *
-	 * @expectedException PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_USER_WARNING
+	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
 	 */
@@ -454,7 +456,9 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against \easter_date()
 	 *
-	 * @expectedException PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_WARNING
+	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
 	 */
@@ -465,7 +469,9 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against \easter_date()
 	 *
-	 * @expectedException PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_USER_WARNING
+	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
 	 */
@@ -476,7 +482,9 @@ class ScriptTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against \easter_date()
 	 *
-	 * @expectedException PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_WARNING
+	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
 	 */
@@ -823,7 +831,7 @@ class ScriptTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \JDToJewish()
+	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
 	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
 	 *
 	 * @large
@@ -834,8 +842,34 @@ class ScriptTest extends TestCase {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
 
-			$this->assertEquals(Shim::jdToJewish($jd), \JDToJewish($jd));
+			$this->assertEquals(Shim::jdToJewish($jd), \jdtojewish($jd));
 			$this->assertEquals(Shim::calFromJd($jd, CAL_JEWISH), \cal_from_jd($jd, CAL_JEWISH));
+		}
+	}
+
+	/**
+	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 *
+	 * @large
+	 *
+	 * @return void
+	 */
+	public function testJdToJewishHebrew() {
+		for ($n = 0; $n < static::ITERATIONS; ++$n) {
+			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
+
+			$this->assertSame(Shim::jdToJewish($jd, true), \jdtojewish($jd, true));
+
+			//foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
+			//	foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
+			//		foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
+			//			$fl = $alafim + $gereshayim + $alafim_geresh;
+			//			$this->assertSame(Shim::jdToJewish($jd, true, $fl), \jdtojewish($jd, true, $fl));
+			//		}
+			//	}
+			//}
+
 		}
 	}
 
@@ -937,7 +971,8 @@ class ScriptTest extends TestCase {
 	 * @return void
 	 */
 	public function testUnixToJd() {
-		for ($unix = 0; $unix > 0 && $unix <= 2147483647; $unix += 232323) {
+		for ($n=0; $n < static::ITERATIONS; ++$n) {
+			$unix = mt_rand(1, 2147483647);
 			$this->assertSame(Shim::unixToJd($unix), \unixtojd($unix));
 		}
 	}

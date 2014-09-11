@@ -44,8 +44,6 @@ abstract class Calendar {
 	/**
 	 * The concrete class needs to provide the implementation.
 	 *
-	 * @param int $year
-	 *
 	 * @return string[]
 	 */
 	protected abstract function monthNames();

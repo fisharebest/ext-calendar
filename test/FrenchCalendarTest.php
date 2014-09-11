@@ -39,6 +39,21 @@ class FrenchCalendarTest extends TestCase {
 	}
 
 	/**
+	 * Test the PHP calendar information function.
+	 *
+	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
+	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::monthNames
+	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
+	 *
+	 * @return void
+	 */
+	public function testPhpCalInfo() {
+		$french = new FrenchCalendar;
+
+		$this->assertSame($french->phpCalInfo(), \cal_info($french::PHP_CALENDAR_NUMBER));
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::leapYear
@@ -102,7 +117,7 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *
@@ -126,7 +141,7 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *
@@ -155,7 +170,7 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *

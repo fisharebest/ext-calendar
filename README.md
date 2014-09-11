@@ -91,7 +91,7 @@ These functions are naturally slower than the native functions, especially for c
 
     JDToFrench()                     FrenchCalendar->jdToYmd()         3.7
     JDToGregorian()                  GregorianCalendar->jdToYmd()      5.9
-    JDToJewish()                     JewishCalendar->jdToYmd()        23.7
+    jdtojewish()                     JewishCalendar->jdToYmd()        23.7
     JDToJulian()                     JulianCalendar->jdToYmd()         4.8
     FrenchToJD()                     FrenchCalendar->ymdToJd()         2.0
     GregorianToJD()                  GregorianCalendar->ymdToJd()      3.0

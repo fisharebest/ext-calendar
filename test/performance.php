@@ -38,17 +38,17 @@ $t2 = microtime(true); for ($i = 0; $i < $ITERATIONS; ++$i) {
 
 printf($FORMAT, 'JDToGregorian()', 'GregorianCalendar->jdToYmd()', $t2 / $t1);
 
-// JDToJewish
+// jdtojewish
 
 $t1 = microtime(true); for ($i = 0; $i < $ITERATIONS; ++$i) {
-	JDToJewish(2380947);
+	jdtojewish(2380947);
 } $t1 = microtime(true) - $t1 - $loop_overhead;
 
 $t2 = microtime(true); for ($i = 0; $i < $ITERATIONS; ++$i) {
 	$jewish->jdToYmd(2380947);
 } $t2 = microtime(true) - $t2 - $loop_overhead;
 
-printf($FORMAT, 'JDToJewish()', 'JewishCalendar->jdToYmd()', $t2 / $t1);
+printf($FORMAT, 'jdtojewish()', 'JewishCalendar->jdToYmd()', $t2 / $t1);
 
 // JDToJulian
 

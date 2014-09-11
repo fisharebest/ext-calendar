@@ -1,6 +1,9 @@
 CHANGE LOG
 ==========
 
+## 1.0.2 (2014-09-11)
+ - Wrong encoding of Hebrew dates
+
 ## 1.0.1 (2014-09-11)
  - Improve coverage of unit tests.
  - Convert logic to lookup tables for better performance.

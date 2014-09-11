@@ -88,6 +88,9 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 		40 => 'מ',
 		30 => 'ל',
 		20 => 'כ',
+		19 => 'יט',
+		18 => 'יח',
+		17 => 'יז',
 		16 => 'טז',
 		15 => 'טו',
 		10 => 'י',
@@ -415,7 +418,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 			1 => 'תשרי', 'חשון', 'כסלו', 'טבת', 'שבט',
 			$leap_year ? 'אדר א׳' : '',
 			$leap_year ? 'אדר ב׳' : 'אדר',
-			'ניסן', 'אייר', 'סיוון', 'תמוז', 'אב', 'אלול',
+			'ניסן', 'אייר', 'סיון', 'תמוז', 'אב', 'אלול',
 		);
 	}
 
@@ -447,7 +450,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 		$hebrew = '';
 		while ($number > 0) {
 			foreach (self::$HEBREW_NUMERALS_FINAL as $n => $h) {
-				if ($number === $n) {
+				if ($number == $n) {
 					$hebrew .= $h;
 					break 2;
 				}
@@ -456,6 +459,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 				if ($number >= $n) {
 					$hebrew .= $h;
 					$number -= $n;
+					break;
 				}
 			}
 		}

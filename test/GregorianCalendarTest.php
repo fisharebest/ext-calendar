@@ -39,6 +39,21 @@ class GregorianCalendarTest extends TestCase {
 	}
 
 	/**
+	 * Test the PHP calendar information function.
+	 *
+	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
+	 * @covers Fisharebest\ExtCalendar\GregorianCalendar::monthNames
+	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
+	 *
+	 * @return void
+	 */
+	public function testPhpCalInfo() {
+		$gregorian = new GregorianCalendar;
+
+		$this->assertSame($gregorian->phpCalInfo(), \cal_info($gregorian::PHP_CALENDAR_NUMBER));
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::leapYear
@@ -48,6 +63,11 @@ class GregorianCalendarTest extends TestCase {
 	public function testLeapYear() {
 		$gregorian = new GregorianCalendar;
 
+		$this->assertSame($gregorian->leapYear(-5), true);
+		$this->assertSame($gregorian->leapYear(-4), false);
+		$this->assertSame($gregorian->leapYear(-3), false);
+		$this->assertSame($gregorian->leapYear(-2), false);
+		$this->assertSame($gregorian->leapYear(-1), true);
 		$this->assertSame($gregorian->leapYear(1500), false);
 		$this->assertSame($gregorian->leapYear(1600), true);
 		$this->assertSame($gregorian->leapYear(1700), false);
@@ -114,7 +134,7 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -138,7 +158,7 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -162,7 +182,7 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -184,7 +204,7 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *

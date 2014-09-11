@@ -38,6 +38,21 @@ class JewishCalendarTest extends TestCase {
 	}
 
 	/**
+	 * Test the PHP calendar information function.
+	 *
+	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
+	 * @covers Fisharebest\ExtCalendar\JewishCalendar::monthNames
+	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
+	 *
+	 * @return void
+	 */
+	public function testPhpCalInfo() {
+		$jewish = new JewishCalendar;
+
+		$this->assertSame($jewish->phpCalInfo(), \cal_info($jewish::PHP_CALENDAR_NUMBER));
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::leapYear
@@ -88,7 +103,7 @@ class JewishCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToY
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::yToJd
@@ -105,7 +120,7 @@ class JewishCalendarTest extends TestCase {
 				$ymd = $jewish->jdToYmd($jd);
 
 				$this->assertSame($jewish->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJewish($jd));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \jdtojewish($jd));
 				$this->assertSame($jewish->calFromJd($jd, CAL_JEWISH), \cal_from_jd($jd, CAL_JEWISH));
 			}
 		}
@@ -114,7 +129,7 @@ class JewishCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToY
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::yToJd
@@ -130,14 +145,14 @@ class JewishCalendarTest extends TestCase {
 			$ymd = $jewish->jdToYmd($jd);
 
 			$this->assertSame($jewish->ymdToJd(5776, $month, 27), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJewish($jd));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \jdtojewish($jd));
 			$this->assertSame($jewish->calFromJd($jd), \cal_from_jd($jd, CAL_JEWISH));
 
 			$jd = \JewishToJD($month, 27, 5777);
 			$ymd = $jewish->jdToYmd($jd);
 
 			$this->assertSame($jewish->ymdToJd(5777, $month, 27), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJewish($jd));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \jdtojewish($jd));
 			$this->assertSame($jewish->calFromJd($jd), \cal_from_jd($jd, CAL_JEWISH));
 		}
 	}
@@ -145,7 +160,7 @@ class JewishCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToY
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::yToJd
@@ -163,7 +178,7 @@ class JewishCalendarTest extends TestCase {
 			$ymd = $jewish->jdToYmd($jd);
 
 			$this->assertSame($jewish->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJewish($jd));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \jdtojewish($jd));
 			$this->assertSame($jewish->calFromJd($jd), \cal_from_jd($jd, CAL_JEWISH));
 		}
 	}
@@ -171,7 +186,7 @@ class JewishCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToY
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::yToJd
@@ -187,14 +202,14 @@ class JewishCalendarTest extends TestCase {
 			$ymd = $jewish->jdToYmd($jd);
 
 			$this->assertSame($jewish->ymdToJd($year, 1, 1), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJewish($jd));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \jdtojewish($jd));
 			$this->assertSame($jewish->calFromJd($jd), \cal_from_jd($jd, CAL_JEWISH));
 
 			$jd = \JewishToJD(13, 30, $year);
 			$ymd = $jewish->jdToYmd($jd);
 
 			$this->assertSame($jewish->ymdToJd($year, 13, 30), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJewish($jd));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \jdtojewish($jd));
 			$this->assertSame($jewish->calFromJd($jd), \cal_from_jd($jd, CAL_JEWISH));
 		}
 	}
@@ -219,11 +234,11 @@ class JewishCalendarTest extends TestCase {
 							foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 								$ours = $jewish->jdToHebrew($jd, false, false, false);
 								$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
-								$ours = bin2hex($ours);
-								$theirs = \JDToJewish($jd, true, CAL_JEWISH_ADD_ALAFIM_GERESH*0);
+								$ours .= bin2hex($ours);
+								$theirs = \jdtojewish($jd, true);
 								$theirs = mb_convert_encoding($theirs, 'UTF-8', 'ISO-8859-8');
-								$theirs = bin2hex($theirs);
-								//$this->assertSame($ours, $theirs);
+								$theirs .= bin2hex($theirs);
+								$this->assertSame($ours, $theirs);
 							}
 						}
 					}

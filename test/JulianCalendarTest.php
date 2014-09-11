@@ -39,6 +39,21 @@ class JulianCalendarTest extends TestCase {
 	}
 
 	/**
+	 * Test the PHP calendar information function.
+	 *
+	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
+	 * @covers Fisharebest\ExtCalendar\JulianCalendar::monthNames
+	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
+	 *
+	 * @return void
+	 */
+	public function testPhpCalInfo() {
+		$julian = new JulianCalendar;
+
+		$this->assertSame($julian->phpCalInfo(), \cal_info($julian::PHP_CALENDAR_NUMBER));
+	}
+
+	/**
 	 * Test the leap year calculations.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::leapYear
@@ -48,6 +63,11 @@ class JulianCalendarTest extends TestCase {
 	public function testLeapYear() {
 		$julian = new JulianCalendar;
 
+		$this->assertSame($julian->leapYear(-5), true);
+		$this->assertSame($julian->leapYear(-4), false);
+		$this->assertSame($julian->leapYear(-3), false);
+		$this->assertSame($julian->leapYear(-2), false);
+		$this->assertSame($julian->leapYear(-1), true);
 		$this->assertSame($julian->leapYear(1500), true);
 		$this->assertSame($julian->leapYear(1600), true);
 		$this->assertSame($julian->leapYear(1700), true);
@@ -114,7 +134,7 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -138,7 +158,7 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -162,7 +182,7 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -184,7 +204,7 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::calFromJd
+	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
