@@ -2,7 +2,7 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * class FrenchCalendar - calculations for the French Republican calendar.
+ * class ArabicCalendar - calculations for the Arabic (Hijri) calendar.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -19,30 +19,34 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class FrenchCalendar extends Calendar implements CalendarInterface {
+class ArabicCalendar extends Calendar implements CalendarInterface {
 	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NAME = 'French';
+	const PHP_CALENDAR_NAME = 'Arabic';
 
 	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NUMBER = 3;
+	const PHP_CALENDAR_NUMBER = 4; // PHP uses 0-3
 
 	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_SYMBOL = 'CAL_FRENCH';
+	const PHP_CALENDAR_SYMBOL = 'CAL_ARABIC';
 
 	/** See the GEDCOM specification */
-	const GEDCOM_CALENDAR_ESCAPE = '@#DFRENCH R@';
+	const GEDCOM_CALENDAR_ESCAPE = '@#DHIJRI@';
 
 	/** The earliest Julian Day number that can be converted into this calendar. */
-	const JD_START = 2375840;
-
-	/** The latest Julian Day number that can be converted into this calendar. */
-	const JD_END = 2380952; // For compatibility with PHP, this is 0014-13-05
-
-	/** The maximum number of months in any year */
-	const MAX_MONTHS_IN_YEAR = 13;
+	const JD_START = 1948440; // 1 Muharram 1 AH = 16 JUL 0622 (Julian)
 
 	/** The maximum number of days in any month */
 	const MAX_DAYS_IN_MONTH = 30;
+
+	/**
+	 * Month lengths for regular years and leap-years.
+	 *
+	 * @var int[][]
+	 */
+	protected static $DAYS_IN_MONTH = array(
+		0 => array(1 => 30, 28, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29),
+		1 => array(1 => 30, 28, 30, 29, 30, 29, 30, 29, 30, 29, 30, 30),
+	);
 
 	/**
 	 * Determine whether a year is a leap year.
@@ -51,7 +55,7 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 * @return bool
 	 */
 	public function leapYear($year) {
-		return $year % 4 == 3;
+		return ((11 * $year + 14) % 30) < 11;
 	}
 
 	/**
@@ -62,9 +66,9 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 * @return int[];
 	 */
 	public function jdToYmd($jd) {
-		$year = (int)(($jd - 2375109) * 4 / 1461) - 1;
-		$month = (int)(($jd - 2375475 - $year * 365 - (int)($year / 4)) / 30) + 1;
-		$day = $jd - 2375444 - $month * 30 - $year * 365 - (int)($year / 4);
+		$year = (int)((30 * ($jd - 1948439) + 10646) / 10631);
+		$month = (int)((11 * ($jd - $year * 354 - (int)((3 + 11 * $year) / 30) - 1948085) + 330) / 325);
+		$day = $jd - 29 * ($month - 1) - (int)((6 * $month - 1) / 11) - $year * 354 - (int)((3 + 11 * $year) / 30) - 1948084;
 
 		return array($year, $month, $day);
 	}
@@ -79,7 +83,7 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 * @return int
 	 */
 	public function ymdToJd($year, $month, $day) {
-		return 2375444 + $day + $month * 30 + $year * 365 + (int)($year / 4);
+		return $day + 29 * ($month - 1) + (int)((6 * $month - 1) / 11) + $year * 354 + (int)((3 + 11 * $year) / 30) + 1948084;
 	}
 
 	/**
@@ -89,8 +93,8 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 */
 	public function monthNames() {
 		return array(
-			1 => 'Vendemiaire', 'Brumaire', 'Frimaire', 'Nivose', 'Pluviose', 'Ventose',
-			'Germinal', 'Floreal', 'Prairial', 'Messidor', 'Thermidor', 'Fructidor', 'Extra',
+			1 => 'Muharram', 'Safar', 'Rabi‘ I', 'Rabi‘ II', 'Jumada I', 'Jumada II',
+			'Rajab', 'Sha‘aban', 'Ramadan', 'Shawwal', 'Dhu al-Qi‘dah', 'Dhu al-Hijjah',
 		);
 	}
 
@@ -103,18 +107,10 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 * @return int
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year < 1 || $year > 14) {
+		if ($year == 0 || $month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
 			return trigger_error('invalid date.', E_USER_WARNING);
-		} elseif ($month >=1 && $month <= 12) {
-			return 30;
-		} elseif ($month == 13) {
-			if ($this->leapYear($year)) {
-				return 6;
-			} else {
-				return $year == 14 ? -2380948 : 5; // Emulate a bug in PHP
-			}
 		} else {
-			return trigger_error('invalid date.', E_USER_WARNING);
+			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
 		}
 	}
 }

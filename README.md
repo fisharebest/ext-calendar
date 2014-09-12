@@ -8,10 +8,12 @@ PHP calendar functions
 ======================
 
 This package provides an implementation of the
+[Arabic (Hijri)](https://en.wikipedia.org/wiki/Islamic_calendar),
+[French Republican](https://en.wikipedia.org/wiki/French_Republican_Calendar),
 [Gregorian](https://en.wikipedia.org/wiki/Gregorian_calendar),
 [Julian](https://en.wikipedia.org/wiki/Julian_calendar),
-[French Republican](https://en.wikipedia.org/wiki/French_Republican_Calendar) and
-[Jewish calendars](https://en.wikipedia.org/wiki/Hebrew_calendar) calendars, plus
+[Jewish](https://en.wikipedia.org/wiki/Hebrew_calendar) and
+[Persian(Jalali)](https://en.wikipedia.org/wiki/Iranian_calendars) calendars, plus
 [shims](https://en.wikipedia.org/wiki/Shim_%28computing%29) for the
 [functions](https://php.net/ref.calendar) and [constants](https://php.net/calendar.constants)
 in PHP‘s [ext/calendar](https://php.net/calendar) extension.
@@ -66,19 +68,21 @@ Alternatively, just use the calendar classes directly.
 use Fisharebest\ExtCalendar;
 
 // Create a calendar
-$cal = new FrenchCalendar;
-$cal = new GregorianCalendar;
-$cal = new JewishCalendar;
-$cal = new JulianCalendar;
+$calendar = new ArabicCalendar;
+$calendar = new FrenchCalendar;
+$calendar = new GregorianCalendar;
+$calendar = new JewishCalendar;
+$calendar = new JulianCalendar;
+$calendar = new PersianCalendar;
 
 // Date conversions
-$jd = $cal->ymdToJd($year, $month, $day);
-list($year, $month, $day) = $cal->jdToYmd($jd);
+$julian_day = $calendar->ymdToJd($year, $month, $day);
+list($year, $month, $day) = $calendar->jdToYmd($julian_day);
 
 // Information functions (see the source for more)
-$is_leap_year = $cal->leapYear($year);
-$day_of_week = $cal->dayOfWeek($jd);
-$month_length = $cal->daysInMonth($year, $month);
+$is_leap_year = $calendar->leapYear($year);
+$day_of_week = $calendar->dayOfWeek($julian_day);
+$month_length = $calendar->daysInMonth($year, $month);
 ```
 
 Known restrictions and limitations
@@ -130,7 +134,5 @@ library, given version numbers, unit tests, etc.
 
 Future plans
 ============
-
-It is hoped to add support for the Arabic (Jalali) and Persian (Shamsi) calendars.
 
 It is hoped to extend the French calendar to allow it to be used for modern times.

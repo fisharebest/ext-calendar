@@ -35,7 +35,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	const GEDCOM_CALENDAR_ESCAPE = '@#DHEBREW@';
 
 	/** The earliest Julian Day number that can be converted into this calendar. */
-	const JD_START = 347998;
+	const JD_START = 347998; // 1 Tishri 0001 AM
 
 	/** The latest Julian Day number that can be converted into this calendar. */
 	const JD_END = 324542846;

@@ -1,7 +1,8 @@
 CHANGE LOG
 ==========
 
-## dev/master
+## 1.1.0 (2014-09-13)
+ - Add support for Arabic (Hijri) and Persian (Jalali) calendars.
  - Convert logic to lookup tables for better performance.
 
 ## 1.0.3 (2014-09-12)
