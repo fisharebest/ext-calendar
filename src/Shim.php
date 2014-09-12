@@ -23,6 +23,17 @@ namespace Fisharebest\ExtCalendar;
  */
 class Shim {
 	/**
+	 * Create the necessary shims to emulate the ext/calendar packate.
+	 *
+	 * @return void
+	 */
+	public static function create() {
+		if (!function_exists('cal_info')) {
+			require __DIR__ . '/shims.php';
+		}
+	}
+
+	/**
 	 * Do we need to emulate PHP bug #54254?
 	 *
 	 * This bug relates to the names used for months 6 and 7 in the Jewish calendar.

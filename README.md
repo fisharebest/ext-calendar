@@ -45,25 +45,31 @@ Add the package as a dependency in your `composer.json` file:
         "fisharebest/ext-calendar": "1.*"
     }
 
-Bootstrap the package:
+If you want to create the “shim” functions, you must tell the package to create them.
 
-    // bootstrap.php
-    require 'vendor/autoload.php';
-    \Fisharebest\ExtCalendar\Bootstrap::init();
+    // Put this in your bootstrap.php or similar.
+    \Fisharebest\ExtCalendar\Shim::create();
 
-Use the PHP functions, whether the extension is loaded or not:
+Now you can use the PHP functions, whether the ext/calendar is installed or not:
 
     print_r(cal_info(CAL_GREGORIAN));
 
-Use the calendar classes directly:
+Alternatively, just use the calendar classes directly.
 
+    // Create a calendar
+    $cal = new FrenchCalendar;
+    $cal = new GregorianCalendar;
     $cal = new JewishCalendar;
+    $cal = new JulianCalendar;
+
+    // Date conversions
     $jd = $cal->ymdToJd($year, $month, $day);
     list($year, $month, $day) = $cal->jdToYmd($jd);
+
+    // Information functions (see the source for more)
     $is_leap_year = $cal->leapYear($year);
     $day_of_week = $cal->dayOfWeek($jd);
     $month_length = $cal->daysInMonth($year, $month);
-    // See the source for more…
 
 Known restrictions and limitations
 ==================================

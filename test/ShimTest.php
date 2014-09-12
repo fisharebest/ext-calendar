@@ -33,6 +33,16 @@ class ShimTest extends TestCase {
 	const LARGE_PRIME = 235741;
 
 	/**
+	 * Test that after we call create(), we have the necessary functions/constants.
+	 *
+	 * @return void
+	 */
+	public function testCreate() {
+		Shim::create();
+		$this->assertTrue(defined('CAL_JEWISH'));
+	}
+
+	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
 	 * @large
