@@ -90,24 +90,6 @@ Thus the package always provides the same behaviour as the native `ext/calendar`
 
 * [#67976](https://bugs.php.net/bug.php?id=67976) Wrong value in `cal_days_in_month()` for French calendar - found by this project!
 
-Performance
-===========
-
-These functions are naturally slower than the native functions, especially for complex calendars such as Jewish.  This table shows the relative decrease in performance.
-
-    JDToFrench()                     FrenchCalendar->jdToYmd()         3.7
-    JDToGregorian()                  GregorianCalendar->jdToYmd()      5.9
-    jdtojewish()                     JewishCalendar->jdToYmd()        23.7
-    JDToJulian()                     JulianCalendar->jdToYmd()         4.8
-    FrenchToJD()                     FrenchCalendar->ymdToJd()         2.0
-    GregorianToJD()                  GregorianCalendar->ymdToJd()      3.0
-    jewishtojd()                     JewishCalendar->ymdToJd()        22.1
-    JulianToJD()                     JulianCalendar->ymdToJd()         3.5
-    cal_days_in_month(CAL_FRENCH)    FrenchCalendar->daysInMonth()     2.7
-    cal_days_in_month(CAL_GREGORIAN) GregorianCalendar->daysInMonth()  2.6
-    cal_days_in_month(CAL_JEWISH)    JewishCalendar->daysInMonth()    12.2
-    cal_days_in_month(CAL_JULIAN)    JulianCalendar->daysInMonth()     3.0
-
 HHVM
 ====
 

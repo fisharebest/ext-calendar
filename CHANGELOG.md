@@ -1,6 +1,9 @@
 CHANGE LOG
 ==========
 
+## dev/master
+ - Convert logic to lookup tables for better performance.
+
 ## 1.0.3 (2014-09-12)
  - Simplify the way shims are created.
 

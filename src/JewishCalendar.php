@@ -127,7 +127,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	 *
 	 * @var int[]
 	 */
-	private static $fixed_month_lengths = array(
+	private static $FIXED_MONTH_LENGTHS = array(
 		1 => 30, 4 => 29, 5 => 30, 7 => 29, 8 => 30, 9 => 29, 10 => 30, 11 => 29, 12 => 30, 13 => 29
 	);
 
@@ -139,7 +139,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	 *
 	 * @var int[][][]
 	 */
-	private static $cumulative_days = array(
+	private static $CUMULATIVE_DAYS = array(
 		0 => array( // Non-leap years
 			-1 => array( // Deficient years
 				1 => 0, 30, 59, 88, 117, 147, 147, 176, 206, 235, 265, 294, 324
@@ -164,6 +164,13 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 		),
 	);
 
+
+	/**
+	 * Rosh Hashanah cannot fall on a Sunday, Wednesday or Friday.  Move the year start accordingly.
+	 *
+	 * @var int[]
+	 */
+	private static $ROSH_HASHANAH = array(347998, 347997, 347997, 347998, 347997, 347998, 347997);
 
 	/**
 	 * Determine whether a year is a leap year.
@@ -221,7 +228,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	}
 
 	/**
-	 * Calculate the Julian Day number of the first day in a year
+	 * Calculate the Julian Day number of the first day in a year.
 	 *
 	 * @param  int $year
 	 *
@@ -244,18 +251,12 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 			$jd++;
 		}
 
-		switch ($jd % 7) {
-			case 0:
-			case 3:
-			case 5:
-				return $jd + 347998;
-			default:
-				return $jd + 347997;
-		}
+		// The actual year start depends on the day of the week
+		return $jd + self::$ROSH_HASHANAH[$jd % 7];
 	}
 
 	/**
-	 * Convert a year/month/day into a Julian day number
+	 * Convert a year/month/day into a Julian day number.
 	 *
 	 * @param int $year
 	 * @param int $month
@@ -266,7 +267,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 	public function ymdToJd($year, $month, $day) {
 		return
 			$this->yToJd($year) +
-			self::$cumulative_days[$this->leapYear($year)][$this->yearType($year)][$month] +
+			self::$CUMULATIVE_DAYS[$this->leapYear($year)][$this->yearType($year)][$month] +
 			$day - 1;
 	}
 
@@ -352,7 +353,7 @@ class JewishCalendar extends Calendar implements CalendarInterface{
 		} elseif ($month === 6) {
 			return $this->daysInMonthAdarI($year);
 		} else {
-			return self::$fixed_month_lengths[$month];
+			return self::$FIXED_MONTH_LENGTHS[$month];
 		}
 	}
 
