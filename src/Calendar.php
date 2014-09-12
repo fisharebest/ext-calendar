@@ -29,6 +29,9 @@ abstract class Calendar {
 	/** Same as PHP’s ext/calendar extension */
 	const PHP_CALENDAR_SYMBOL = 'CAL_UNDEFINED';
 
+	/** See the GEDCOM specification */
+	const GEDCOM_CALENDAR_ESCAPE = '@#DUNKNOWN@';
+
 	/** The earliest Julian Day number that can be converted into this calendar. */
 	const JD_START = 1;
 

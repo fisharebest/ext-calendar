@@ -29,6 +29,9 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	/** Same as PHP’s ext/calendar extension */
 	const PHP_CALENDAR_SYMBOL = 'CAL_FRENCH';
 
+	/** See the GEDCOM specification */
+	const GEDCOM_CALENDAR_ESCAPE = '@#DFRENCH R@';
+
 	/** The earliest Julian Day number that can be converted into this calendar. */
 	const JD_START = 2375840;
 

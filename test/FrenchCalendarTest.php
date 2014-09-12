@@ -36,6 +36,7 @@ class FrenchCalendarTest extends TestCase {
 
 		$this->assertSame($french::PHP_CALENDAR_NAME, 'French');
 		$this->assertSame($french::PHP_CALENDAR_NUMBER, CAL_FRENCH);
+		$this->assertSame($french::GEDCOM_CALENDAR_ESCAPE, '@#DFRENCH R@');
 	}
 
 	/**

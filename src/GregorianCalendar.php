@@ -29,6 +29,9 @@ class GregorianCalendar extends JulianCalendar implements CalendarInterface {
 	/** Same as PHP’s ext/calendar extension */
 	const PHP_CALENDAR_SYMBOL = 'CAL_GREGORIAN';
 
+	/** See the GEDCOM specification */
+	const GEDCOM_CALENDAR_ESCAPE = '@#DGREGORIAN@';
+
 	/**
 	 * Determine whether a year is a leap year.
 	 *

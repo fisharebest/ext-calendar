@@ -36,6 +36,7 @@ class JulianCalendarTest extends TestCase {
 
 		$this->assertSame($julian::PHP_CALENDAR_NAME, 'Julian');
 		$this->assertSame($julian::PHP_CALENDAR_NUMBER, CAL_JULIAN);
+		$this->assertSame($julian::GEDCOM_CALENDAR_ESCAPE, '@#DJULIAN@');
 	}
 
 	/**

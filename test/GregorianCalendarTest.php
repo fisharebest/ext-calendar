@@ -36,6 +36,7 @@ class GregorianCalendarTest extends TestCase {
 
 		$this->assertSame($gregorian::PHP_CALENDAR_NAME, 'Gregorian');
 		$this->assertSame($gregorian::PHP_CALENDAR_NUMBER, CAL_GREGORIAN);
+		$this->assertSame($gregorian::GEDCOM_CALENDAR_ESCAPE, '@#DGREGORIAN@');
 	}
 
 	/**

@@ -35,6 +35,7 @@ class JewishCalendarTest extends TestCase {
 
 		$this->assertSame($jewish::PHP_CALENDAR_NAME, 'Jewish');
 		$this->assertSame($jewish::PHP_CALENDAR_NUMBER, CAL_JEWISH);
+		$this->assertSame($jewish::GEDCOM_CALENDAR_ESCAPE, '@#DHEBREW@');
 	}
 
 	/**

@@ -56,6 +56,8 @@ Now you can use the PHP functions, whether the ext/calendar is installed or not:
 
 Alternatively, just use the calendar classes directly.
 
+    use Fisharebest\ExtCalendar;
+    
     // Create a calendar
     $cal = new FrenchCalendar;
     $cal = new GregorianCalendar;

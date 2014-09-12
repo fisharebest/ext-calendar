@@ -29,6 +29,9 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	/** Same as PHP’s ext/calendar extension */
 	const PHP_CALENDAR_SYMBOL = 'CAL_JULIAN';
 
+	/** See the GEDCOM specification */
+	const GEDCOM_CALENDAR_ESCAPE = '@#DJULIAN@';
+
 	/**
 	 * Month lengths for regular years and leap-years.
 	 *
