@@ -41,37 +41,45 @@ How to use it
 
 Add the package as a dependency in your `composer.json` file:
 
-    require {
-        "fisharebest/ext-calendar": "1.*"
-    }
+``` javascript
+require {
+    "fisharebest/ext-calendar": "1.*"
+}
+```
 
 If you want to create the “shim” functions, you must tell the package to create them.
 
-    // Put this in your bootstrap.php or similar.
-    \Fisharebest\ExtCalendar\Shim::create();
+```php
+// Put this in your bootstrap.php or similar.
+\Fisharebest\ExtCalendar\Shim::create();
+```
 
 Now you can use the PHP functions, whether the ext/calendar is installed or not:
 
-    print_r(cal_info(CAL_GREGORIAN));
+``` php
+print_r(cal_info(CAL_GREGORIAN));
+```
 
 Alternatively, just use the calendar classes directly.
 
-    use Fisharebest\ExtCalendar;
-    
-    // Create a calendar
-    $cal = new FrenchCalendar;
-    $cal = new GregorianCalendar;
-    $cal = new JewishCalendar;
-    $cal = new JulianCalendar;
+``` php
+use Fisharebest\ExtCalendar;
 
-    // Date conversions
-    $jd = $cal->ymdToJd($year, $month, $day);
-    list($year, $month, $day) = $cal->jdToYmd($jd);
+// Create a calendar
+$cal = new FrenchCalendar;
+$cal = new GregorianCalendar;
+$cal = new JewishCalendar;
+$cal = new JulianCalendar;
 
-    // Information functions (see the source for more)
-    $is_leap_year = $cal->leapYear($year);
-    $day_of_week = $cal->dayOfWeek($jd);
-    $month_length = $cal->daysInMonth($year, $month);
+// Date conversions
+$jd = $cal->ymdToJd($year, $month, $day);
+list($year, $month, $day) = $cal->jdToYmd($jd);
+
+// Information functions (see the source for more)
+$is_leap_year = $cal->leapYear($year);
+$day_of_week = $cal->dayOfWeek($jd);
+$month_length = $cal->daysInMonth($year, $month);
+```
 
 Known restrictions and limitations
 ==================================
@@ -83,7 +91,7 @@ The functions `easterdate()` and `jdtounixtime()` use PHP‘s timezone, instead 
 Compatibility with different versions of PHP
 ============================================
 
-The following bugs are emulated, according to the version of PHP being used.
+The following PHP bugs are emulated, according to the version of PHP being used.
 Thus the package always provides the same behaviour as the native `ext/calendar` extension.
 
 * [#54254](https://bugs.php.net/bug.php?id=54254) Jewish month "Adar" - fixed in PHP 5.5
