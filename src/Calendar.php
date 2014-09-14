@@ -45,13 +45,6 @@ abstract class Calendar {
 	const MAX_DAYS_IN_MONTH = 31;
 
 	/**
-	 * The concrete class needs to provide the implementation.
-	 *
-	 * @return string[]
-	 */
-	protected abstract function monthNames();
-
-	/**
 	 * English names for the days of the week.
 	 *
 	 * @return string[]
@@ -72,24 +65,6 @@ abstract class Calendar {
 			'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
 		);
 	}
-
-	/**
-	 * The concrete class needs to provide the implementation.
-	 *
-	 * @param $jd
-	 */
-	abstract public function jdToYmd($jd);
-
-	/**
-	 * The concrete class needs to provide the implementation.
-	 *
-	 * @param int $year
-	 * @param int $month
-	 * @param int $day
-	 *
-	 * @return int
-	 */
-	abstract public function ymdToJd($year, $month, $day);
 
 	/**
 	 * Convert a Julian Day number into a calendar date.
