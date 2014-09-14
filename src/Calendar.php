@@ -78,7 +78,7 @@ abstract class Calendar {
 	 *
 	 * @param $jd
 	 */
-	public abstract function jdToYmd($jd);
+	abstract public function jdToYmd($jd);
 
 	/**
 	 * The concrete class needs to provide the implementation.
@@ -89,7 +89,7 @@ abstract class Calendar {
 	 *
 	 * @return int
 	 */
-	public abstract function ymdToJd($year, $month, $day);
+	abstract public function ymdToJd($year, $month, $day);
 
 	/**
 	 * Convert a Julian Day number into a calendar date.
