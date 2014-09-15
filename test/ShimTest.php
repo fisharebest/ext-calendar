@@ -867,16 +867,8 @@ class ShimTest extends TestCase {
 	public function testJdToJewishHebrew() {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
-
-			//foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
-			//	foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
-			//		foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
-			//			$fl = $alafim + $gereshayim + $alafim_geresh;
-			//			$this->assertSame(Shim::jdToJewish($jd, true, $fl), \jdtojewish($jd, true, $fl));
-			//		}
-			//	}
-			//}
-
+			$fl = mt_rand(0, 7);
+			$this->assertSame(Shim::jdToJewish($jd, true, $fl), \jdtojewish($jd, true, $fl));
 		}
 	}
 

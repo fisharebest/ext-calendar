@@ -447,6 +447,9 @@ class Shim {
 		$jewish = new JewishCalendar;
 
 		if ($hebrew) {
+			if ($juliandaycount < 347998 || $juliandaycount > 4000075) {
+				return trigger_error('Year out of range (0-9999).', E_USER_WARNING);
+			}
 			$hebrew = $jewish->jdToHebrew($juliandaycount, $fl & CAL_JEWISH_ADD_ALAFIM_GERESH, $fl & CAL_JEWISH_ADD_ALAFIM, $fl & CAL_JEWISH_ADD_GERESHAYIM);
 			// Our code generates Hebrew punctuation.  PHP uses ASCII punctuation.
 			$hebrew = strtr($hebrew, array(JewishCalendar::GERESH => "'", JewishCalendar::GERSHAYIM => '"'));

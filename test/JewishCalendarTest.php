@@ -222,23 +222,78 @@ class JewishCalendarTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testJdToHebrew() {
+	public function testJdToHebrewYear() {
 		$jewish = new JewishCalendar;
 
-		for ($year=5776; $year <= 5777; ++$year) {
-			for ($month = 1; $month <= 13; ++$month) {
-				foreach (array(4, 15, 16, 27) as $day) {
-					$jd = \JewishToJD($month, $day, $year);
+		foreach (array(
+			1, 15, 16, 17, 234, 987,
+			4010, 4020, 4030, 4040, 4050, 4060, 4070, 4080, 4090,
+			5000, 5100, 5150, 5110, 5776, 5777, 9999
+		) as $year) {
+			$jd = \JewishToJD(13, 15, $year);
+			foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
+				foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
+					foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
+						$ours = $jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim);
+						$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
+						$ours = mb_convert_encoding($ours, 'ISO-8859-8', 'UTF-8');
+						$theirs = \jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim);
+						$this->assertSame($ours, $theirs);
+					}
+				}
+			}
+		}
+	}
 
+
+	/**
+	 * Test the conversion of calendar dates into Julian days against the reference implementation.
+	 *
+	 * @large This test can take several seconds to run.
+	 *
+	 * @return void
+	 */
+	public function testJdToHebrewDay() {
+		$jewish = new JewishCalendar;
+
+		foreach (array(4, 15, 16, 27) as $day) {
+			$jd = \JewishToJD(8, $day, 5776);
+			foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
+				foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
+					foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
+						$ours = $jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim);
+						$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
+						$ours = mb_convert_encoding($ours, 'ISO-8859-8', 'UTF-8');
+						$theirs = \jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim);
+						$this->assertSame($ours, $theirs);
+					}
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Test the conversion of calendar dates into Julian days against the reference implementation.
+	 *
+	 * @large This test can take several seconds to run.
+	 *
+	 * @return void
+	 */
+	public function testJdToHebrewMonth() {
+		$jewish = new JewishCalendar;
+
+		foreach (array(5776, 5777) as $year) {
+			for ($month = 1; $month <= 13; ++$month) {
+				$jd = \JewishToJD($month, 23, $year);
+				foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 					foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 						foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
-							foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
-								$ours = $jewish->jdToHebrew($jd, false, false, false);
-								$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
-								$theirs = \jdtojewish($jd, true);
-								$theirs = mb_convert_encoding($theirs, 'UTF-8', 'ISO-8859-8');
-								$this->assertSame($ours, $theirs);
-							}
+							$ours = $jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim);
+							$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
+							$ours = mb_convert_encoding($ours, 'ISO-8859-8', 'UTF-8');
+							$theirs = \jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim);
+							$this->assertSame($ours, $theirs);
 						}
 					}
 				}
