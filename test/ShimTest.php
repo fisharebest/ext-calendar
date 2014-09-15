@@ -445,7 +445,6 @@ class ShimTest extends TestCase {
 	 * @return void
 	 */
 	public function testEasterDate() {
-		$this->assertSame(Shim::easterDate(), \easter_date());
 		$this->assertSame(Shim::easterDate(2013), \easter_date(2013));
 		$this->assertSame(Shim::easterDate(2014), \easter_date(2014));
 	}
@@ -852,7 +851,7 @@ class ShimTest extends TestCase {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
 
-			$this->assertEquals(Shim::jdToJewish($jd), \jdtojewish($jd));
+			$this->assertEquals(Shim::jdToJewish($jd, false, 0), \jdtojewish($jd));
 			$this->assertEquals(Shim::calFromJd($jd, CAL_JEWISH), \cal_from_jd($jd, CAL_JEWISH));
 		}
 	}
@@ -868,8 +867,6 @@ class ShimTest extends TestCase {
 	public function testJdToJewishHebrew() {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
-
-			$this->assertSame(Shim::jdToJewish($jd, true), \jdtojewish($jd, true));
 
 			//foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 			//	foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
