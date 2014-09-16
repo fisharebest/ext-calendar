@@ -234,11 +234,10 @@ class JewishCalendarTest extends TestCase {
 			foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 				foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 					foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
-						$ours = $jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim);
-						$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
-						$ours = mb_convert_encoding($ours, 'ISO-8859-8', 'UTF-8');
-						$theirs = \jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim);
-						$this->assertSame($ours, $theirs);
+						$this->assertSame(
+							$jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim),
+							\jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim)
+						);
 					}
 				}
 			}
@@ -261,11 +260,10 @@ class JewishCalendarTest extends TestCase {
 			foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 				foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 					foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
-						$ours = $jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim);
-						$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
-						$ours = mb_convert_encoding($ours, 'ISO-8859-8', 'UTF-8');
-						$theirs = \jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim);
-						$this->assertSame($ours, $theirs);
+						$this->assertSame(
+							$jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim),
+							\jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim)
+						);
 					}
 				}
 			}
@@ -289,11 +287,10 @@ class JewishCalendarTest extends TestCase {
 				foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 					foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 						foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
-							$ours = $jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim);
-							$ours = strtr($ours, array($jewish::GERESH => '\'', $jewish::GERSHAYIM => '"'));
-							$ours = mb_convert_encoding($ours, 'ISO-8859-8', 'UTF-8');
-							$theirs = \jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim);
-							$this->assertSame($ours, $theirs);
+							$this->assertSame(
+								bin2hex($jewish->jdToHebrew($jd, $alafim_geresh, $alafim, $gereshayim)),
+								bin2hex(\jdtojewish($jd, true, $alafim_geresh + $alafim + $gereshayim))
+							);
 						}
 					}
 				}

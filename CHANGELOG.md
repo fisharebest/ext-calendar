@@ -2,6 +2,7 @@ CHANGE LOG
 ==========
 
  - Unit test coverage
+ - Remove dependency on mb_string - generate Hebrew text directly in ISO-8859-8
 
 ## 1.1.2 (2014-09-16)
  - Fix #1; add support for the third parameter in jdtojewish().

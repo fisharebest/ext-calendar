@@ -6,7 +6,8 @@ use InvalidArgumentException;
 /**
  * class JewishCalendar - calculations for the Jewish calendar.
  *
- * Hebrew characters in this file have UTF-8 encoding.
+ * Hebrew characters in the code have ISO-8859-8 encoding (and ASCII punctuation).
+ * Hebrew characters in the comments have UTF-8 encoding (and Hebrew punctuation).
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -49,13 +50,13 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	const MAX_MONTHS_IN_YEAR = 13;
 
 	/** Place this symbol before the final letter of a sequence of numerals. */
-	const GERSHAYIM = '״';
+	const GERSHAYIM = "\"";  // The gershayim symbol - ״
 
 	/** Place this symbol after a single numeral. */
-	const GERESH = '׳';
+	const GERESH = "'"; // The geresh symbol - ׳
 
 	/** Word for thousand. */
-	const ALAFIM = 'אלפים';
+	const ALAFIM = " \xe0\xec\xf4\xe9\xed "; // The hebrew word for thousand with leading/trailing spaces - אלפים
 
 	/** A year that is one day shorter than normal. */
 	const DEFECTIVE_YEAR = -1;
@@ -72,33 +73,33 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @var string[]
 	 */
 	private static $HEBREW_NUMERALS = array(
-		400 => 'ת',
-		300 => 'ש',
-		200 => 'ר',
-		100 => 'ק',
-		90 => 'צ',
-		80 => 'פ',
-		70 => 'ע',
-		60 => 'ס',
-		50 => 'נ',
-		40 => 'מ',
-		30 => 'ל',
-		20 => 'כ',
-		19 => 'יט',
-		18 => 'יח',
-		17 => 'יז',
-		16 => 'טז',
-		15 => 'טו',
-		10 => 'י',
-		9 => 'ט',
-		8 => 'ח',
-		7 => 'ז',
-		6 => 'ו',
-		5 => 'ה',
-		4 => 'ד',
-		3 => 'ג',
-		2 => 'ב',
-		1 => 'א',
+		400 => "\xfa", // Tav - ת
+		300 => "\xf9", // Shin - ש
+		200 => "\xf8", // Resh - ר
+		100 => "\xf7", // Kuf - ק
+		90 => "\xf6", // Tsadi - צ
+		80 => "\xf4", // Pei - פ
+		70 => "\xf2", // Ayin - ע
+		60 => "\xf1", // Samech - ס
+		50 => "\xf0", // Nun - נ - (note that we don’t distinguish end nuns from regular nuns)
+		40 => "\xee", // Mem - מ
+		30 => "\xec", // Lamed - ל
+		20 => "\xeb", // Kaf - כ
+		19 => "\xe9\xe8", // Yud Tet - יט - (to prevent 19 matching 17 + 2)
+		18 => "\xe9\xe7", // Yud Het - יח - (to prevent 18 matching 17 + 1)
+		17 => "\xe9\xe6", // Yud Zayin - יז - (to prevent 17 matching 16 + 1)
+		16 => "\xe8\xe6", // Tet Zayin - טז
+		15 => "\xe8\xe5", // Tet Vav - טו
+		10 => "\xe9", // Yud - י
+		9 => "\xe8", // Tet - ט
+		8 => "\xe7", // Het - ח
+		7 => "\xe6", // Zayin -ז
+		6 => "\xe5", // Vav - ו
+		5 => "\xe4", // Hei - ה
+		4 => "\xe3", // Dalet - ד
+		3 => "\xe2", // Gimel - ג
+		2 => "\xe1", // Bet - ב
+		1 => "\xe0", // Aleph - א
 	);
 
 	/**
@@ -400,10 +401,19 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 		$leap_year = $this->leapYear($year);
 
 		return array(
-			1 => 'תשרי', 'חשון', 'כסלו', 'טבת', 'שבט',
-			$leap_year ? (Shim::emulateBug54254() ? 'אדר' : 'אדר א׳') : 'אדר',
-			$leap_year ? (Shim::emulateBug54254() ? '\'אדר ב' : 'אדר ב׳') : 'אדר',
-			'ניסן', 'אייר', 'סיון', 'תמוז', 'אב', 'אלול',
+			1 => "\xfa\xf9\xf8\xe9", // Tishri - תשרי
+			"\xe7\xf9\xe5\xef", // Heshvan - חשון
+			"\xeb\xf1\xec\xe5", // Kislev - כסלו
+			"\xe8\xe1\xfa", // Tevet - טבת
+			"\xf9\xe1\xe8", // Shevat - שבט
+			$leap_year ? (Shim::emulateBug54254() ? "\xe0\xe3\xf8" : "\xe0\xe3\xf8 \xe0'") : "\xe0\xe3\xf8", // Adar I - אדר - אדר א׳ - אדר
+			$leap_year ? (Shim::emulateBug54254() ? "'\xe0\xe3\xf8 \xe1" : "\xe0\xe3\xf8 \xe1'") : "\xe0\xe3\xf8", // Adar II - 'אדר ב - אדר ב׳ - אדר
+			"\xf0\xe9\xf1\xef", // Nisan - ניסן
+			"\xe0\xe9\xe9\xf8", // Iyar - אייר
+			"\xf1\xe9\xe5\xef", // Sivan - סיון
+			"\xfa\xee\xe5\xe6", // Tammuz - תמוז
+			"\xe0\xe1", // Av - אב
+			"\xe0\xec\xe5\xec", // Elul - אלול
 		);
 	}
 
@@ -431,7 +441,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @return string
 	 */
 	protected function addGereshayim($hebrew) {
-		switch (mb_strlen($hebrew, 'UTF-8')) {
+		switch (strlen($hebrew)) {
 		case 0:
 			// Zero, e.g. the zeros from the year 5,000
 			return $hebrew;
@@ -440,7 +450,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 			return $hebrew . self::GERESH;
 		default:
 			// Multiple digits - insert a gershayim
-			return mb_substr($hebrew, 0, mb_strlen($hebrew, 'UTF-8') - 1, 'UTF-8') . self::GERSHAYIM . mb_substr($hebrew, -1, 1, 'UTF-8');
+			return substr($hebrew, 0, strlen($hebrew) - 1) . self::GERSHAYIM . substr($hebrew, -1, 1);
 		}
 	}
 
@@ -491,7 +501,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 				$thousands .= self::GERESH;
 			}
 			if ($alafim) {
-				$thousands .= ' ' . self::ALAFIM . ' ';
+				$thousands .= self::ALAFIM;
 			}
 			return $thousands . $this->numberToHebrewNumerals($year % 1000, $gereshayim);
 		}

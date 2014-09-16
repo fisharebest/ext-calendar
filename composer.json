@@ -22,12 +22,8 @@
 	},
 	"require-dev": {
 		"ext-calendar": "*",
-		"ext-mbstring": "*",
 		"phpunit/phpunit": "*",
 		"satooshi/php-coveralls": "dev-master"
-	},
-	"suggest": {
-		"patchwork/utf8": "ext/mb_string support is required to generate dates using Hebrew text."
 	},
 	"autoload": {
 		"psr-4": {
