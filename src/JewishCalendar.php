@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class JewishCalendar - calculations for the Jewish calendar.
  *
@@ -320,10 +322,14 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @param  int $month
 	 *
 	 * @return int
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year === 0 || $month < 1 || $month > 13) {
-			return trigger_error('invalid date.', E_USER_WARNING);
+		if ($year <= 0) {
+			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
+		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
+			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
 		} elseif ($month === 2) {
 			return $this->daysInMonthHeshvan($year);
 		} elseif ($month === 3) {
@@ -420,7 +426,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 *
 	 * Gereshayim is a contraction of “geresh” and “gershayim”.
 	 *
-	 * @param string $number
+	 * @param string $hebrew
 	 *
 	 * @return string
 	 */

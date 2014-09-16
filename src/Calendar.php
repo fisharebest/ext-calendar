@@ -70,7 +70,7 @@ abstract class Calendar {
 	 * Convert a Julian Day number into a calendar date.
 	 *
 	 * @param  $jd
-	 * @return int[] Array of month, day and year
+	 * @return int[] Array of month, day and year and other information
 	 */
 	public function calFromJd($jd) {
 		$dow = $this->dayOfWeek($jd);

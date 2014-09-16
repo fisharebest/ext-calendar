@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class ArabicCalendar - calculations for the Arabic (Hijri) calendar.
  *
@@ -105,12 +107,15 @@ class ArabicCalendar extends Calendar implements CalendarInterface {
 	 * @param  int $month
 	 *
 	 * @return int
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year == 0 || $month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			return trigger_error('invalid date.', E_USER_WARNING);
+		if ($year <= 0) {
+			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
+		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
+			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
 		} else {
 			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
 		}
-	}
-}
+	}}

@@ -90,7 +90,8 @@ class FrenchCalendarTest extends TestCase {
 	public function testDaysInMonth() {
 		$french = new FrenchCalendar;
 
-		for ($year = 1; $year <= 14; ++$year) {
+		// Cannot test year 14 against PHP, due to PHP bug 67976.
+		for ($year = 1; $year <= 13; ++$year) {
 			for ($month = 1; $month <= 13; ++$month) {
 				$this->assertSame($french->daysInMonth($year, $month), \cal_days_in_month(CAL_FRENCH, $month, $year));
 			}

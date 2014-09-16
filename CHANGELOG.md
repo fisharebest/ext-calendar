@@ -1,6 +1,8 @@
 CHANGE LOG
 ==========
 
+ - Unit test coverage
+
 ## 1.1.2 (2014-09-16)
  - Fix #1; add support for the third parameter in jdtojewish().
 

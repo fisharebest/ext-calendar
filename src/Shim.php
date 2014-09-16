@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class Shim - PHP implementations of functions from the PHP calendar extension.
  *
@@ -28,9 +30,7 @@ class Shim {
 	 * @return void
 	 */
 	public static function create() {
-		if (!function_exists('cal_info')) {
-			require __DIR__ . '/shims.php';
-		}
+		function_exists('cal_info')|| require __DIR__ . '/shims.php';
 	}
 
 	/**
@@ -65,38 +65,58 @@ class Shim {
 	}
 
 	/**
+	 * Create a calendar object for a specified calendar ID.
+	 *
+	 * @param int $calendar_id A PHP calendar ID
+	 *
+	 * @return CalendarInterface
+	 */
+	private static function calendarFromId($calendar_id) {
+		switch ($calendar_id) {
+			case CAL_GREGORIAN:
+				return new GregorianCalendar;
+
+			case CAL_JULIAN:
+				return new JulianCalendar;
+
+			case CAL_FRENCH:
+				return new FrenchCalendar();
+
+			case CAL_JEWISH:
+				return new JewishCalendar();
+
+			default:
+				return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+		}
+	}
+
+	/**
 	 * Return the number of days in a month for a given year and calendar.
 	 *
 	 * Shim implementation of \cal_days_in_month()
 	 *
 	 * @link https://php.net/cal_days_in_month
+	 * @link https://bugs.php.net/bug.php?id=67976
 	 *
-	 * @param $calendar
+	 * @param $calendar_id
 	 * @param $month
 	 * @param $year
 	 *
 	 * @return int The number of days in the specified month
 	 */
-	public static function calDaysInMonth($calendar, $month, $year) {
-		switch ($calendar) {
-			case CAL_GREGORIAN:
-				$gregorian = new GregorianCalendar;
-				return $gregorian->daysInMonth($year, $month);
-
-			case CAL_JULIAN:
-				$julian= new JulianCalendar;
-				return $julian->daysInMonth($year, $month);
-
-			case CAL_FRENCH:
-				$french = new FrenchCalendar();
-				return $french->daysInMonth($year, $month);
-
-			case CAL_JEWISH:
-				$jewish = new JewishCalendar();
-				return $jewish->daysInMonth($year, $month);
-
-			default:
-				return trigger_error('invalid calendar ID ' . $calendar . '.', E_USER_WARNING);
+	public static function calDaysInMonth($calendar_id, $month, $year) {
+		if ($calendar_id == CAL_FRENCH && $month == 13 && $year == 14) {
+			// Emulate PHP bug 67976.
+			return -2380948;
+		} elseif ($calendar_id == CAL_FRENCH && $year > 14) {
+			// PHP’s implementation stops at year 14.
+			return trigger_error('invalid date.', E_USER_WARNING);
+		} else {
+			try {
+				return self::calendarFromId($calendar_id)->daysInMonth($year, $month);
+			} catch (InvalidArgumentException $ex) {
+				return trigger_error('invalid date.', E_USER_WARNING);
+			}
 		}
 	}
 
@@ -107,32 +127,13 @@ class Shim {
 	 *
 	 * @link https://php.net/cal_from_jd
 	 *
-	 * @param int $jd       Julian Day number
-	 * @param int $calendar Calendar constant
+	 * @param int $jd          Julian Day number
+	 * @param int $calendar_id Calendar constant
 	 *
 	 * @return array
 	 */
-	public static function calFromJd($jd, $calendar) {
-		switch ($calendar) {
-		case CAL_FRENCH:
-			$french = new FrenchCalendar;
-			return $french->calFromJd($jd);
-
-		case CAL_GREGORIAN:
-			$gregorian = new GregorianCalendar;
-			return $gregorian->calFromJd($jd);
-
-		case CAL_JEWISH:
-			$jewish = new JewishCalendar;
-			return $jewish->calFromJd($jd);
-
-		case CAL_JULIAN:
-			$julian = new JulianCalendar;
-			return $julian->calFromJd($jd);
-
-		default:
-			return trigger_error('invalid calendar ID ' . $calendar, E_USER_WARNING);
-		}
+	public static function calFromJd($jd, $calendar_id) {
+		return self::calendarFromId($calendar_id)->calFromJd($jd);
 	}
 
 	/**
@@ -142,37 +143,20 @@ class Shim {
 	 *
 	 * @link https://php.net/cal_info
 	 *
-	 * @param int $calendar
+	 * @param int $calendar_id
 	 *
 	 * @return array
 	 */
-	public static function calInfo($calendar) {
-		switch ($calendar) {
-			case -1:
-				return array(
-					CAL_GREGORIAN => static::calInfo(CAL_GREGORIAN),
-					CAL_JULIAN => static::calInfo(CAL_JULIAN),
-					CAL_JEWISH => static::calInfo(CAL_JEWISH),
-					CAL_FRENCH => static::calInfo(CAL_FRENCH),
-				);
-			case CAL_FRENCH:
-				$french = new FrenchCalendar;
-				return $french->phpCalInfo();
-
-			case CAL_GREGORIAN:
-				$gregorian = new GregorianCalendar;
-				return $gregorian->phpCalInfo();
-
-			case CAL_JEWISH:
-				$jewish = new JewishCalendar;
-				return $jewish->phpCalInfo();
-
-			case CAL_JULIAN:
-				$julian = new JulianCalendar;
-				return $julian->phpCalInfo();
-
-			default:
-				return trigger_error('invalid calendar ID ' . $calendar . '.', E_USER_WARNING);
+	public static function calInfo($calendar_id) {
+		if ($calendar_id == -1) {
+			return array(
+				CAL_GREGORIAN => static::calInfo(CAL_GREGORIAN),
+				CAL_JULIAN => static::calInfo(CAL_JULIAN),
+				CAL_JEWISH => static::calInfo(CAL_JEWISH),
+				CAL_FRENCH => static::calInfo(CAL_FRENCH),
+			);
+		} else {
+			return self::calendarFromId($calendar_id)->phpCalInfo();
 		}
 	}
 
@@ -291,7 +275,7 @@ class Shim {
 	 * @return int
 	 */
 	public static function frenchToJd($month, $day, $year) {
-		if ($year == 0) {
+		if ($year <= 0) {
 			return 0;
 		} else {
 			$french = new FrenchCalendar;
@@ -514,8 +498,8 @@ class Shim {
 	 *
 	 * @return int
 	 */
-	public static function jewishToJD($month, $day, $year) {
-		if ($year == 0) {
+	public static function jewishToJd($month, $day, $year) {
+		if ($year <= 0) {
 			return 0;
 		} else {
 			$jewish = new JewishCalendar;

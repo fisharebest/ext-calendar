@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class FrenchCalendar - calculations for the French Republican calendar.
  *
@@ -105,20 +107,18 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 * @param  int $month
 	 *
 	 * @return int
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year < 1 || $year > 14) {
-			return trigger_error('invalid date.', E_USER_WARNING);
-		} elseif ($month >=1 && $month <= 12) {
-			return 30;
+		if ($year <= 0) {
+			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
+		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
+			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
 		} elseif ($month == 13) {
-			if ($this->leapYear($year)) {
-				return 6;
-			} else {
-				return $year == 14 ? -2380948 : 5; // Emulate a bug in PHP
-			}
+			return $this->leapYear($year) ? 6 : 5;
 		} else {
-			return trigger_error('invalid date.', E_USER_WARNING);
+			return 30;
 		}
 	}
 }

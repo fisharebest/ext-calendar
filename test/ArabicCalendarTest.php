@@ -1,6 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -145,6 +146,54 @@ class ArabicCalendarTest extends TestCase {
 		$this->assertSame($arabic->daysInMonth(1202, 10), 29);
 		$this->assertSame($arabic->daysInMonth(1202, 11), 30);
 		$this->assertSame($arabic->daysInMonth(1202, 12), 30);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month.
+	 *
+	 * @expectedException        InvalidArgumentException
+	 * @expectedExceptionMessage Month 13 is invalid for this calendar
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthInvalidMonth() {
+		$arabic = new ArabicCalendar;
+
+		$arabic->daysInMonth(13, 1234);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month.
+	 *
+	 * @expectedException        InvalidArgumentException
+	 * @expectedExceptionMessage Year 0 is invalid for this calendar
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthZeroYear() {
+		$arabic = new ArabicCalendar;
+
+		$arabic->daysInMonth(0, 1);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month.
+	 *
+	 * @expectedException        InvalidArgumentException
+	 * @expectedExceptionMessage Year -1 is invalid for this calendar
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthNegativeYear() {
+		$arabic = new ArabicCalendar;
+
+		$arabic->daysInMonth(-1, 1);
 	}
 
 	/**

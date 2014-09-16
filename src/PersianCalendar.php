@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class PersianCalendar - calculations for the Persian (Jalali) calendar.
  *
@@ -33,7 +35,7 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 	const GEDCOM_CALENDAR_ESCAPE = '@#DJALALI@';
 
 	/** The earliest Julian Day number that can be converted into this calendar. */
-	const JD_START = 1948321; // 1 Farvardīn 0001 AP = ?? ??? ???? (Julian)
+	const JD_START = 1948320; // 1 Farvardīn 0001 AP = 19 MAR 0622 (Julian)
 
 	/**
 	 * Month lengths for regular years and leap-years.
@@ -72,7 +74,7 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 	 * @return int[];
 	 */
 	public function jdToYmd($jd) {
-		$depoch = $jd - $this->ymdToJd(475, 1, 1);
+		$depoch = $jd - 2121447;
 		$cycle = (int)($depoch / 1029983);
 		$cyear = $depoch % 1029983;
 		if ($cyear == 1029982) {
@@ -84,9 +86,7 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 				$aux1 + 1;
 		}
 		$year = $ycycle + (2820 * $cycle) + 474;
-		if ($year <= 0) {
-			$year--;
-		}
+		// If we allowed negative years, we would deal with them here.
 		$yday = ($jd - $this->ymdToJd($year, 1, 1)) + 1;
 		$month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
 		$day = ($jd - $this->ymdToJd($year, $month, 1)) + 1;
@@ -113,7 +113,7 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 			(int)((($epyear * 682) - 110) / 2816) +
 			($epyear - 1) * 365 +
 			(int)($epbase / 2820) * 1029983 +
-			(self::JD_START - 1);
+			self::JD_START;
 	}
 
 	/**
@@ -135,10 +135,14 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 	 * @param  int $month
 	 *
 	 * @return int
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year == 0 || $month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			return trigger_error('invalid date.', E_USER_WARNING);
+		if ($year <= 0) {
+			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
+		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
+			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
 		} else {
 			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
 		}

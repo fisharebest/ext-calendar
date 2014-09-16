@@ -45,16 +45,23 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
 	 *
-	 * @large
-	 *
 	 * @return void
 	 */
 	public function testCalDaysInMonthFrench() {
-		for ($n = 0; $n < static::ITERATIONS; ++$n) {
-			$year = mt_rand(1, 14);
-			$month = mt_rand(1, 13);
-			$this->assertEquals(Shim::calDaysInMonth(CAL_FRENCH, $month, $year), \cal_days_in_month(CAL_FRENCH, $month, $year));
+		foreach (array(3, 4) as $year) {
+			foreach (array(1, 12, 13) as $month) {
+				$this->assertEquals(Shim::calDaysInMonth(CAL_FRENCH, $month, $year), \cal_days_in_month(CAL_FRENCH, $month, $year));
+			}
 		}
+	}
+
+	/**
+	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 *
+	 * @return void
+	 */
+	public function testCalDaysInMonthFrenchBug67976() {
+		$this->assertEquals(Shim::calDaysInMonth(CAL_FRENCH, 13, 14), \cal_days_in_month(CAL_FRENCH, 13, 14));
 	}
 
 	/**
@@ -89,7 +96,7 @@ class ShimTest extends TestCase {
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
-	public function testCalDaysInMonthFrenchLowYear1() {
+	public function testCalDaysInMonthFrenchZeroYear1() {
 		Shim::calDaysInMonth(CAL_FRENCH, 1, 0);
 	}
 
@@ -101,8 +108,32 @@ class ShimTest extends TestCase {
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
-	public function testCalDaysInMonthFrenchLowYear2() {
+	public function testCalDaysInMonthFrenchZeroYear2() {
 		\cal_days_in_month(CAL_FRENCH, 1, 0);
+	}
+
+	/**
+	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 *
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_USER_WARNING
+	 * @expectedExceptionMessage invalid date.
+	 * @return                   void
+	 */
+	public function testCalDaysInMonthFrenchNegativeYear1() {
+		Shim::calDaysInMonth(CAL_FRENCH, 1, -1);
+	}
+
+	/**
+	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 *
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_WARNING
+	 * @expectedExceptionMessage invalid date.
+	 * @return                   void
+	 */
+	public function testCalDaysInMonthFrenchNegativeYear2() {
+		\cal_days_in_month(CAL_FRENCH, 1, -1);
 	}
 
 	/**
@@ -327,7 +358,7 @@ class ShimTest extends TestCase {
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_USER_WARNING
-	 * @expectedExceptionMessage invalid calendar ID 999.
+	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthInvalidCalendar1() {
@@ -339,7 +370,7 @@ class ShimTest extends TestCase {
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
 	 * @expectedExceptionCode    E_WARNING
-	 * @expectedExceptionMessage invalid calendar ID 999.
+	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthInvalidCalendar2() {
@@ -870,6 +901,66 @@ class ShimTest extends TestCase {
 			$fl = mt_rand(0, 7);
 			$this->assertSame(Shim::jdToJewish($jd, true, $fl), \jdtojewish($jd, true, $fl));
 		}
+	}
+
+	/**
+	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 *
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_USER_WARNING
+	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @return                   void
+	 */
+	public function testJdToJewishHebrewOutOfRangeLow1() {
+		$jd = \JewishToJd(1,1,1) - 1;
+
+		Shim::jdToJewish($jd, true, 0);
+	}
+
+	/**
+	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 *
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_WARNING
+	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @return                   void
+	 */
+	public function testJdToJewishHebrewOutOfRangeLow2() {
+		$jd = \JewishToJd(1, 1, 1) - 1;
+
+		JdToJewish($jd, true, 0);
+	}
+
+	/**
+	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 *
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_USER_WARNING
+	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @return                   void
+	 */
+	public function testJdToJewishHebrewOutOfRangeHigh1() {
+		$jd = \JewishToJd(13, 29, 9999) + 1;
+
+		Shim::jdToJewish($jd, true, 0);
+	}
+
+	/**
+	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 *
+	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedExceptionCode    E_WARNING
+	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @return                   void
+	 */
+	public function testJdToJewishHebrewOutOfRangeHigh2() {
+		$jd = \JewishToJd(13, 29, 9999) + 1;
+
+		JdToJewish($jd, true, 0);
 	}
 
 	/**

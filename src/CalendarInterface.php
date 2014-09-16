@@ -5,6 +5,8 @@ namespace Fisharebest\ExtCalendar;
  * interface CalendarInterface - each calendar implementation needs to provide
  * these methods.
  *
+ * Many of them are actually provided by the Calendar base class.
+ *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
  * @license   This program is free software: you can redistribute it and/or modify
@@ -22,33 +24,12 @@ namespace Fisharebest\ExtCalendar;
  */
 interface CalendarInterface {
 	/**
-	 * Convert a Julian day number into a year/month/day.
+	 * Convert a Julian Day number into a calendar date.
 	 *
-	 * @param $jd
-	 *
-	 * @return int[]
+	 * @param  $jd
+	 * @return int[] Array of month, day and year and other information
 	 */
-	public function jdToYmd($jd);
-
-	/**
-	 * Convert a year/month/day to a Julian day number.
-	 *
-	 * @param int $year
-	 * @param int $month
-	 * @param int $day
-	 *
-	 * @return int
-	 */
-	public function ymdToJd($year, $month, $day);
-
-	/**
-	 * Determine whether or not a given year is a leap-year.
-	 *
-	 * @param int $year
-	 *
-	 * @return bool
-	 */
-	public function leapYear($year);
+	public function calFromJd($jd);
 
 	/**
 	 * Determine the number of days in a specified month, allowing for leap years, etc.
@@ -61,10 +42,45 @@ interface CalendarInterface {
 	public function daysInMonth($year, $month);
 
 	/**
+	 * Convert a Julian day number into a year/month/day.
+	 *
+	 * @param $jd
+	 *
+	 * @return int[]
+	 */
+	public function jdToYmd($jd);
+
+	/**
+	 * Determine whether or not a given year is a leap-year.
+	 *
+	 * @param int $year
+	 *
+	 * @return bool
+	 */
+	public function leapYear($year);
+
+	/**
 	 * Provide a list of month names, as required by PHP::cal_info()
 	 *
 	 * @return string[]
 	 */
 	public function monthNames();
 
+	/**
+	 * Provide information about this calendar.
+	 *
+	 * @return array
+	 */
+	public function phpCalInfo();
+
+	/**
+	 * Convert a year/month/day to a Julian day number.
+	 *
+	 * @param int $year
+	 * @param int $month
+	 * @param int $day
+	 *
+	 * @return int
+	 */
+	public function ymdToJd($year, $month, $day);
 }

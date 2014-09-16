@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class JulianCalendar - calculations for the Julian calendar.
  *
@@ -130,10 +132,14 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	 * @param  int $month
 	 *
 	 * @return int
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year == 0 || $month < 1 || $month > 12) {
-			return trigger_error('invalid date.', E_USER_WARNING);
+		if ($year == 0) {
+			throw new InvalidArgumentException('Year 0 is invalid for this calendar');
+		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
 		} else {
 			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
 		}
