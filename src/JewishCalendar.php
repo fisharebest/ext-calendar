@@ -255,7 +255,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Determine whether a year is normal, defective or complete.
 	 *
-	 * @param $year
+	 * @param int $year
 	 *
 	 * @return int defective (-1), normal (0) or complete (1)
 	 */
@@ -361,7 +361,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Calculate the name of a month, for a specified Julian Day number.
 	 *
-	 * @param  $jd
+	 * @param  int $jd
 	 *
 	 * @return string
 	 */

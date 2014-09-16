@@ -259,7 +259,7 @@ class PersianCalendarTest extends TestCase {
 	public function testDaysInMonthInvalidMonth() {
 		$persian = new PersianCalendar;
 
-		$persian->daysInMonth(13, 1234);
+		$persian->daysInMonth(1234, 13);
 	}
 
 	/**

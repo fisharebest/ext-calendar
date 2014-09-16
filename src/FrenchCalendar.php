@@ -1,8 +1,6 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use InvalidArgumentException;
-
 /**
  * class FrenchCalendar - calculations for the French Republican calendar.
  *
@@ -47,6 +45,28 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	const MAX_DAYS_IN_MONTH = 30;
 
 	/**
+	 * Month lengths for regular years and leap-years.
+	 *
+	 * @var int[][]
+	 */
+	protected static $DAYS_IN_MONTH = array(
+		0 => array(1 => 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 5),
+		1 => array(1 => 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 6),
+	);
+
+	/**
+	 * Month names for the calendar.
+	 *
+	 * @return string[]
+	 */
+	public function monthNames() {
+		return array(
+			1 => 'Vendemiaire', 'Brumaire', 'Frimaire', 'Nivose', 'Pluviose', 'Ventose',
+			'Germinal', 'Floreal', 'Prairial', 'Messidor', 'Thermidor', 'Fructidor', 'Extra',
+		);
+	}
+
+	/**
 	 * Determine whether a year is a leap year.
 	 *
 	 * Leap years were based on astronomical observations.  Only years 3, 7 and 11
@@ -86,39 +106,5 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 */
 	public function ymdToJd($year, $month, $day) {
 		return 2375444 + $day + $month * 30 + $year * 365 + (int)($year / 4);
-	}
-
-	/**
-	 * Month names for the calendar.
-	 *
-	 * @return string[]
-	 */
-	public function monthNames() {
-		return array(
-			1 => 'Vendemiaire', 'Brumaire', 'Frimaire', 'Nivose', 'Pluviose', 'Ventose',
-			'Germinal', 'Floreal', 'Prairial', 'Messidor', 'Thermidor', 'Fructidor', 'Extra',
-		);
-	}
-
-	/**
-	 * Calculate the number of days in a month.
-	 *
-	 * @param  int $year
-	 * @param  int $month
-	 *
-	 * @return int
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	public function daysInMonth($year, $month) {
-		if ($year <= 0) {
-			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
-		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
-		} elseif ($month == 13) {
-			return $this->leapYear($year) ? 6 : 5;
-		} else {
-			return 30;
-		}
 	}
 }

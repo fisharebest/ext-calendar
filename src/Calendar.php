@@ -1,6 +1,8 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
+use InvalidArgumentException;
+
 /**
  * class Calendar - generic base class for specific calendars.
  *
@@ -47,30 +49,23 @@ abstract class Calendar {
 	/**
 	 * English names for the days of the week.
 	 *
-	 * @return string[]
+	 * @var string[]
 	 */
-	protected function dayNames() {
-		return array(
-			'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
-		);
-	}
+	protected static $DAY_NAMES = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 
 	/**
 	 * Abbreviated English names for the days of the week.
 	 *
-	 * @return string[]
+	 * @var string[]
 	 */
-	protected function dayNamesAbbreviated() {
-		return array(
-			'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-		);
-	}
+	protected static $DAY_NAMES_ABBREVIATED = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
 
 	/**
 	 * Convert a Julian Day number into a calendar date.
 	 *
-	 * @param  $jd
-	 * @return int[] Array of month, day and year and other information
+	 * @param  int $jd
+	 *
+	 * @return mixed[] Array of month, day and year and other information
 	 */
 	public function calFromJd($jd) {
 		$dow = $this->dayOfWeek($jd);
@@ -143,9 +138,7 @@ abstract class Calendar {
 	 * @return string
 	 */
 	public function dayName($dow) {
-		$days = $this->dayNames();
-
-		return $days[$dow];
+		return static::$DAY_NAMES[$dow];
 	}
 
 	/**
@@ -156,9 +149,7 @@ abstract class Calendar {
 	 * @return string
 	 */
 	public function dayNameAbbreviated($dow) {
-		$days = $this->dayNamesAbbreviated();
-
-		return $days[$dow];
+		return static::$DAY_NAMES_ABBREVIATED[$dow];
 	}
 
 	/**
@@ -196,5 +187,25 @@ abstract class Calendar {
 	 */
 	public function monthNamesAbbreviated() {
 		return $this->monthNames();
+	}
+
+	/**
+	 * Calculate the number of days in a month.
+	 *
+	 * @param  int $year
+	 * @param  int $month
+	 *
+	 * @return int
+	 *
+	 * @throws InvalidArgumentException
+	 */
+	public function daysInMonth($year, $month) {
+		if ($year <= 0) {
+			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
+		} elseif ($month < 1 || $month > static::MAX_MONTHS_IN_YEAR) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		} else {
+			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
+		}
 	}
 }

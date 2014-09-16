@@ -1,8 +1,6 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use InvalidArgumentException;
-
 /**
  * class PersianCalendar - calculations for the Persian (Jalali) calendar.
  *
@@ -126,25 +124,5 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 			1 => 'Farvardin', 'Ordibehesht', 'Khordad', 'Tir', 'Mordad', 'Shahrivar',
 			'Mehr', 'Aban', 'Azar', 'Dey', 'Bahman', 'Esfand',
 		);
-	}
-
-	/**
-	 * Calculate the number of days in a month.
-	 *
-	 * @param  int $year
-	 * @param  int $month
-	 *
-	 * @return int
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	public function daysInMonth($year, $month) {
-		if ($year <= 0) {
-			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
-		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
-		} else {
-			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
-		}
 	}
 }

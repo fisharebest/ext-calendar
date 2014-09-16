@@ -344,7 +344,7 @@ class Shim {
 	 * @param int $julianday
 	 * @param int $mode
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public static function jdMonthName($julianday, $mode) {
 		switch ($mode) {

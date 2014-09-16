@@ -161,7 +161,7 @@ class ArabicCalendarTest extends TestCase {
 	public function testDaysInMonthInvalidMonth() {
 		$arabic = new ArabicCalendar;
 
-		$arabic->daysInMonth(13, 1234);
+		$arabic->daysInMonth(1234, 13);
 	}
 
 	/**
