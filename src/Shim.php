@@ -168,13 +168,13 @@ class Shim {
 	 *
 	 * @link https://php.net/cal_from_jd
 	 *
-	 * @param int $jd          Julian Day number
+	 * @param int $julian_day  Julian Day number
 	 * @param int $calendar_id Calendar constant
 	 *
 	 * @return array
 	 */
-	public static function calFromJd($jd, $calendar_id) {
-		return self::calendarFromId($calendar_id)->calFromJd($jd);
+	public static function calFromJd($julian_day, $calendar_id) {
+		return self::calendarFromId($calendar_id)->calFromJd($julian_day);
 	}
 
 	/**
@@ -348,13 +348,13 @@ class Shim {
 	 * @link https://php.net/JDDayOfWeek
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
-	 * @param int $julianday
+	 * @param int $julian_day
 	 * @param int $mode
 	 *
 	 * @return mixed
 	 */
-	public static function jdDayOfWeek($julianday, $mode) {
-		$dow = self::$julian_calendar->dayOfWeek($julianday);
+	public static function jdDayOfWeek($julian_day, $mode) {
+		$dow = self::$julian_calendar->dayOfWeek($julian_day);
 
 		switch ($mode) {
 			case 1: // 1, not CAL_DOW_LONG - see bug 67960
@@ -373,30 +373,30 @@ class Shim {
 	 *
 	 * @link https://php.net/JDMonthName
 	 *
-	 * @param int $julianday
+	 * @param int $julian_day
 	 * @param int $mode
 	 *
 	 * @return string
 	 */
-	public static function jdMonthName($julianday, $mode) {
+	public static function jdMonthName($julian_day, $mode) {
 		switch ($mode) {
 			case CAL_MONTH_GREGORIAN_LONG:
-				return self::$gregorian_calendar->jdMonthName($julianday);
+				return self::$gregorian_calendar->jdMonthName($julian_day);
 
 			case CAL_MONTH_JULIAN_LONG:
-				return self::$julian_calendar->jdMonthName($julianday);
+				return self::$julian_calendar->jdMonthName($julian_day);
 
 			case CAL_MONTH_JULIAN_SHORT:
-				return self::$julian_calendar->jdMonthNameAbbreviated($julianday);
+				return self::$julian_calendar->jdMonthNameAbbreviated($julian_day);
 
 			case CAL_MONTH_JEWISH:
-				return self::$jewish_calendar->jdMonthName($julianday);
+				return self::$jewish_calendar->jdMonthName($julian_day);
 
 			case CAL_MONTH_FRENCH:
-				return self::$french_calendar->jdMonthName($julianday);
+				return self::$french_calendar->jdMonthName($julian_day);
 
 			default: // CAL_MONTH_GREGORIAN_SHORT and anything else
-				return self::$gregorian_calendar->jdMonthNameAbbreviated($julianday);
+				return self::$gregorian_calendar->jdMonthNameAbbreviated($julian_day);
 		}
 	}
 
@@ -407,15 +407,17 @@ class Shim {
 	 *
 	 * @link https://php.net/JDToFrench
 	 *
-	 * @param int $juliandaycount A Julian Day number
+	 * @param int $julian_day A Julian Day number
 	 *
 	 * @return string A string of the form "month/day/year"
 	 */
-	public static function jdToFrench($juliandaycount) {
-		if ($juliandaycount >= FrenchCalendar::JD_START && $juliandaycount <= FrenchCalendar::JD_END) {
-			$cal = self::$french_calendar->calFromJd($juliandaycount);
+	public static function jdToFrench($julian_day) {
+		// JDToFrench() converts years 1 to 14 inclusive, even though the calendar
+		// officially ended on 10 Nivôse 14 (JD 2380687, 31st December 1805 Gregorian).
+		if ($julian_day >= 2375840 && $julian_day <= 2380952) {
+			list($year, $month, $day) = self::$french_calendar->jdToYmd($julian_day);
 
-			return $cal['date'];
+			return $month . '/' . $day . '/' . $year;
 		} else {
 			return '0/0/0';
 		}
@@ -428,14 +430,21 @@ class Shim {
 	 *
 	 * @link https://php.net/JDToGregorian
 	 *
-	 * @param int $julianday A Julian Day number
+	 * @param int $julian_day A Julian Day number
 	 *
 	 * @return string A string of the form "month/day/year"
 	 */
-	public static function jdToGregorian($julianday) {
-		$cal = self::$gregorian_calendar->calFromJd($julianday);
+	public static function jdToGregorian($julian_day) {
+		// PHP has different limits on 32 and 64 bit systems.
+		$MAX_JD = PHP_INT_SIZE == 4 ? 536838866 : 2305843009213661906;
 
-		return $cal['date'];
+		if ($julian_day >= 1 && $julian_day <= $MAX_JD) {
+			list($year, $month, $day) = self::$gregorian_calendar->jdToYmd($julian_day);
+
+			return $month . '/' . $day . '/' . $year;
+		} else {
+			return '0/0/0';
+		}
 	}
 
 	/**
@@ -445,23 +454,28 @@ class Shim {
 	 *
 	 * @link https://php.net/JdtoJewish
 	 *
-	 * @param int $juliandaycount A Julian Day number
-	 * @param bool $hebrew        If true, the date is returned in Hebrew text
-	 * @param int $fl             If $hebrew is true, then add alafim and gereshayim to the text
+	 * @param int $julian_day A Julian Day number
+	 * @param bool $hebrew    If true, the date is returned in Hebrew text
+	 * @param int $fl         If $hebrew is true, then add alafim and gereshayim to the text
 	 *
 	 * @return string A string of the form "month/day/year"
 	 */
-	public static function jdToJewish($juliandaycount, $hebrew, $fl) {
+	public static function jdToJewish($julian_day, $hebrew, $fl) {
 		if ($hebrew) {
-			if ($juliandaycount < 347998 || $juliandaycount > 4000075) {
+			if ($julian_day < 347998 || $julian_day > 4000075) {
 				return trigger_error('Year out of range (0-9999).', E_USER_WARNING);
 			}
 
-			return self::$jewish_calendar->jdToHebrew($juliandaycount, $fl & CAL_JEWISH_ADD_ALAFIM_GERESH, $fl & CAL_JEWISH_ADD_ALAFIM, $fl & CAL_JEWISH_ADD_GERESHAYIM);
+			return self::$jewish_calendar->jdToHebrew($julian_day, $fl & CAL_JEWISH_ADD_ALAFIM_GERESH, $fl & CAL_JEWISH_ADD_ALAFIM, $fl & CAL_JEWISH_ADD_GERESHAYIM);
 		} else {
-			list($year, $month, $day) = self::$jewish_calendar->jdToYmd($juliandaycount);
+			// The upper limit is hard-coded into PHP to prevent numeric overflow on 32 bit systems.
+			if ($julian_day >= 347998 && $julian_day <= 324542846) {
+				list($year, $month, $day) = self::$jewish_calendar->jdToYmd($julian_day);
 
-			return $month . '/' . $day . '/' . $year;
+				return $month . '/' . $day . '/' . $year;
+			} else {
+				return '0/0/0';
+			}
 		}
 	}
 
@@ -472,14 +486,21 @@ class Shim {
 	 *
 	 * @link https://php.net/JDToJulian
 	 *
-	 * @param int $julianday A Julian Day number
+	 * @param int $julian_day A Julian Day number
 	 *
 	 * @return string A string of the form "month/day/year"
 	 */
-	public static function jdToJulian($julianday) {
-		$cal = self::$julian_calendar->calFromJd($julianday);
+	public static function jdToJulian($julian_day) {
+		// PHP has different limits on 32 and 64 bit systems.
+		$MAX_JD = PHP_INT_SIZE == 4 ? 536838829 : 784368370349;
 
-		return $cal['date'];
+		if ($julian_day >= 1 && $julian_day <= $MAX_JD) {
+			list($year, $month, $day) = self::$julian_calendar->jdToYmd($julian_day);
+
+			return $month . '/' . $day . '/' . $year;
+		} else {
+			return '0/0/0';
+		}
 	}
 
 	/**
@@ -489,13 +510,13 @@ class Shim {
 	 *
 	 * @link https://php.net/jdtounix
 	 *
-	 * @param int $jday
+	 * @param int $julian_day
 	 *
 	 * @return int
 	 */
-	public static function jdToUnix($jday) {
-		if ($jday >= 2440588 && $jday <= 2465343) {
-			return (int)($jday - 2440588) * 86400;
+	public static function jdToUnix($julian_day) {
+		if ($julian_day >= 2440588 && $julian_day <= 2465343) {
+			return (int)($julian_day - 2440588) * 86400;
 		} else {
 			return false;
 		}
