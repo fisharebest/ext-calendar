@@ -26,6 +26,16 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class PersianCalendarTest extends TestCase {
 	/**
+	 * Create the shim functions, so we can run tests on servers which do
+	 * not have the ext/calendar library installed.  For example HHVM.
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		Shim::create();
+	}
+
+	/**
 	 * Test the class constants.
 	 *
 	 * @coversNone
@@ -35,39 +45,7 @@ class PersianCalendarTest extends TestCase {
 	public function testConstants() {
 		$persian = new PersianCalendar;
 
-		$this->assertSame($persian::PHP_CALENDAR_NAME, 'Persian');
-		$this->assertSame($persian::PHP_CALENDAR_NUMBER, 5);
 		$this->assertSame($persian::GEDCOM_CALENDAR_ESCAPE, '@#DJALALI@');
-	}
-
-	/**
-	 * Test the PHP calendar information function (if php_info() supported this calendar)!
-	 *
-	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 * @covers Fisharebest\ExtCalendar\PersianCalendar::monthNames
-	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
-	 *
-	 * @return void
-	 */
-	public function testPhpCalInfo() {
-		$persian = new PersianCalendar;
-
-		$cal_info = array(
-			'months' => array(
-				1 => 'Farvardin', 'Ordibehesht', 'Khordad', 'Tir', 'Mordad', 'Shahrivar',
-				'Mehr', 'Aban', 'Azar', 'Dey', 'Bahman', 'Esfand',
-			),
-			'abbrevmonths' => array(
-				1 => 'Farvardin', 'Ordibehesht', 'Khordad', 'Tir', 'Mordad', 'Shahrivar',
-				'Mehr', 'Aban', 'Azar', 'Dey', 'Bahman', 'Esfand',
-			),
-			'maxdaysinmonth' => 31,
-			'calname' => 'Persian',
-			'calsymbol' => 'CAL_PERSIAN',
-		);
-
-
-		$this->assertSame($persian->phpCalInfo(), $cal_info);
 	}
 
 	/**
@@ -247,51 +225,67 @@ class PersianCalendarTest extends TestCase {
 	}
 
 	/**
-	 * Test the calculation of the number of days in each month.
-	 *
-	 * @expectedException        InvalidArgumentException
-	 * @expectedExceptionMessage Month 13 is invalid for this calendar
+	 * Test the calculation of the number of days in each month against the reference implementation.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::daysInMonth
 	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 0 is invalid for this calendar
+	 *
 	 * @return void
 	 */
-	public function testDaysInMonthInvalidMonth() {
+	public function testDaysInMonthMonthZero() {
 		$persian = new PersianCalendar;
 
-		$persian->daysInMonth(1234, 13);
+		$persian->daysInMonth(1501, 0);
 	}
 
 	/**
-	 * Test the calculation of the number of days in each month.
+	 * Test the calculation of the number of days in each month against the reference implementation.
 	 *
-	 * @expectedException        InvalidArgumentException
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthFourteen() {
+		$persian = new PersianCalendar;
+
+		$persian->daysInMonth(1501, 14);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
 	 * @expectedExceptionMessage Year 0 is invalid for this calendar
 	 *
-	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::daysInMonth
-	 *
 	 * @return void
 	 */
-	public function testDaysInMonthZeroYear() {
+	public function testDaysInMonthYearZero() {
 		$persian = new PersianCalendar;
 
-		$persian->daysInMonth(0, 1);
+		$persian->daysInMonth(0, 6);
 	}
 
 	/**
-	 * Test the calculation of the number of days in each month.
-	 *
-	 * @expectedException        InvalidArgumentException
-	 * @expectedExceptionMessage Year -1 is invalid for this calendar
+	 * Test the calculation of the number of days in each month against the reference implementation.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::daysInMonth
 	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Year -1 is invalid for this calendar
+	 *
 	 * @return void
 	 */
-	public function testDaysInMonthNegativeYear() {
+	public function testDaysInMonthYearMinusOne() {
 		$persian = new PersianCalendar;
 
-		$persian->daysInMonth(-1, 1);
+		$persian->daysInMonth(-1, 6);
 	}
 
 	/**

@@ -25,6 +25,16 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class GregorianCalendarTest extends TestCase {
 	/**
+	 * Create the shim functions, so we can run tests on servers which do
+	 * not have the ext/calendar library installed.  For example HHVM.
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		Shim::create();
+	}
+
+	/**
 	 * Test the class constants.
 	 *
 	 * @coversNone
@@ -34,24 +44,7 @@ class GregorianCalendarTest extends TestCase {
 	public function testConstants() {
 		$gregorian = new GregorianCalendar;
 
-		$this->assertSame($gregorian::PHP_CALENDAR_NAME, 'Gregorian');
-		$this->assertSame($gregorian::PHP_CALENDAR_NUMBER, CAL_GREGORIAN);
 		$this->assertSame($gregorian::GEDCOM_CALENDAR_ESCAPE, '@#DGREGORIAN@');
-	}
-
-	/**
-	 * Test the PHP calendar information function.
-	 *
-	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 * @covers Fisharebest\ExtCalendar\GregorianCalendar::monthNames
-	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
-	 *
-	 * @return void
-	 */
-	public function testPhpCalInfo() {
-		$gregorian = new GregorianCalendar;
-
-		$this->assertSame($gregorian->phpCalInfo(), \cal_info($gregorian::PHP_CALENDAR_NUMBER));
 	}
 
 	/**
@@ -96,7 +89,7 @@ class GregorianCalendarTest extends TestCase {
 		$gregorian = new GregorianCalendar;
 
 		foreach (array(2037, 2035, 2030, 1981, 1894, 1875, -1, -2, -3, -15, -19, -34, -53, -1712, -1788) as $year) {
-			$this->assertSame($gregorian->easterDays($year), \easter_days($year, CAL_EASTER_ALWAYS_GREGORIAN));
+			$this->assertSame($gregorian->easterDays($year), easter_days($year, CAL_EASTER_ALWAYS_GREGORIAN));
 		}
 	}
 
@@ -111,7 +104,7 @@ class GregorianCalendarTest extends TestCase {
 		$gregorian = new GregorianCalendar;
 
 		for ($year = 1970; $year <= 2037; ++$year) {
-			$this->assertSame($gregorian->easterDays($year), \easter_days($year, CAL_EASTER_ALWAYS_GREGORIAN));
+			$this->assertSame($gregorian->easterDays($year), easter_days($year, CAL_EASTER_ALWAYS_GREGORIAN));
 		}
 	}
 
@@ -127,15 +120,62 @@ class GregorianCalendarTest extends TestCase {
 
 		foreach (array(-5, -4, -1, 1, 1500, 1600, 1700, 1800, 1900, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2100, 2200) as $year) {
 			for ($month = 1; $month <= 12; ++$month) {
-				$this->assertSame($gregorian->daysInMonth($year, $month), \cal_days_in_month(CAL_GREGORIAN, $month, $year));
+				$this->assertSame($gregorian->daysInMonth($year, $month), cal_days_in_month(CAL_GREGORIAN, $month, $year));
 			}
 		}
 	}
 
 	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 0 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthZero() {
+		$gregorian = new GregorianCalendar;
+
+		$gregorian->daysInMonth(2001, 0);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 13 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthThirteen() {
+		$gregorian = new GregorianCalendar;
+
+		$gregorian->daysInMonth(2001, 13);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Year 0 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthYearZero() {
+		$gregorian = new GregorianCalendar;
+
+		$gregorian->daysInMonth(0, 6);
+	}
+
+	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -146,12 +186,11 @@ class GregorianCalendarTest extends TestCase {
 
 		foreach (array(2012, 2014) as $year) {
 			for ($day = 1; $day <= 28; ++$day) {
-				$jd = \GregorianToJD(8, $day, $year);
+				$jd = GregorianToJD(8, $day, $year);
 				$ymd = $gregorian->jdToYmd($jd);
 
 				$this->assertSame($gregorian->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToGregorian($jd));
-				$this->assertSame($gregorian->calFromJd($jd), \cal_from_jd($jd, CAL_GREGORIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
 			}
 		}
 	}
@@ -159,7 +198,6 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -170,12 +208,11 @@ class GregorianCalendarTest extends TestCase {
 
 		foreach (array(2012, 2014) as $year) {
 			for ($month=1; $month<=12; ++$month) {
-				$jd = \GregorianToJD($month, 9, $year);
+				$jd = GregorianToJD($month, 9, $year);
 				$ymd = $gregorian->jdToYmd($jd);
 
 				$this->assertSame($gregorian->ymdToJd($year, $month, 9), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToGregorian($jd));
-				$this->assertSame($gregorian->calFromJd($jd), \cal_from_jd($jd, CAL_GREGORIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
 			}
 		}
 	}
@@ -183,7 +220,6 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -193,19 +229,17 @@ class GregorianCalendarTest extends TestCase {
 		$gregorian = new GregorianCalendar;
 
 		for ($year=1970; $year<=2037; ++$year) {
-			$jd = \GregorianToJD(8, 9, $year);
+			$jd = GregorianToJD(8, 9, $year);
 			$ymd = $gregorian->jdToYmd($jd);
 
 			$this->assertSame($gregorian->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToGregorian($jd));
-			$this->assertSame($gregorian->calFromJd($jd), \cal_from_jd($jd, CAL_GREGORIAN));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
 		}
 	}
 
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
@@ -216,73 +250,18 @@ class GregorianCalendarTest extends TestCase {
 
 		for ($year=-5; $year<=5; ++$year) {
 			if ($year != 0) {
-				$jd = \GregorianToJD(1, 1, $year);
+				$jd = GregorianToJD(1, 1, $year);
 				$ymd = $gregorian->jdToYmd($jd);
 
 				$this->assertSame($gregorian->ymdToJd($year, 1, 1), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToGregorian($jd));
-				$this->assertSame($gregorian->calFromJd($jd), \cal_from_jd($jd, CAL_GREGORIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
 
-				$jd = \GregorianToJD(12, 31, $year);
+				$jd = GregorianToJD(12, 31, $year);
 				$ymd = $gregorian->jdToYmd($jd);
 
 				$this->assertSame($gregorian->ymdToJd($year, 12, 31), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToGregorian($jd));
-				$this->assertSame($gregorian->calFromJd($jd), \cal_from_jd($jd, CAL_GREGORIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
 			}
-		}
-	}
-
-	/**
-	 * Test the implementation of Gregorian::calInfo() against \cal_info()
-	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 *
-	 * @return void
-	 */
-	public function testCalInfo() {
-		$gregorian = new GregorianCalendar;
-
-		$this->assertSame($gregorian->phpCalInfo(), cal_info(CAL_GREGORIAN));
-	}
-
-///////////////////////////////////////////////////////
-
-	/**
-	 * To iterate over large ranges of test data, use a prime-number interval to
-	 * avoid any synchronisation problems.
-	 */
-	const LARGE_PRIME = 235741;
-
-	/**
-	 * Test the implementation of Gregorian::jDMonthName() against \JDMonthName()
-	 *
-	 * @return void
-	 */
-	public function testJdMonthName() {
-		$gregorian = new GregorianCalendar;
-
-		$start_jd = 1; // 25 November 4715 B.C.E.
-		$end_jd = 5373484; // 31 December 9999
-
-		for ($jd = $start_jd; $jd <= $end_jd; $jd += static::LARGE_PRIME) {
-			$this->assertSame($gregorian->jDMonthName($jd), \JDMonthName($jd, CAL_MONTH_GREGORIAN_LONG));
-		}
-	}
-
-	/**
-	 * Test the implementation of Gregorian::jDMonthName() against \JDMonthName()
-	 *
-	 * @return void
-	 */
-	public function testJdMonthNameAbbreviated() {
-		$gregorian = new GregorianCalendar;
-
-		$start_jd = 1; // 25 November 4715 B.C.E.
-		$end_jd = 5373484; // 31 December 9999
-
-		for ($jd = $start_jd; $jd <= $end_jd; $jd += static::LARGE_PRIME) {
-			$this->assertSame($gregorian->jDMonthNameAbbreviated($jd), \JDMonthName($jd, CAL_MONTH_GREGORIAN_SHORT));
 		}
 	}
 }

@@ -25,6 +25,16 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class FrenchCalendarTest extends TestCase {
 	/**
+	 * Create the shim functions, so we can run tests on servers which do
+	 * not have the ext/calendar library installed.  For example HHVM.
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		Shim::create();
+	}
+
+	/**
 	 * Test the class constants.
 	 *
 	 * @coversNone
@@ -34,24 +44,7 @@ class FrenchCalendarTest extends TestCase {
 	public function testConstants() {
 		$french = new FrenchCalendar;
 
-		$this->assertSame($french::PHP_CALENDAR_NAME, 'French');
-		$this->assertSame($french::PHP_CALENDAR_NUMBER, CAL_FRENCH);
 		$this->assertSame($french::GEDCOM_CALENDAR_ESCAPE, '@#DFRENCH R@');
-	}
-
-	/**
-	 * Test the PHP calendar information function.
-	 *
-	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::monthNames
-	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
-	 *
-	 * @return void
-	 */
-	public function testPhpCalInfo() {
-		$french = new FrenchCalendar;
-
-		$this->assertSame($french->phpCalInfo(), \cal_info($french::PHP_CALENDAR_NUMBER));
 	}
 
 	/**
@@ -93,9 +86,57 @@ class FrenchCalendarTest extends TestCase {
 		// Cannot test year 14 against PHP, due to PHP bug 67976.
 		for ($year = 1; $year <= 13; ++$year) {
 			for ($month = 1; $month <= 13; ++$month) {
-				$this->assertSame($french->daysInMonth($year, $month), \cal_days_in_month(CAL_FRENCH, $month, $year));
+				$this->assertSame($french->daysInMonth($year, $month), cal_days_in_month(CAL_FRENCH, $month, $year));
 			}
 		}
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 0 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthZero() {
+		$french = new FrenchCalendar;
+
+		$french->daysInMonth(9, 0);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthFourteen() {
+		$french = new FrenchCalendar;
+
+		$french->daysInMonth(9, 14);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Year 0 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthYearZero() {
+		$french = new FrenchCalendar;
+
+		$french->daysInMonth(0, 6);
 	}
 
 	/**
@@ -119,7 +160,6 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *
@@ -130,12 +170,11 @@ class FrenchCalendarTest extends TestCase {
 
 		foreach (array(3, 4) as $year) {
 			for ($day = 1; $day <= 30; ++$day) {
-				$jd = \FrenchToJD(8, $day, $year);
+				$jd = FrenchToJD(8, $day, $year);
 				$ymd = $french->jdToYmd($jd);
 
 				$this->assertSame($french->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToFrench($jd));
-				$this->assertSame($french->calFromJd($jd), \cal_from_jd($jd, CAL_FRENCH));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
 			}
 		}
 	}
@@ -143,7 +182,6 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *
@@ -153,26 +191,23 @@ class FrenchCalendarTest extends TestCase {
 		$french = new FrenchCalendar;
 
 		for ($month=1; $month<=12; ++$month) {
-			$jd = \FrenchToJD($month, 9, 5);
+			$jd = FrenchToJD($month, 9, 5);
 			$ymd = $french->jdToYmd($jd);
 
 			$this->assertSame($french->ymdToJd(5, $month, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToFrench($jd));
-			$this->assertSame($french->calFromJd($jd), \cal_from_jd($jd, CAL_FRENCH));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
 
-			$jd = \FrenchToJD($month, 9, 5);
+			$jd = FrenchToJD($month, 9, 5);
 			$ymd = $french->jdToYmd($jd);
 
 			$this->assertSame($french->ymdToJd(5, $month, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToFrench($jd));
-			$this->assertSame($french->calFromJd($jd), \cal_from_jd($jd, CAL_FRENCH));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
 		}
 	}
 
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *
@@ -182,25 +217,11 @@ class FrenchCalendarTest extends TestCase {
 		$french = new FrenchCalendar;
 
 		for ($year=1; $year<=14; ++$year) {
-			$jd = \FrenchToJD(8, 9, $year);
+			$jd = FrenchToJD(8, 9, $year);
 			$ymd = $french->jdToYmd($jd);
 
 			$this->assertSame($french->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToFrench($jd));
-			$this->assertSame($french->calFromJd($jd), \cal_from_jd($jd, CAL_FRENCH));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
 		}
-	}
-
-	/**
-	 * Test the implementation of French::calInfo() against \cal_info()
-	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 *
-	 * @return void
-	 */
-	public function testCalInfo() {
-		$french = new FrenchCalendar;
-
-		$this->assertSame($french->phpCalInfo(), cal_info(CAL_FRENCH));
 	}
 }

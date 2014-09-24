@@ -25,15 +25,6 @@ use InvalidArgumentException;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class JewishCalendar extends Calendar implements CalendarInterface {
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NAME = 'Jewish';
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NUMBER = 2;
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_SYMBOL = 'CAL_JEWISH';
-
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DHEBREW@';
 
@@ -42,9 +33,6 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 
 	/** The latest Julian Day number that can be converted into this calendar. */
 	const JD_END = 324542846;
-
-	/** The maximum number of days in any month. */
-	const MAX_DAYS_IN_MONTH = 30;
 
 	/** The maximum number of months in any year. */
 	const MAX_MONTHS_IN_YEAR = 13;
@@ -327,10 +315,10 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @throws InvalidArgumentException
 	 */
 	public function daysInMonth($year, $month) {
-		if ($year <= 0) {
+		if ($year < 1) {
 			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
 		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			throw new InvalidArgumentException('Month ' . $year . ' is invalid for this calendar');
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
 		} elseif ($month === 2) {
 			return $this->daysInMonthHeshvan($year);
 		} elseif ($month === 3) {
@@ -341,52 +329,6 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 			return self::$FIXED_MONTH_LENGTHS[$month];
 		}
 	}
-
-	/**
-	 * Month names.
-	 *
-	 * @link https://bugs.php.net/bug.php?id=54254
-	 *
-	 * @return string[]
-	 */
-	public function monthNames() {
-		return array(
-			1 => 'Tishri', 'Heshvan', 'Kislev', 'Tevet', 'Shevat',
-			Shim::emulateBug54254() ? 'AdarI' : 'Adar I',
-			Shim::emulateBug54254() ? 'AdarII' : 'Adar II',
-			'Nisan', 'Iyyar', 'Sivan', 'Tammuz', 'Av', 'Elul',
-		);
-	}
-
-	/**
-	 * Calculate the name of a month, for a specified Julian Day number.
-	 *
-	 * @param  int $jd
-	 *
-	 * @return string
-	 */
-	public function jdMonthName($jd) {
-		list($year, $month) = $this->jdToYmd($jd);
-		$months = $this->monthNames();
-
-		if (!$this->leapYear($year) && ($month === 6 || $month === 7)) {
-			return Shim::emulateBug54254() ? 'AdarI' : 'Adar';
-		} else {
-			return $months[$month];
-		}
-	}
-
-	/**
-	 * Calculate the name of a month, for a specified Julian Day number.
-	 *
-	 * @param  int $jd
-	 *
-	 * @return string
-	 */
-	public function jdMonthNameAbbreviated($jd) {
-		return $this->jdMonthName($jd);
-	}
-
 
 	/**
 	 * Hebrew month names.

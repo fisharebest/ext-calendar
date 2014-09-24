@@ -20,23 +20,11 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class ArabicCalendar extends Calendar implements CalendarInterface {
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NAME = 'Arabic';
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NUMBER = 4; // PHP uses 0-3
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_SYMBOL = 'CAL_ARABIC';
-
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DHIJRI@';
 
 	/** The earliest Julian Day number that can be converted into this calendar. */
 	const JD_START = 1948440; // 1 Muharram 1 AH = 16 JUL 0622 (Julian)
-
-	/** The maximum number of days in any month */
-	const MAX_DAYS_IN_MONTH = 30;
 
 	/**
 	 * Month lengths for regular years and leap-years.
@@ -84,17 +72,5 @@ class ArabicCalendar extends Calendar implements CalendarInterface {
 	 */
 	public function ymdToJd($year, $month, $day) {
 		return $day + 29 * ($month - 1) + (int)((6 * $month - 1) / 11) + $year * 354 + (int)((3 + 11 * $year) / 30) + 1948084;
-	}
-
-	/**
-	 * Month names for the calendar.
-	 *
-	 * @return string[]
-	 */
-	public function monthNames() {
-		return array(
-			1 => 'Muharram', 'Safar', 'Rabi‘ I', 'Rabi‘ II', 'Jumada I', 'Jumada II',
-			'Rajab', 'Sha‘aban', 'Ramadan', 'Shawwal', 'Dhu al-Qi‘dah', 'Dhu al-Hijjah',
-		);
 	}
 }

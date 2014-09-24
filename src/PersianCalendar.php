@@ -20,15 +20,6 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class PersianCalendar extends Calendar implements CalendarInterface {
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NAME = 'Persian';
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NUMBER = 5; // PHP uses 0-3
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_SYMBOL = 'CAL_PERSIAN';
-
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DJALALI@';
 
@@ -112,17 +103,5 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 			($epyear - 1) * 365 +
 			(int)($epbase / 2820) * 1029983 +
 			self::JD_START;
-	}
-
-	/**
-	 * Month names for the calendar.
-	 *
-	 * @return string[]
-	 */
-	public function monthNames() {
-		return array(
-			1 => 'Farvardin', 'Ordibehesht', 'Khordad', 'Tir', 'Mordad', 'Shahrivar',
-			'Mehr', 'Aban', 'Azar', 'Dey', 'Bahman', 'Esfand',
-		);
 	}
 }

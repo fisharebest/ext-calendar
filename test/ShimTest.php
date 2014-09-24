@@ -33,42 +33,117 @@ class ShimTest extends TestCase {
 	const LARGE_PRIME = 235741;
 
 	/**
-	 * Test that after we call create(), we have the necessary functions/constants.
+	 * Create the shim functions, so we can run tests on servers which do
+	 * not have the ext/calendar library installed.  For example HHVM.
 	 *
 	 * @return void
 	 */
-	public function testCreate() {
+	public function setUp() {
 		Shim::create();
-		$this->assertTrue(defined('CAL_JEWISH'));
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test that the shim defines all the necessary constants.
+	 *
+	 * @return void
+	 */
+	public function testConstantsExist() {
+		$this->assertTrue(defined('CAL_GREGORIAN'));
+		$this->assertTrue(defined('CAL_JULIAN'));
+		$this->assertTrue(defined('CAL_JEWISH'));
+		$this->assertTrue(defined('CAL_FRENCH'));
+		$this->assertTrue(defined('CAL_NUM_CALS'));
+		$this->assertTrue(defined('CAL_DOW_DAYNO'));
+		$this->assertTrue(defined('CAL_DOW_SHORT'));
+		$this->assertTrue(defined('CAL_DOW_LONG'));
+		$this->assertTrue(defined('CAL_MONTH_GREGORIAN_SHORT'));
+		$this->assertTrue(defined('CAL_MONTH_GREGORIAN_LONG'));
+		$this->assertTrue(defined('CAL_MONTH_JULIAN_SHORT'));
+		$this->assertTrue(defined('CAL_MONTH_JULIAN_LONG'));
+		$this->assertTrue(defined('CAL_MONTH_JEWISH'));
+		$this->assertTrue(defined('CAL_MONTH_FRENCH'));
+		$this->assertTrue(defined('CAL_EASTER_DEFAULT'));
+		$this->assertTrue(defined('CAL_EASTER_ROMAN'));
+		$this->assertTrue(defined('CAL_EASTER_ALWAYS_GREGORIAN'));
+		$this->assertTrue(defined('CAL_EASTER_ALWAYS_JULIAN'));
+		$this->assertTrue(defined('CAL_JEWISH_ADD_ALAFIM_GERESH'));
+		$this->assertTrue(defined('CAL_JEWISH_ADD_ALAFIM'));
+		$this->assertTrue(defined('CAL_JEWISH_ADD_GERESHAYIM'));
+
+		$this->assertSame(0, CAL_GREGORIAN);
+		$this->assertSame(1, CAL_JULIAN);
+		$this->assertSame(2, CAL_JEWISH);
+		$this->assertSame(3, CAL_FRENCH);
+		$this->assertSame(4, CAL_NUM_CALS);
+		$this->assertSame(0, CAL_DOW_DAYNO);
+		$this->assertSame(Shim::emulateBug67960() ? 1 : 2, CAL_DOW_SHORT);
+		$this->assertSame(Shim::emulateBug67960() ? 2 : 1, CAL_DOW_LONG);
+		$this->assertSame(0, CAL_MONTH_GREGORIAN_SHORT);
+		$this->assertSame(1, CAL_MONTH_GREGORIAN_LONG);
+		$this->assertSame(2, CAL_MONTH_JULIAN_SHORT);
+		$this->assertSame(3, CAL_MONTH_JULIAN_LONG);
+		$this->assertSame(4, CAL_MONTH_JEWISH);
+		$this->assertSame(5, CAL_MONTH_FRENCH);
+		$this->assertSame(0, CAL_EASTER_DEFAULT);
+		$this->assertSame(1, CAL_EASTER_ROMAN);
+		$this->assertSame(2, CAL_EASTER_ALWAYS_GREGORIAN);
+		$this->assertSame(3, CAL_EASTER_ALWAYS_JULIAN);
+		$this->assertSame(2, CAL_JEWISH_ADD_ALAFIM_GERESH);
+		$this->assertSame(4, CAL_JEWISH_ADD_ALAFIM);
+		$this->assertSame(8, CAL_JEWISH_ADD_GERESHAYIM);
+	}
+
+	/**
+	 * Test that the shim defines all the necessary functions.
+	 *
+	 * @return void
+	 */
+	public function testFunctionsExist() {
+		$this->assertTrue(function_exists('cal_days_in_month'));
+		$this->assertTrue(function_exists('cal_from_jd'));
+		$this->assertTrue(function_exists('cal_info'));
+		$this->assertTrue(function_exists('easter_date'));
+		$this->assertTrue(function_exists('easter_days'));
+		$this->assertTrue(function_exists('FrenchToJD'));
+		$this->assertTrue(function_exists('GregorianToJD'));
+		$this->assertTrue(function_exists('JDDayOfWeek'));
+		$this->assertTrue(function_exists('JDMonthName'));
+		$this->assertTrue(function_exists('JDToFrench'));
+		$this->assertTrue(function_exists('JDToGregorian'));
+		$this->assertTrue(function_exists('jdtojewish'));
+		$this->assertTrue(function_exists('JDToJulian'));
+		$this->assertTrue(function_exists('jdtounix'));
+		$this->assertTrue(function_exists('JewishToJD'));
+		$this->assertTrue(function_exists('JulianToJD'));
+		$this->assertTrue(function_exists('unixtojd'));
+	}
+
+	/**
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @return void
 	 */
 	public function testCalDaysInMonthFrench() {
 		foreach (array(3, 4) as $year) {
 			foreach (array(1, 12, 13) as $month) {
-				$this->assertSame(Shim::calDaysInMonth(CAL_FRENCH, $month, $year), \cal_days_in_month(CAL_FRENCH, $month, $year));
+				$this->assertSame(Shim::calDaysInMonth(CAL_FRENCH, $month, $year), cal_days_in_month(CAL_FRENCH, $month, $year));
 			}
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @return void
 	 */
 	public function testCalDaysInMonthFrenchBug67976() {
-		$this->assertSame(Shim::calDaysInMonth(CAL_FRENCH, 13, 14), \cal_days_in_month(CAL_FRENCH, 13, 14));
+		$this->assertSame(Shim::calDaysInMonth(CAL_FRENCH, 13, 14), cal_days_in_month(CAL_FRENCH, 13, 14));
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -77,22 +152,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchInvalidMonth2() {
-		\cal_days_in_month(CAL_FRENCH, 14, 10);
+		cal_days_in_month(CAL_FRENCH, 14, 10);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -101,22 +174,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchZeroYear2() {
-		\cal_days_in_month(CAL_FRENCH, 1, 0);
+		cal_days_in_month(CAL_FRENCH, 1, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -125,22 +196,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchNegativeYear2() {
-		\cal_days_in_month(CAL_FRENCH, 1, -1);
+		cal_days_in_month(CAL_FRENCH, 1, -1);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -149,19 +218,18 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchHighYear2() {
-		\cal_days_in_month(CAL_FRENCH, 1, 15);
+		cal_days_in_month(CAL_FRENCH, 1, 15);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @large
 	 *
@@ -172,16 +240,15 @@ class ShimTest extends TestCase {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
 			if ($year != 0) {
-				$this->assertSame(Shim::calDaysInMonth(CAL_GREGORIAN, $month, $year), \cal_days_in_month(CAL_GREGORIAN, $month, $year));
+				$this->assertSame(Shim::calDaysInMonth(CAL_GREGORIAN, $month, $year), cal_days_in_month(CAL_GREGORIAN, $month, $year));
 			}
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -190,22 +257,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthGregorianInvalidMonth2() {
-		\cal_days_in_month(CAL_GREGORIAN, 13, 2014);
+		cal_days_in_month(CAL_GREGORIAN, 13, 2014);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -214,19 +279,18 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthGregorianInvalidYear2() {
-		\cal_days_in_month(CAL_GREGORIAN, 1, 0);
+		cal_days_in_month(CAL_GREGORIAN, 1, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @large
 	 *
@@ -237,13 +301,13 @@ class ShimTest extends TestCase {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
 			if ($year != 0) {
-				$this->assertSame(Shim::calDaysInMonth(CAL_GREGORIAN, $month, $year), \cal_days_in_month(CAL_GREGORIAN, $month, $year));
+				$this->assertSame(Shim::calDaysInMonth(CAL_GREGORIAN, $month, $year), cal_days_in_month(CAL_GREGORIAN, $month, $year));
 			}
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @large
 	 *
@@ -253,15 +317,14 @@ class ShimTest extends TestCase {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(1, 6000);
 			$month = mt_rand(1, 13);
-			$this->assertSame(Shim::calDaysInMonth(CAL_JEWISH, $month, $year), \cal_days_in_month(CAL_JEWISH, $month, $year));
+			$this->assertSame(Shim::calDaysInMonth(CAL_JEWISH, $month, $year), cal_days_in_month(CAL_JEWISH, $month, $year));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -270,22 +333,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJewishInvalidMonth2() {
-		\cal_days_in_month(CAL_JEWISH, 14, 2014);
+		cal_days_in_month(CAL_JEWISH, 14, 2014);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -294,22 +355,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJewishInvalidYear2() {
-		\cal_days_in_month(CAL_JEWISH, 1, 0);
+		cal_days_in_month(CAL_JEWISH, 1, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -318,22 +377,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJulianInvalidMonth2() {
-		\cal_days_in_month(CAL_JULIAN, 13, 2014);
+		cal_days_in_month(CAL_JULIAN, 13, 2014);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -342,22 +399,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJulianInvalidYear2() {
-		\cal_days_in_month(CAL_JULIAN, 1, 0);
+		cal_days_in_month(CAL_JULIAN, 1, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -366,22 +421,80 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calDaysInMonth() against \cal_days_in_month()
+	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthInvalidCalendar2() {
-		\cal_days_in_month(999, 1, 1);
+		cal_days_in_month(999, 1, 1);
 	}
 
 	/**
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 *
+	 * @return void
+	 */
+	public function testCalFromJdFrench() {
+		// 0/0/0
+		$this->assertSame(cal_from_jd(2375839, CAL_FRENCH), Shim::calFromJd(2375839, CAL_FRENCH));
+		// 1/1/1
+		$this->assertSame(cal_from_jd(2375840, CAL_FRENCH), Shim::calFromJd(2375840, CAL_FRENCH));
+		// 13/5/14
+		$this->assertSame(cal_from_jd(2380952, CAL_FRENCH), Shim::calFromJd(2380952, CAL_FRENCH));
+		// 0/0/0
+		$this->assertSame(cal_from_jd(2380953, CAL_FRENCH), Shim::calFromJd(2380953, CAL_FRENCH));
+	}
+
+	/**
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 *
+	 * @return void
+	 */
+	public function testCalFromJdGregorian() {
+		// 0/0/0
+		$this->assertSame(cal_from_jd(0, CAL_GREGORIAN), Shim::calFromJd(0, CAL_GREGORIAN));
+		// 11/25/-4714
+		$this->assertSame(cal_from_jd(1, CAL_GREGORIAN), Shim::calFromJd(1, CAL_GREGORIAN));
+		// 12/31/-1
+		$this->assertSame(cal_from_jd(1721425, CAL_GREGORIAN), Shim::calFromJd(1721425, CAL_GREGORIAN));
+		// 1/1/1
+		$this->assertSame(cal_from_jd(1721426, CAL_GREGORIAN), Shim::calFromJd(1721426, CAL_GREGORIAN));
+	}
+
+	/**
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 *
+	 * @return void
+	 */
+	public function testCalFromJdJewish() {
+		// 0/0/0
+		$this->assertSame(cal_from_jd(347997, CAL_JEWISH), Shim::calFromJd(347997, CAL_JEWISH));
+		// 1/1/1
+		$this->assertSame(cal_from_jd(347998, CAL_JEWISH), Shim::calFromJd(347998, CAL_JEWISH));
+	}
+
+	/**
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 *
+	 * @return void
+	 */
+	public function testCalFromJdJulian() {
+		// 0/0/0
+		$this->assertSame(cal_from_jd(0, CAL_JULIAN), Shim::calFromJd(0, CAL_JULIAN));
+		// 1/2/-4713
+		$this->assertSame(cal_from_jd(1, CAL_JULIAN), Shim::calFromJd(1, CAL_JULIAN));
+		// 12/31/-1
+		$this->assertSame(cal_from_jd(1721423, CAL_JULIAN), Shim::calFromJd(1721423, CAL_JULIAN));
+		// 1/1/1
+		$this->assertSame(cal_from_jd(1721424, CAL_JULIAN), Shim::calFromJd(1721424, CAL_JULIAN));
+	}
+
+	/**
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -390,43 +503,41 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
 	public function testCalFromJdInvalidCalendar2() {
-		\cal_from_jd(2345678, 999);
+		cal_from_jd(2345678, 999);
 	}
 
 	/**
-	 * Test the implementation of Shim::calInfo() against \cal_info()
+	 * Test the implementation of Shim::calInfo() against cal_info()
 	 *
 	 * @return void
 	 */
 	public function testCalInfo() {
-		$this->assertSame(Shim::calInfo(CAL_FRENCH), \cal_info(CAL_FRENCH));
-		$this->assertSame(Shim::calInfo(CAL_GREGORIAN), \cal_info(CAL_GREGORIAN));
-		$this->assertSame(Shim::calInfo(CAL_JEWISH), \cal_info(CAL_JEWISH));
-		$this->assertSame(Shim::calInfo(CAL_JULIAN), \cal_info(CAL_JULIAN));
+		$this->assertSame(Shim::calInfo(CAL_FRENCH), cal_info(CAL_FRENCH));
+		$this->assertSame(Shim::calInfo(CAL_GREGORIAN), cal_info(CAL_GREGORIAN));
+		$this->assertSame(Shim::calInfo(CAL_JEWISH), cal_info(CAL_JEWISH));
+		$this->assertSame(Shim::calInfo(CAL_JULIAN), cal_info(CAL_JULIAN));
 	}
 
 	/**
-	 * Test the implementation of Shim::calInfo() against \cal_info()
+	 * Test the implementation of Shim::calInfo() against cal_info()
 	 *
 	 * @return void
 	 */
 	public function testCalInfoAll() {
-		$this->assertSame(Shim::calInfo(-1), \cal_info(-1));
+		$this->assertSame(Shim::calInfo(-1), cal_info(-1));
 	}
 
 	/**
-	 * Test the implementation of Shim::calInfo() against \cal_info()
+	 * Test the implementation of Shim::calInfo() against cal_info()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -435,22 +546,20 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calInfo() against \cal_info()
+	 * Test the implementation of Shim::calInfo() against cal_info()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
 	public function testCalInfoInvalid2() {
-		\cal_info(999);
+		cal_info(999);
 	}
 
 	/**
-	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
+	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -459,32 +568,30 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
+	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
 	public function testCalToJdInvalidCalendar2() {
-		\cal_to_jd(999, 1, 1, 1);
+		cal_to_jd(999, 1, 1, 1);
 	}
 
 	/**
-	 * Test the implementation of Shim::easterDate() against \easter_date()
+	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
 	 * @return void
 	 */
 	public function testEasterDate() {
-		$this->assertSame(Shim::easterDate(2013), \easter_date(2013));
-		$this->assertSame(Shim::easterDate(2014), \easter_date(2014));
+		$this->assertSame(Shim::easterDate(2013), easter_date(2013));
+		$this->assertSame(Shim::easterDate(2014), easter_date(2014));
 	}
 
 	/**
-	 * Test the implementation of Shim::easterDate() against \easter_date()
+	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
@@ -494,23 +601,21 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::easterDate() against \easter_date()
+	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
 	 */
 	public function testEasterDateHighYear2() {
-		\easter_date(2038);
+		easter_date(2038);
 	}
 
 	/**
-	 * Test the implementation of Shim::easterDate() against \easter_date()
+	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
@@ -520,41 +625,40 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::easterDate() against \easter_date()
+	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
 	 */
 	public function testEasterDateLowYear2() {
-		\easter_date(1969);
+		easter_date(1969);
 	}
 
 	/**
-	 * Test the implementation of Shim::easterDays() against \easter_days()
+	 * Test the implementation of Shim::easterDays() against easter_days()
 	 *
 	 * @large
 	 *
 	 * @return void
 	 */
 	public function testEasterDays() {
-		$this->assertSame(Shim::easterDays(-4, CAL_EASTER_ALWAYS_GREGORIAN), \easter_days(-4, CAL_EASTER_ALWAYS_GREGORIAN));
-		$this->assertSame(Shim::easterDays(-4, CAL_EASTER_ALWAYS_JULIAN), \easter_days(-4, CAL_EASTER_ALWAYS_JULIAN));
+		$this->assertSame(Shim::easterDays(-4, CAL_EASTER_ALWAYS_GREGORIAN), easter_days(-4, CAL_EASTER_ALWAYS_GREGORIAN));
+		$this->assertSame(Shim::easterDays(-4, CAL_EASTER_ALWAYS_JULIAN), easter_days(-4, CAL_EASTER_ALWAYS_JULIAN));
 
 		for ($year = 1295; $year <= 2500; ++$year) {
-			$this->assertSame(Shim::easterDays($year, 999), \easter_days($year, 999));
-			$this->assertSame(Shim::easterDays($year, CAL_EASTER_DEFAULT), \easter_days($year, CAL_EASTER_DEFAULT));
-			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ROMAN), \easter_days($year, CAL_EASTER_ROMAN));
-			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ALWAYS_GREGORIAN), \easter_days($year, CAL_EASTER_ALWAYS_GREGORIAN));
-			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ALWAYS_JULIAN), \easter_days($year, CAL_EASTER_ALWAYS_JULIAN));
+			$this->assertSame(Shim::easterDays($year, 999), easter_days($year, 999));
+			$this->assertSame(Shim::easterDays($year, CAL_EASTER_DEFAULT), easter_days($year, CAL_EASTER_DEFAULT));
+			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ROMAN), easter_days($year, CAL_EASTER_ROMAN));
+			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ALWAYS_GREGORIAN), easter_days($year, CAL_EASTER_ALWAYS_GREGORIAN));
+			$this->assertSame(Shim::easterDays($year, CAL_EASTER_ALWAYS_JULIAN), easter_days($year, CAL_EASTER_ALWAYS_JULIAN));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::frenchToJd() against \FrenchToJd()
-	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
+	 * Test the implementation of Shim::frenchToJd() against FrenchToJd()
+	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
 	 * @large
 	 *
@@ -566,50 +670,50 @@ class ShimTest extends TestCase {
 			$month = mt_rand(1, 13);
 			$day = mt_rand(1, $month == 13 ? 6 : 28);
 
-			$this->assertSame(Shim::frenchToJd($month, $day, $year), \FrenchToJd($month, $day, $year));
-			$this->assertSame(Shim::calToJd(CAL_FRENCH, $month, $day, $year), \cal_to_jd(CAL_FRENCH, $month, $day, $year));
+			$this->assertSame(Shim::frenchToJd($month, $day, $year), FrenchToJd($month, $day, $year));
+			$this->assertSame(Shim::calToJd(CAL_FRENCH, $month, $day, $year), cal_to_jd(CAL_FRENCH, $month, $day, $year));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::frenchToJd() against \FrenchToJd()
+	 * Test the implementation of Shim::frenchToJd() against FrenchToJd()
 	 *
 	 * @return void
 	 */
 	public function testFrenchToJdOutOfRange() {
-		$this->assertSame(Shim::frenchToJd(1, 1, 0), \FrenchToJd(1, 1, 0));
+		$this->assertSame(Shim::frenchToJd(1, 1, 0), FrenchToJd(1, 1, 0));
 	}
 
 	/**
-	 * Test the implementation of Shim::gregorianToJd() against \GregorianToJD()
-	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
+	 * Test the implementation of Shim::gregorianToJd() against GregorianToJD()
+	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
 	 * @large
 	 *
 	 * @return void
 	 */
 	public function testGregorianToJD() {
-		$this->assertSame(Shim::gregorianToJd(1, 1, 0), \GregorianToJD(1, 1, 0));
+		$this->assertSame(Shim::gregorianToJd(1, 1, 0), GregorianToJD(1, 1, 0));
 
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
 			$day = mt_rand(1, 30);
 
-			$this->assertSame(Shim::gregorianToJd($month, $day, $year), \GregorianToJD($month, $day, $year));
-			$this->assertSame(Shim::calToJd(CAL_GREGORIAN, $month, $day, $year), \cal_to_jd(CAL_GREGORIAN, $month, $day, $year));
+			$this->assertSame(Shim::gregorianToJd($month, $day, $year), GregorianToJD($month, $day, $year));
+			$this->assertSame(Shim::calToJd(CAL_GREGORIAN, $month, $day, $year), cal_to_jd(CAL_GREGORIAN, $month, $day, $year));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekSunday() {
-		$jd = \GregorianToJD(8, 31, 2014);
+		$jd = GregorianToJD(8, 31, 2014);
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, 1), 'Sunday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, 2), 'Sun');
@@ -617,127 +721,127 @@ class ShimTest extends TestCase {
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Sun' : 'Sunday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Sunday' : 'Sun');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekMonday() {
-		$jd = \GregorianToJD(9, 1, 2014); // 2456902
+		$jd = GregorianToJD(9, 1, 2014); // 2456902
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 1);
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Mon' : 'Monday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Monday' : 'Mon');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekTuesday() {
-		$jd = \GregorianToJD(9, 2, 2014); // 2456903
+		$jd = GregorianToJD(9, 2, 2014); // 2456903
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 2);
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Tue' : 'Tuesday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Tuesday' : 'Tue');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekWednesday() {
-		$jd = \GregorianToJD(9, 3, 2014); // 2456904
+		$jd = GregorianToJD(9, 3, 2014); // 2456904
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 3);
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Wed' : 'Wednesday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Wednesday' : 'Wed');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekThursday() {
-		$jd = \GregorianToJD(9, 4, 2014); // 2456905
+		$jd = GregorianToJD(9, 4, 2014); // 2456905
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 4);
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Thu' : 'Thursday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Thursday' : 'Thu');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekFriday() {
-		$jd = \GregorianToJD(9, 5, 2014); // 2456906
+		$jd = GregorianToJD(9, 5, 2014); // 2456906
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 5);
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Fri' : 'Friday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Friday' : 'Fri');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekSaturday() {
-		$jd = \GregorianToJD(9, 6, 2014); // 2456907
+		$jd = GregorianToJD(9, 6, 2014); // 2456907
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_DAYNO), 6);
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Sat' : 'Saturday');
 		$this->assertSame(Shim::jdDayOfWeek($jd, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Saturday' : 'Sat');
 
-		$this->assertSame(Shim::jdDayOfWeek($jd, 0), \JDDayOfWeek($jd, 0));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 1), \JDDayOfWeek($jd, 1));
-		$this->assertSame(Shim::jdDayOfWeek($jd, 2), \JDDayOfWeek($jd, 2));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 0), JDDayOfWeek($jd, 0));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 1), JDDayOfWeek($jd, 1));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 2), JDDayOfWeek($jd, 2));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @return void
 	 */
@@ -746,82 +850,85 @@ class ShimTest extends TestCase {
 	}
 
 	/**
-	 * Test the implementation of Shim::jdDayOfWeek() against \JDDayOfWeek()
+	 * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
 	 *
 	 * @return void
 	 */
 	public function testJdDayOfWeekInvalidMode() {
-		$jd = \GregorianToJD(8, 31, 2014); // 2456901
+		$jd = GregorianToJD(8, 31, 2014); // 2456901
 
 		$this->assertSame(Shim::jdDayOfWeek($jd, 999), 0);
-		$this->assertSame(Shim::jdDayOfWeek($jd, 999), \JDDayOfWeek($jd, 999));
+		$this->assertSame(Shim::jdDayOfWeek($jd, 999), JDDayOfWeek($jd, 999));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdMonthName() against \JDMonthName()
-	 *
-	 * @return void
-	 */
-	public function testJdMonthNameGregorian() {
-		for ($month=1; $month <= 12; ++$month) {
-			$jd = \GregorianToJD($month, 1, 2014);
-			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_GREGORIAN_LONG), \JDMonthName($jd, CAL_MONTH_GREGORIAN_LONG));
-			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_GREGORIAN_SHORT), \JDMonthName($jd, CAL_MONTH_GREGORIAN_SHORT));
-		}
-	}
-
-	/**
-	 * Test the implementation of Shim::jdMonthName() against \JDMonthName()
-	 *
-	 * @return void
-	 */
-	public function testJdMonthNameJulian() {
-		for ($month=1; $month <= 12; ++$month) {
-			$jd = \JulianToJD($month, 1, 2014);
-			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_JULIAN_LONG), \JDMonthName($jd, CAL_MONTH_JULIAN_LONG));
-			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_JULIAN_SHORT), \JDMonthName($jd, CAL_MONTH_JULIAN_SHORT));
-		}
-	}
-
-	/**
-	 * Test the implementation of Shim::jdMonthName() against \JDMonthName()
+	 * Test the implementation of Shim::jdMonthName() against JDMonthName()
 	 *
 	 * @return void
 	 */
 	public function testJdMonthNameFrench() {
 		for ($month=1; $month <= 13; ++$month) {
-			$jd = \FrenchToJD($month, 1, 10);
-			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_FRENCH), \JDMonthName($jd, CAL_MONTH_FRENCH));
+			$jd = FrenchToJD($month, 1, 10);
+			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_FRENCH), JDMonthName($jd, CAL_MONTH_FRENCH));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::jdMonthName() against \JDMonthName()
+	 * Test the implementation of Shim::jdMonthName() against JDMonthName()
+	 *
+	 * @return void
+	 */
+	public function testJdMonthNameGregorian() {
+		for ($month=1; $month <= 12; ++$month) {
+			$jd = GregorianToJD($month, 1, 2014);
+			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_GREGORIAN_LONG), JDMonthName($jd, CAL_MONTH_GREGORIAN_LONG));
+			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_GREGORIAN_SHORT), JDMonthName($jd, CAL_MONTH_GREGORIAN_SHORT));
+		}
+	}
+
+	/**
+	 * Test the implementation of Shim::jdMonthName() against JDMonthName()
 	 *
 	 * @return void
 	 */
 	public function testJdMonthNameJewish() {
-		for ($month=1; $month <= 13; ++$month) {
-			$jd = \JewishToJD($month, 1, 5000);
-			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_JEWISH), \JDMonthName($jd, CAL_MONTH_JEWISH));
+		// Both leap and non-leap years
+		foreach (array(5000, 5001) as $year) {
+			for ($month = 1; $month <= 13; ++$month) {
+				$jd = JewishToJD($month, 1, $year);
+				$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_JEWISH), JDMonthName($jd, CAL_MONTH_JEWISH));
+			}
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::jdMonthName() against \JDMonthName()
+	 * Test the implementation of Shim::jdMonthName() against JDMonthName()
+	 *
+	 * @return void
+	 */
+	public function testJdMonthNameJulian() {
+		for ($month=1; $month <= 12; ++$month) {
+			$jd = JulianToJD($month, 1, 2014);
+			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_JULIAN_LONG), JDMonthName($jd, CAL_MONTH_JULIAN_LONG));
+			$this->assertSame(Shim::jdMonthName($jd, CAL_MONTH_JULIAN_SHORT), JDMonthName($jd, CAL_MONTH_JULIAN_SHORT));
+		}
+	}
+
+	/**
+	 * Test the implementation of Shim::jdMonthName() against JDMonthName()
 	 *
 	 * @return void
 	 */
 	public function testJdMonthNameInvalidMode() {
-		$jd = \JulianToJD(1, 1, 2014);
+		$jd = JulianToJD(1, 1, 2014);
 
 		$this->assertSame(Shim::jdMonthName($jd, 999), 'Jan');
-		$this->assertSame(Shim::jdMonthName($jd, 999), \JDMonthName($jd, 999));
+		$this->assertSame(Shim::jdMonthName($jd, 999), JDMonthName($jd, 999));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToFrench() against \JDToFrench()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToFrench() against JDToFrench()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @large
 	 *
@@ -829,39 +936,39 @@ class ShimTest extends TestCase {
 	 */
 	public function testJdToFrench() {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
-			$jd = mt_rand(\GregorianToJD(9, 22, 1792), \GregorianToJD(9, 22, 1806));
-			$this->assertSame(Shim::jdToFrench($jd), \JDToFrench($jd));
-			$this->assertSame(Shim::calFromJd($jd, CAL_FRENCH), \cal_from_jd($jd, CAL_FRENCH));
+			$jd = mt_rand(GregorianToJD(9, 22, 1792), GregorianToJD(9, 22, 1806));
+			$this->assertSame(Shim::jdToFrench($jd), JDToFrench($jd));
+			$this->assertSame(Shim::calFromJd($jd, CAL_FRENCH), cal_from_jd($jd, CAL_FRENCH));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
-	 * Test the implementation of Shim::jdToFrench() against \JDToFrench()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 * Test the implementation of Shim::jdToFrench() against JDToFrench()
 	 *
 	 * @return void
 	 */
 	public function testJdToFrenchEdgeCases() {
-		$this->assertSame(\cal_from_jd(2375839, CAL_FRENCH), Shim::calFromJd(2375839, CAL_FRENCH));
+		$this->assertSame(cal_from_jd(2375839, CAL_FRENCH), Shim::calFromJd(2375839, CAL_FRENCH));
 		$this->assertSame('0/0/0', Shim::jdToFrench(2375839));
-		$this->assertSame('0/0/0', \JDToFrench(2375839));
+		$this->assertSame('0/0/0', JDToFrench(2375839));
 
-		$this->assertSame(\cal_from_jd(2375840, CAL_FRENCH), Shim::calFromJd(2375840, CAL_FRENCH));
+		$this->assertSame(cal_from_jd(2375840, CAL_FRENCH), Shim::calFromJd(2375840, CAL_FRENCH));
 		$this->assertSame('1/1/1', Shim::jdToFrench(2375840));
-		$this->assertSame('1/1/1', \JDToFrench(2375840));
+		$this->assertSame('1/1/1', JDToFrench(2375840));
 
-		$this->assertSame(\cal_from_jd(2380952, CAL_FRENCH), Shim::calFromJd(2380952, CAL_FRENCH));
+		$this->assertSame(cal_from_jd(2380952, CAL_FRENCH), Shim::calFromJd(2380952, CAL_FRENCH));
 		$this->assertSame('13/5/14', Shim::jdToFrench(2380952));
-		$this->assertSame('13/5/14', \JDToFrench(2380952));
+		$this->assertSame('13/5/14', JDToFrench(2380952));
 
-		$this->assertSame(\cal_from_jd(2380953, CAL_FRENCH), Shim::calFromJd(2380953, CAL_FRENCH));
+		$this->assertSame(cal_from_jd(2380953, CAL_FRENCH), Shim::calFromJd(2380953, CAL_FRENCH));
 		$this->assertSame('0/0/0', Shim::jdToFrench(2380953));
-		$this->assertSame('0/0/0', \JDToFrench(2380953));
+		$this->assertSame('0/0/0', JDToFrench(2380953));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToFrench() against \JDToFrench()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToFrench() against JDToFrench()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @return void
 	 */
@@ -869,15 +976,15 @@ class ShimTest extends TestCase {
 		$jd1 = 2375840 - 1;
 		$jd2 = 2380953 + 2;
 
-		$this->assertSame(Shim::jdToFrench($jd1), \JDToFrench($jd1));
-		$this->assertSame(Shim::jdToFrench($jd2), \JDToFrench($jd2));
-		$this->assertSame(Shim::calFromJd($jd1, CAL_FRENCH), \cal_from_jd($jd1, CAL_FRENCH));
-		$this->assertSame(Shim::calFromJd($jd2, CAL_FRENCH), \cal_from_jd($jd2, CAL_FRENCH));
+		$this->assertSame(Shim::jdToFrench($jd1), JDToFrench($jd1));
+		$this->assertSame(Shim::jdToFrench($jd2), JDToFrench($jd2));
+		$this->assertSame(Shim::calFromJd($jd1, CAL_FRENCH), cal_from_jd($jd1, CAL_FRENCH));
+		$this->assertSame(Shim::calFromJd($jd2, CAL_FRENCH), cal_from_jd($jd2, CAL_FRENCH));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToGregorian() against \JDToGregorian()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToGregorian() against JDToGregorian()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @large
 	 *
@@ -885,48 +992,48 @@ class ShimTest extends TestCase {
 	 */
 	public function testJdToGregorian() {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
-			$jd = mt_rand(1, \GregorianToJD(12, 31, 9999));
+			$jd = mt_rand(1, GregorianToJD(12, 31, 9999));
 
-			$this->assertSame(Shim::jdToGregorian($jd), \JDToGregorian($jd));
-			$this->assertSame(Shim::calFromJd($jd, CAL_GREGORIAN), \cal_from_jd($jd, CAL_GREGORIAN));
+			$this->assertSame(Shim::jdToGregorian($jd), JDToGregorian($jd));
+			$this->assertSame(Shim::calFromJd($jd, CAL_GREGORIAN), cal_from_jd($jd, CAL_GREGORIAN));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
-	 * Test the implementation of Shim::jdToGregorian() against \JDToGregorian()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 * Test the implementation of Shim::jdToGregorian() against JDToGregorian()
 	 *
 	 * @return void
 	 */
 	public function testJdToGregorianEdgeCases() {
 		$MAX_JD = PHP_INT_SIZE == 4 ? 536838866 : 2305843009213661906;
 
-		$this->assertSame(\cal_from_jd(-1, CAL_GREGORIAN), Shim::calFromJd(-1, CAL_GREGORIAN));
+		$this->assertSame(cal_from_jd(-1, CAL_GREGORIAN), Shim::calFromJd(-1, CAL_GREGORIAN));
 		$this->assertSame('0/0/0', Shim::jdToGregorian(-1));
-		$this->assertSame('0/0/0', \JDToGregorian(-1));
+		$this->assertSame('0/0/0', JDToGregorian(-1));
 
-		$this->assertSame(\cal_from_jd(0, CAL_GREGORIAN), Shim::calFromJd(0, CAL_GREGORIAN));
+		$this->assertSame(cal_from_jd(0, CAL_GREGORIAN), Shim::calFromJd(0, CAL_GREGORIAN));
 		$this->assertSame('0/0/0', Shim::jdToGregorian(0));
-		$this->assertSame('0/0/0', \JDToGregorian(0));
+		$this->assertSame('0/0/0', JDToGregorian(0));
 
-		$this->assertSame(\cal_from_jd(1, CAL_GREGORIAN), Shim::calFromJd(1, CAL_GREGORIAN));
+		$this->assertSame(cal_from_jd(1, CAL_GREGORIAN), Shim::calFromJd(1, CAL_GREGORIAN));
 		$this->assertSame('11/25/-4714', Shim::jdToGregorian(1));
-		$this->assertSame('11/25/-4714', \JDToGregorian(1));
+		$this->assertSame('11/25/-4714', JDToGregorian(1));
 
 		// PHP overflows and gives bogus results
-		//$this->assertSame(\cal_from_jd($MAX_JD, CAL_GREGORIAN), Shim::calFromJd($MAX_JD, CAL_GREGORIAN));
-		//$this->assertSame(\JDToGregorian($MAX_JD), Shim::jdToGregorian($MAX_JD));
-		$this->assertNotSame('0/0/0', \JDToGregorian($MAX_JD));
+		//$this->assertSame(cal_from_jd($MAX_JD, CAL_GREGORIAN), Shim::calFromJd($MAX_JD, CAL_GREGORIAN));
+		//$this->assertSame(JDToGregorian($MAX_JD), Shim::jdToGregorian($MAX_JD));
+		$this->assertNotSame('0/0/0', JDToGregorian($MAX_JD));
 		$this->assertNotSame('0/0/0', Shim::jdToGregorian($MAX_JD));
 
-		$this->assertSame(\cal_from_jd($MAX_JD + 1, CAL_GREGORIAN), Shim::calFromJd($MAX_JD + 1, CAL_GREGORIAN));
+		$this->assertSame(cal_from_jd($MAX_JD + 1, CAL_GREGORIAN), Shim::calFromJd($MAX_JD + 1, CAL_GREGORIAN));
 		$this->assertSame('0/0/0', Shim::jdToGregorian($MAX_JD + 1));
-		$this->assertSame('0/0/0', \JDToGregorian($MAX_JD + 1));
+		$this->assertSame('0/0/0', JDToGregorian($MAX_JD + 1));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @large
 	 *
@@ -934,16 +1041,50 @@ class ShimTest extends TestCase {
 	 */
 	public function testJdToJewish() {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
-			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
+			$jd = mt_rand(JewishToJD(1, 1, 1000), JewishToJD(13, 29, 9999));
 
-			$this->assertSame(Shim::jdToJewish($jd, false, 0), \jdtojewish($jd));
-			$this->assertSame(Shim::calFromJd($jd, CAL_JEWISH), \cal_from_jd($jd, CAL_JEWISH));
+			$this->assertSame(Shim::jdToJewish($jd, false, 0), jdtojewish($jd));
+			$this->assertSame(Shim::calFromJd($jd, CAL_JEWISH), cal_from_jd($jd, CAL_JEWISH));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 *
+	 * @large
+	 *
+	 * @return void
+	 */
+	public function testJdToJewishEdgeCases() {
+		$this->assertSame(cal_from_jd(347997, CAL_JEWISH), Shim::calFromJd(347997, CAL_JEWISH));
+		$this->assertSame('0/0/0', Shim::jdToJewish(347997, false, 0));
+		$this->assertSame('0/0/0', JDToJewish(347997));
+
+		$this->assertSame(cal_from_jd(347998, CAL_JEWISH), Shim::calFromJd(347998, CAL_JEWISH));
+		$this->assertSame('1/1/1', Shim::jdToJewish(347998, false, 0));
+		$this->assertSame('1/1/1', JDToJewish(347998));
+
+		$this->assertSame(cal_from_jd(4000075, CAL_JEWISH), Shim::calFromJd(4000075, CAL_JEWISH));
+		$this->assertSame('13/29/9999', Shim::jdToJewish(4000075, false, 0));
+		$this->assertSame('13/29/9999', JDToJewish(4000075));
+
+		$this->assertSame(cal_from_jd(4000076, CAL_JEWISH), Shim::calFromJd(4000076, CAL_JEWISH));
+		$this->assertSame('1/1/10000', Shim::jdToJewish(4000076, false, 0));
+		$this->assertSame('1/1/10000', JDToJewish(4000076));
+
+		$this->assertSame(cal_from_jd(324542846, CAL_JEWISH), Shim::calFromJd(324542846, CAL_JEWISH));
+		$this->assertSame('12/13/887605', Shim::jdToJewish(324542846, false, 0));
+		$this->assertSame('12/13/887605', JDToJewish(324542846));
+
+		$this->assertSame(cal_from_jd(324542847, CAL_JEWISH), Shim::calFromJd(324542847, CAL_JEWISH));
+		$this->assertSame('0/0/0', Shim::jdToJewish(324542847, false, 0));
+		$this->assertSame('0/0/0', JDToJewish(324542847));
+	}
+
+	/**
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @large
 	 *
@@ -951,75 +1092,71 @@ class ShimTest extends TestCase {
 	 */
 	public function testJdToJewishHebrew() {
 		for ($n = 0; $n < static::ITERATIONS; ++$n) {
-			$jd = mt_rand(\JewishToJD(1, 1, 1000), \JewishToJD(13, 29, 9999));
+			$jd = mt_rand(JewishToJD(1, 1, 1000), JewishToJD(13, 29, 9999));
 			$fl = mt_rand(0, 7);
-			$this->assertSame(Shim::jdToJewish($jd, true, $fl), \jdtojewish($jd, true, $fl));
+			$this->assertSame(Shim::jdToJewish($jd, true, $fl), jdtojewish($jd, true, $fl));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeLow1() {
-		$jd = \JewishToJd(1,1,1) - 1;
+		$jd = JewishToJd(1,1,1) - 1;
 
 		Shim::jdToJewish($jd, true, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeLow2() {
-		$jd = \JewishToJd(1, 1, 1) - 1;
+		$jd = JewishToJd(1, 1, 1) - 1;
 
 		JdToJewish($jd, true, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_USER_WARNING
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeHigh1() {
-		$jd = \JewishToJd(13, 29, 9999) + 1;
+		$jd = JewishToJd(13, 29, 9999) + 1;
 
 		Shim::jdToJewish($jd, true, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToJewish() against \jdtojewish()
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
+	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionCode    E_WARNING
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeHigh2() {
-		$jd = \JewishToJd(13, 29, 9999) + 1;
+		$jd = JewishToJd(13, 29, 9999) + 1;
 
 		JdToJewish($jd, true, 0);
 	}
 
 	/**
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
-	 * Test the implementation of Shim::jdToJulian() against \JDToJulian()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 * Test the implementation of Shim::jdToJulian() against JDToJulian()
 	 *
 	 * @return void
 	 */
@@ -1028,141 +1165,140 @@ class ShimTest extends TestCase {
 		$end_jd = JulianToJD(1, 1, 2500);
 
 		for ($jd = $start_jd; $jd <= $end_jd; $jd += static::LARGE_PRIME) {
-			$this->assertSame(Shim::calFromJd($jd, CAL_JULIAN), \cal_from_jd($jd, CAL_JULIAN));
-			$this->assertSame(Shim::jdToJulian($jd), \JDToJulian($jd));
+			$this->assertSame(Shim::calFromJd($jd, CAL_JULIAN), cal_from_jd($jd, CAL_JULIAN));
+			$this->assertSame(Shim::jdToJulian($jd), JDToJulian($jd));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::calFromJd() against \cal_from_jd()
-	 * Test the implementation of Shim::jdToJulian() against \JDToJulian()
+	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
+	 * Test the implementation of Shim::jdToJulian() against JDToJulian()
 	 *
 	 * @return void
 	 */
 	public function testJdToJulianEdgeCases() {
 		$MAX_JD = PHP_INT_SIZE == 4 ? 536838829 : 784368370349;
 
-		$this->assertSame(\cal_from_jd(-1, CAL_JULIAN), Shim::calFromJd(-1, CAL_JULIAN));
+		$this->assertSame(cal_from_jd(-1, CAL_JULIAN), Shim::calFromJd(-1, CAL_JULIAN));
 		$this->assertSame('0/0/0', Shim::jdToJulian(-1));
-		$this->assertSame('0/0/0', \JDToJulian(-1));
+		$this->assertSame('0/0/0', JDToJulian(-1));
 
-		$this->assertSame(\cal_from_jd(0, CAL_JULIAN), Shim::calFromJd(0, CAL_JULIAN));
+		$this->assertSame(cal_from_jd(0, CAL_JULIAN), Shim::calFromJd(0, CAL_JULIAN));
 		$this->assertSame('0/0/0', Shim::jdToJulian(0));
-		$this->assertSame('0/0/0', \JDToJulian(0));
+		$this->assertSame('0/0/0', JDToJulian(0));
 
-		$this->assertSame(\cal_from_jd(1, CAL_JULIAN), Shim::calFromJd(1, CAL_JULIAN));
+		$this->assertSame(cal_from_jd(1, CAL_JULIAN), Shim::calFromJd(1, CAL_JULIAN));
 		$this->assertSame('1/2/-4713', Shim::jdToJulian(1));
-		$this->assertSame('1/2/-4713', \JDToJulian(1));
+		$this->assertSame('1/2/-4713', JDToJulian(1));
 
 		// PHP overflows and gives bogus results
-		//$this->assertSame(\cal_from_jd($MAX_JD, CAL_JULIAN), Shim::calFromJd($MAX_JD, CAL_JULIAN));
-		//$this->assertSame(\JDToJulian($MAX_JD), Shim::jdToJulian($MAX_JD));
-		$this->assertNotSame('0/0/0', \JDToJulian($MAX_JD));
+		//$this->assertSame(cal_from_jd($MAX_JD, CAL_JULIAN), Shim::calFromJd($MAX_JD, CAL_JULIAN));
+		//$this->assertSame(JDToJulian($MAX_JD), Shim::jdToJulian($MAX_JD));
+		$this->assertNotSame('0/0/0', JDToJulian($MAX_JD));
 		$this->assertNotSame('0/0/0', Shim::jdToJulian($MAX_JD));
 
-		$this->assertSame(\cal_from_jd($MAX_JD + 1, CAL_JULIAN), Shim::calFromJd($MAX_JD + 1, CAL_JULIAN));
+		$this->assertSame(cal_from_jd($MAX_JD + 1, CAL_JULIAN), Shim::calFromJd($MAX_JD + 1, CAL_JULIAN));
 		$this->assertSame('0/0/0', Shim::jdToJulian($MAX_JD + 1));
-		$this->assertSame('0/0/0', \JDToJulian($MAX_JD + 1));
+		$this->assertSame('0/0/0', JDToJulian($MAX_JD + 1));
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToUnix() against \jdtojunix()
+	 * Test the implementation of Shim::jdToUnix() against jdtojunix()
 	 *
 	 * @return void
 	 */
 	public function testJdToUnix() {
-		$jd_start = \GregorianToJD(1, 1, 1980);
-		$jd_end = \GregorianToJD(12, 31, 2030);
+		$jd_start = GregorianToJD(1, 1, 1980);
+		$jd_end = GregorianToJD(12, 31, 2030);
 
 		for ($jd = $jd_start; $jd <= $jd_end; $jd += 23) {
-			$this->assertSame(Shim::jdToUnix($jd), \jdtounix($jd));
+			$this->assertSame(Shim::jdToUnix($jd), jdtounix($jd));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::jdToUnix() against \jdtojunix()
+	 * Test the implementation of Shim::jdToUnix() against jdtojunix()
 	 *
 	 * @return void
 	 */
 	public function testJdToUnixEdgeCases() {
 		$this->assertSame(Shim::jdToUnix(2440587), false);
-		$this->assertSame(Shim::jdToUnix(2440587), \jdtounix(2440587));
+		$this->assertSame(Shim::jdToUnix(2440587), jdtounix(2440587));
 
 		$this->assertSame(Shim::jdToUnix(2440588), 0);
-		$this->assertSame(Shim::jdToUnix(2440588), \jdtounix(2440588));
+		$this->assertSame(Shim::jdToUnix(2440588), jdtounix(2440588));
 
 		$this->assertSame(Shim::jdToUnix(2465343), 2138832000);
-		$this->assertSame(Shim::jdToUnix(2465343), \jdtounix(2465343));
+		$this->assertSame(Shim::jdToUnix(2465343), jdtounix(2465343));
 
 		$this->assertSame(Shim::jdToUnix(2465344), false);
-		$this->assertSame(Shim::jdToUnix(2465344), \jdtounix(2465344));
-
+		$this->assertSame(Shim::jdToUnix(2465344), jdtounix(2465344));
 	}
 
 	/**
-	 * Test the implementation of Shim::jewishToJD() against \JewishToJD()
-	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
+	 * Test the implementation of Shim::jewishToJD() against JewishToJD()
+	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
 	 * @large
 	 *
 	 * @return void
 	 */
 	public function testJewishToJd() {
-		$this->assertSame(Shim::jewishToJD(1, 1, 0), \JewishToJD(1, 1, 0));
+		$this->assertSame(Shim::jewishToJD(1, 1, 0), JewishToJD(1, 1, 0));
 
 		for ($n=0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(1, 9999);
 			$month = mt_rand(1, 13);
 			$day = mt_rand(1, 29);
 
-			$this->assertSame(Shim::jewishToJD($month, $day, $year), \JewishToJD($month, $day, $year));
-			$this->assertSame(Shim::calToJd(CAL_JEWISH, $month, $day, $year), \cal_to_jd(CAL_JEWISH, $month, $day, $year));
+			$this->assertSame(Shim::jewishToJD($month, $day, $year), JewishToJD($month, $day, $year));
+			$this->assertSame(Shim::calToJd(CAL_JEWISH, $month, $day, $year), cal_to_jd(CAL_JEWISH, $month, $day, $year));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::julianToJd() against \JulianToJd()
-	 * Test the implementation of Shim::calToJd() against \cal_to_jd()
+	 * Test the implementation of Shim::julianToJd() against JulianToJd()
+	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
 	 * @large
 	 *
 	 * @return void
 	 */
 	public function testJulianToJd() {
-		$this->assertSame(Shim::julianToJd(1, 1, 0), \JulianToJd(1, 1, 0));
+		$this->assertSame(Shim::julianToJd(1, 1, 0), JulianToJd(1, 1, 0));
 
 		for ($n=0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
 			$day = mt_rand(1, 30);
 
-			$this->assertSame(Shim::julianToJd($month, $day, $year), \JulianToJd($month, $day, $year));
-			$this->assertSame(Shim::calToJd(CAL_JULIAN, $month, $day, $year), \cal_to_jd(CAL_JULIAN, $month, $day, $year));
+			$this->assertSame(Shim::julianToJd($month, $day, $year), JulianToJd($month, $day, $year));
+			$this->assertSame(Shim::calToJd(CAL_JULIAN, $month, $day, $year), cal_to_jd(CAL_JULIAN, $month, $day, $year));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::unixToJd() against \unixtojd()
+	 * Test the implementation of Shim::unixToJd() against unixtojd()
 	 *
 	 * @return void
 	 */
 	public function testUnixToJd() {
 		for ($n=0; $n < static::ITERATIONS; ++$n) {
 			$unix = mt_rand(1, 2147483647);
-			$this->assertSame(Shim::unixToJd($unix), \unixtojd($unix));
+			$this->assertSame(Shim::unixToJd($unix), unixtojd($unix));
 		}
 	}
 
 	/**
-	 * Test the implementation of Shim::unixToJd() against \unixtojd()
+	 * Test the implementation of Shim::unixToJd() against unixtojd()
 	 *
 	 * @return void
 	 */
 	public function testUnixToJdEdgeCases() {
 		$this->assertSame(Shim::unixToJd(-1), false);
-		$this->assertSame(Shim::unixToJd(-1), \unixtojd(-1));
+		$this->assertSame(Shim::unixToJd(-1), unixtojd(-1));
 
 		$this->assertSame(Shim::unixToJd(2147483647), 2465443);
-		$this->assertSame(Shim::unixToJd(2147483647), \unixtojd(2147483647));
+		$this->assertSame(Shim::unixToJd(2147483647), unixtojd(2147483647));
 	}
 }

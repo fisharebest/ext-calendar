@@ -1,8 +1,6 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use InvalidArgumentException;
-
 /**
  * class JulianCalendar - calculations for the Julian calendar.
  *
@@ -22,17 +20,11 @@ use InvalidArgumentException;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class JulianCalendar extends Calendar implements CalendarInterface {
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NAME = 'Julian';
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NUMBER = 1;
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_SYMBOL = 'CAL_JULIAN';
-
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DJULIAN@';
+
+	/** Does the calendar start at year 1, or are we allowed negative (BCE) years. */
+	const NEGATIVE_YEARS_ALLOWED = true;
 
 	/**
 	 * Month lengths for regular years and leap-years.
@@ -43,29 +35,6 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 		0 => array(1 => 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
 		1 => array(1 => 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
 	);
-
-	/**
-	 * English month names.
-	 *
-	 * @return string[]
-	 */
-	public function monthNames() {
-		return array(
-			1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',
-		);
-	}
-
-	/**
-	 * Abbreviated English month names.
-	 *
-	 * @return string[]
-	 */
-	public function monthNamesAbbreviated() {
-		return array(
-			1 => 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-		);
-	}
-
 
 	/**
 	 * Determine whether a year is a leap year.
@@ -123,26 +92,6 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 		$month = $month + 12 * $a - 3;
 
 		return $day + (int)((153 * $month + 2) / 5) + 365 * $year + (int)($year / 4) - 32083;
-	}
-
-	/**
-	 * Calculate the number of days in a month.
-	 *
-	 * @param  int $year
-	 * @param  int $month
-	 *
-	 * @return int
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	public function daysInMonth($year, $month) {
-		if ($year == 0) {
-			throw new InvalidArgumentException('Year 0 is invalid for this calendar');
-		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
-		} else {
-			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
-		}
 	}
 
 	/**

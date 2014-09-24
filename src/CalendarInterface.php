@@ -24,14 +24,6 @@ namespace Fisharebest\ExtCalendar;
  */
 interface CalendarInterface {
 	/**
-	 * Convert a Julian Day number into a calendar date.
-	 *
-	 * @param  $jd
-	 * @return int[] Array of month, day and year and other information
-	 */
-	public function calFromJd($jd);
-
-	/**
 	 * Determine the number of days in a specified month, allowing for leap years, etc.
 	 *
 	 * @param int $year
@@ -44,7 +36,7 @@ interface CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param $jd
+	 * @param int $jd
 	 *
 	 * @return int[]
 	 */
@@ -58,20 +50,6 @@ interface CalendarInterface {
 	 * @return bool
 	 */
 	public function leapYear($year);
-
-	/**
-	 * Provide a list of month names, as required by PHP::cal_info()
-	 *
-	 * @return string[]
-	 */
-	public function monthNames();
-
-	/**
-	 * Provide information about this calendar.
-	 *
-	 * @return array
-	 */
-	public function phpCalInfo();
 
 	/**
 	 * Convert a year/month/day to a Julian day number.

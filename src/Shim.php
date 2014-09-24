@@ -1,8 +1,6 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use InvalidArgumentException;
-
 /**
  * class Shim - PHP implementations of functions from the PHP calendar extension.
  *
@@ -37,6 +35,59 @@ class Shim {
 	private static $julian_calendar;
 
 	/**
+	 * English names for the days of the week.
+	 *
+	 * @var string[]
+	 */
+	private static $DAY_NAMES = array(
+		'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+	);
+
+	/**
+	 * Abbreviated English names for the days of the week.
+	 *
+	 * @var string[]
+	 */
+	private static $DAY_NAMES_ABBREVIATED = array(
+		'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+	);
+
+	/** @var string[] Names of the months of the Gregorian/Julian calendars */
+	private static $MONTH_NAMES = array(
+		'', 'January', 'February', 'March', 'April', 'May', 'June',
+		'July', 'August', 'September', 'October', 'November', 'December',
+	);
+
+	/** @var string[] Abbreviated names of the months of the Gregorian/Julian calendars */
+	private static $MONTH_NAMES_ABBREVIATED = array(
+		'', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+	);
+
+	/** @var string[] Name of the months of the French calendar */
+	private static $MONTH_NAMES_FRENCH = array(
+		'', 'Vendemiaire', 'Brumaire', 'Frimaire', 'Nivose', 'Pluviose', 'Ventose',
+		'Germinal', 'Floreal', 'Prairial', 'Messidor', 'Thermidor', 'Fructidor', 'Extra'
+	);
+
+	/** @var string[] Names of the months of the Jewish calendar in a non-leap year */
+	private static $MONTH_NAMES_JEWISH = array(
+		'', 'Tishri', 'Heshvan', 'Kislev', 'Tevet', 'Shevat', 'Adar',
+		'Adar', 'Nisan', 'Iyyar', 'Sivan', 'Tammuz', 'Av', 'Elul',
+	);
+
+	/** @var string[] Names of the months of the Jewish calendar in a leap year */
+	private static $MONTH_NAMES_JEWISH_LEAP_YEAR = array(
+		'', 'Tishri', 'Heshvan', 'Kislev', 'Tevet', 'Shevat', 'Adar I',
+		'Adar II', 'Nisan', 'Iyyar', 'Sivan', 'Tammuz', 'Av', 'Elul',
+	);
+
+	/** @var string[] Names of the months of the Jewish calendar (before PHP bug 54254 was fixed)*/
+	private static $MONTH_NAMES_JEWISH_54254 = array(
+		'', 'Tishri', 'Heshvan', 'Kislev', 'Tevet', 'Shevat', 'AdarI',
+		'AdarII', 'Nisan', 'Iyyar', 'Sivan', 'Tammuz', 'Av', 'Elul',
+	);
+
+	/**
 	 * Create the necessary shims to emulate the ext/calendar packate.
 	 *
 	 * @param FrenchCalendar    $french_calendar
@@ -57,7 +108,7 @@ class Shim {
 		self::$jewish_calendar    = $jewish_calendar    ?: new JewishCalendar;
 		self::$julian_calendar    = $julian_calendar    ?: new JulianCalendar;
 
-		function_exists('cal_info')|| require __DIR__ . '/shims.php';
+		defined('CAL_NUM_CALS') || require __DIR__ . '/shims.php';
 	}
 
 	/**
@@ -106,65 +157,92 @@ class Shim {
 	}
 
 	/**
-	 * Create a calendar object for a specified calendar ID.
-	 *
-	 * @param int $calendar_id A PHP calendar ID
-	 *
-	 * @return CalendarInterface
-	 */
-	private static function calendarFromId($calendar_id) {
-		switch ($calendar_id) {
-		case CAL_FRENCH:
-			return self::$french_calendar;
-
-		case CAL_GREGORIAN:
-				return self::$gregorian_calendar;
-
-			case CAL_JEWISH:
-				return self::$jewish_calendar;
-
-		case CAL_JULIAN:
-			return self::$julian_calendar;
-
-		default:
-				return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
-		}
-	}
-
-	/**
 	 * Return the number of days in a month for a given year and calendar.
 	 *
-	 * Shim implementation of \cal_days_in_month()
+	 * Shim implementation of cal_days_in_month()
 	 *
 	 * @link https://php.net/cal_days_in_month
 	 * @link https://bugs.php.net/bug.php?id=67976
 	 *
-	 * @param $calendar_id
-	 * @param $month
-	 * @param $year
+	 * @param int $calendar_id
+	 * @param int $month
+	 * @param int $year
 	 *
 	 * @return int The number of days in the specified month
 	 */
 	public static function calDaysInMonth($calendar_id, $month, $year) {
-		if ($calendar_id == CAL_FRENCH && $month == 13 && $year == 14 && self::emulateBug67976()) {
-			// Emulate PHP bug 67976.
-			return -2380948;
-		} elseif ($calendar_id == CAL_FRENCH && $year > 14) {
-			// PHP’s implementation stops at year 14.
+		switch ($calendar_id) {
+		case CAL_FRENCH:
+			return self::calDaysInMonthFrench($year, $month);
+
+		case CAL_GREGORIAN:
+			return self::calDaysInMonthCalendar(self::$gregorian_calendar, $year, $month);
+
+		case CAL_JEWISH:
+			return self::calDaysInMonthJewish($year, $month);
+
+		case CAL_JULIAN:
+			return self::calDaysInMonthCalendar(self::$julian_calendar, $year, $month);
+
+		default:
+			return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+		}
+	}
+
+	/**
+	 * Calculate the number of days in a month in a specified calendar
+	 *
+	 * @param int $year
+	 * @param int $month
+	 *
+	 * @return int
+	 */
+	private static function calDaysInMonthCalendar(CalendarInterface $calendar, $year, $month) {
+		if ($year == 0 || $month < 1 || $month > 12) {
 			return trigger_error('invalid date.', E_USER_WARNING);
 		} else {
-			try {
-				return self::calendarFromId($calendar_id)->daysInMonth($year, $month);
-			} catch (InvalidArgumentException $ex) {
-				return trigger_error('invalid date.', E_USER_WARNING);
-			}
+			return $calendar->daysInMonth($year, $month);
+		}
+	}
+
+	/**
+	 * Calculate the number of days in a month in the French calendar
+	 *
+	 * @param int $year
+	 * @param int $month
+	 *
+	 * @return int
+	 */
+	private static function calDaysInMonthFrench($year, $month) {
+		if ($month == 13 && $year == 14 && self::emulateBug67976()) {
+			return -2380948;
+		} elseif ($year < 1 || $year > 14 || $month < 1 || $month > 13) {
+			return trigger_error('invalid date.', E_USER_WARNING);
+		} else {
+			return self::$french_calendar->daysInMonth($year, $month);
+		}
+	}
+
+	/**
+	 * Calculate the number of days in a month in the French calendar
+	 *
+	 * @param int $year
+	 * @param int $month
+	 *
+	 * @return int
+	 */
+	private static function calDaysInMonthJewish($year, $month) {
+		if ($year < 1 || $month < 1 || $month > 13) {
+			return trigger_error('invalid date.', E_USER_WARNING);
+		} else {
+			return self::$jewish_calendar->daysInMonth($year, $month);
 		}
 	}
 
 	/**
 	 * Converts from Julian Day Count to a supported calendar.
 	 *
-	 * Shim implementation of \cal_from_jd()
+	 * Shim implementation of cal_from_jd()
 	 *
 	 * @link https://php.net/cal_from_jd
 	 *
@@ -174,13 +252,56 @@ class Shim {
 	 * @return array
 	 */
 	public static function calFromJd($julian_day, $calendar_id) {
-		return self::calendarFromId($calendar_id)->calFromJd($julian_day);
+		switch ($calendar_id) {
+		case CAL_FRENCH:
+			list($month, $day, $year) = explode('/', self::jdToFrench($julian_day));
+			$months = self::$MONTH_NAMES_FRENCH;
+			$months_abbreviated = $months;
+			break;
+
+		case CAL_GREGORIAN:
+			list($month, $day, $year) = explode('/', self::jdToGregorian($julian_day));
+			$months = self::$MONTH_NAMES;
+			$months_abbreviated = self::$MONTH_NAMES_ABBREVIATED;
+			break;
+
+		case CAL_JEWISH:
+			list($month, $day, $year) = explode('/', self::jdToJewish($julian_day, false, 0));
+			if (self::$jewish_calendar->leapYear($year)) {
+				$months = self::emulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH_LEAP_YEAR;
+			} else {
+				$months = self::emulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH;
+			}
+			$months_abbreviated = $months;
+			break;
+
+		case CAL_JULIAN:
+			list($month, $day, $year) = explode('/', self::jdToJulian($julian_day));
+			$months = self::$MONTH_NAMES;
+			$months_abbreviated = self::$MONTH_NAMES_ABBREVIATED;
+			break;
+
+		default:
+			return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+		}
+
+		return array(
+			'date' => $month . '/' . $day . '/' . $year,
+			'month' => (int)$month,
+			'day' => (int)$day,
+			'year' => (int)$year,
+			'dow' => self::jdDayOfWeek($julian_day, 0),
+			'abbrevdayname' => self::jdDayOfWeek($julian_day, 2),
+			'dayname' => self::jdDayOfWeek($julian_day, 1),
+			'abbrevmonth' => $months_abbreviated[$month],
+			'monthname' => $months[$month],
+		);
 	}
 
 	/**
 	 * Returns information about a particular calendar.
 	 *
-	 * Shim implementation of \cal_info()
+	 * Shim implementation of cal_info()
 	 *
 	 * @link https://php.net/cal_info
 	 *
@@ -189,22 +310,98 @@ class Shim {
 	 * @return array
 	 */
 	public static function calInfo($calendar_id) {
-		if ($calendar_id == -1) {
+		switch ($calendar_id) {
+		case CAL_FRENCH:
+			return self::calInfoFrench();
+
+		case CAL_GREGORIAN:
+			return self::calInfoGregorian();
+
+		case CAL_JEWISH:
+			return self::calInfoJewish();
+
+		case CAL_JULIAN:
+			return self::calInfoJulian();
+
+		case -1:
 			return array(
-				CAL_GREGORIAN => self::calInfo(CAL_GREGORIAN),
-				CAL_JULIAN => self::calInfo(CAL_JULIAN),
-				CAL_JEWISH => self::calInfo(CAL_JEWISH),
-				CAL_FRENCH => self::calInfo(CAL_FRENCH),
+				CAL_GREGORIAN => self::calInfoGregorian(),
+				CAL_JULIAN => self::calInfoJulian(),
+				CAL_JEWISH => self::calInfoJewish(),
+				CAL_FRENCH => self::calInfoFrench(),
 			);
-		} else {
-			return self::calendarFromId($calendar_id)->phpCalInfo();
+
+		default:
+			return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
 		}
+	}
+
+	/**
+	 * Returns information about the French calendar.
+	 *
+	 * @return array
+	 */
+	private static function calInfoFrench() {
+		return array(
+			'months' => array_slice(self::$MONTH_NAMES_FRENCH, 1, 13, true),
+			'abbrevmonths' => array_slice(self::$MONTH_NAMES_FRENCH, 1, 13, true),
+			'maxdaysinmonth' => 30,
+			'calname' => 'French',
+			'calsymbol' => 'CAL_FRENCH',
+		);
+	}
+
+	/**
+	 * Returns information about the Gregorian calendar.
+	 *
+	 * @return array
+	 */
+	private static function calInfoGregorian() {
+		return array(
+			'months' => array_slice(self::$MONTH_NAMES, 1, 12, true),
+			'abbrevmonths' => array_slice(self::$MONTH_NAMES_ABBREVIATED, 1, 12, true),
+			'maxdaysinmonth' => 31,
+			'calname' => 'Gregorian',
+			'calsymbol' => 'CAL_GREGORIAN',
+		);
+	}
+
+	/**
+	 * Returns information about the Jewish calendar.
+	 *
+	 * @return array
+	 */
+	private static function calInfoJewish() {
+		$months = self::emulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH_LEAP_YEAR;
+
+		return array(
+			'months' => array_slice($months, 1, 13, true),
+			'abbrevmonths' => array_slice($months, 1, 13, true),
+			'maxdaysinmonth' => 30,
+			'calname' => 'Jewish',
+			'calsymbol' => 'CAL_JEWISH',
+		);
+	}
+
+	/**
+	 * Returns information about the Julian calendar.
+	 *
+	 * @return array
+	 */
+	private static function calInfoJulian() {
+		return array(
+			'months' => array_slice(self::$MONTH_NAMES, 1, 12, true),
+			'abbrevmonths' => array_slice(self::$MONTH_NAMES_ABBREVIATED, 1, 12, true),
+			'maxdaysinmonth' => 31,
+			'calname' => 'Julian',
+			'calsymbol' => 'CAL_JULIAN',
+		);
 	}
 
 	/**
 	 *  Converts from a supported calendar to Julian Day Count
 	 *
-	 * Shim implementation of \cal_to_jd()
+	 * Shim implementation of cal_to_jd()
 	 *
 	 * @link https://php.net/cal_to_jd
 	 *
@@ -237,7 +434,7 @@ class Shim {
 	/**
 	 * Get Unix timestamp for midnight on Easter of a given year.
 	 *
-	 * Shim implementation of \easter_date()
+	 * Shim implementation of easter_date()
 	 *
 	 * @link https://php.net/easter_date
 	 *
@@ -266,7 +463,7 @@ class Shim {
 	/**
 	 * Get number of days after March 21 on which Easter falls for a given year.
 	 *
-	 * Shim implementation of \easter_days()
+	 * Shim implementation of easter_days()
 	 *
 	 * @link https://php.net/easter_days
 	 *
@@ -283,6 +480,7 @@ class Shim {
 				} else {
 					return self::$gregorian_calendar->easterDays($year);
 				}
+
 			case CAL_EASTER_ALWAYS_GREGORIAN:
 				return self::$gregorian_calendar->easterDays($year);
 
@@ -301,7 +499,7 @@ class Shim {
 	/**
 	 * Converts a date from the French Republican Calendar to a Julian Day Count.
 	 *
-	 * Shim implementation of \FrenchToJD()
+	 * Shim implementation of FrenchToJD()
 	 *
 	 * @link https://php.net/FrenchToJD
 	 *
@@ -322,7 +520,7 @@ class Shim {
 	/**
 	 * Converts a Gregorian date to Julian Day Count.
 	 *
-	 * Shim implementation of \GregorianToJD()
+	 * Shim implementation of GregorianToJD()
 	 *
 	 * @link https://php.net/GregorianToJD
 	 *
@@ -343,7 +541,7 @@ class Shim {
 	/**
 	 * Returns the day of the week.
 	 *
-	 * Shim implementation of \JDDayOfWeek()
+	 * Shim implementation of JDDayOfWeek()
 	 *
 	 * @link https://php.net/JDDayOfWeek
 	 * @link https://bugs.php.net/bug.php?id=67960
@@ -354,22 +552,27 @@ class Shim {
 	 * @return mixed
 	 */
 	public static function jdDayOfWeek($julian_day, $mode) {
-		$dow = self::$julian_calendar->dayOfWeek($julian_day);
+		$day_of_week = ($julian_day + 1) % 7;
+		if ($day_of_week < 0) {
+			$day_of_week += 7;
+		}
 
 		switch ($mode) {
 			case 1: // 1, not CAL_DOW_LONG - see bug 67960
-				return self::$julian_calendar->dayName($dow);
+				return self::$DAY_NAMES[$day_of_week];
+
 			case 2: // 2, not CAL_DOW_SHORT - see bug 67960
-				return self::$julian_calendar->dayNameAbbreviated($dow);
+				return self::$DAY_NAMES_ABBREVIATED[$day_of_week];
+
 			default: // CAL_DOW_DAYNO or anything else
-				return $dow;
+				return $day_of_week;
 		}
 	}
 
 	/**
 	 * Returns a month name.
 	 *
-	 * Shim implementation of \JDMonthName()
+	 * Shim implementation of JDMonthName()
 	 *
 	 * @link https://php.net/JDMonthName
 	 *
@@ -381,29 +584,44 @@ class Shim {
 	public static function jdMonthName($julian_day, $mode) {
 		switch ($mode) {
 			case CAL_MONTH_GREGORIAN_LONG:
-				return self::$gregorian_calendar->jdMonthName($julian_day);
+				list(, $month) = self::$gregorian_calendar->jdToYmd($julian_day);
+
+				return self::$MONTH_NAMES[$month];
 
 			case CAL_MONTH_JULIAN_LONG:
-				return self::$julian_calendar->jdMonthName($julian_day);
+				list(, $month) = self::$julian_calendar->jdToYmd($julian_day);
+
+				return self::$MONTH_NAMES[$month];
 
 			case CAL_MONTH_JULIAN_SHORT:
-				return self::$julian_calendar->jdMonthNameAbbreviated($julian_day);
+				list(, $month) = self::$julian_calendar->jdToYmd($julian_day);
+
+				return self::$MONTH_NAMES_ABBREVIATED[$month];
 
 			case CAL_MONTH_JEWISH:
-				return self::$jewish_calendar->jdMonthName($julian_day);
+				list($year, $month) = self::$jewish_calendar->jdToYmd($julian_day);
+				if (self::$jewish_calendar->leapYear($year)) {
+					$months = self::emulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH_LEAP_YEAR;
+				} else {
+					$months = self::emulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH;
+				}
+
+				return $months[$month];
 
 			case CAL_MONTH_FRENCH:
-				return self::$french_calendar->jdMonthName($julian_day);
+				list(, $month) = self::$french_calendar->jdToYmd($julian_day);
+				return self::$MONTH_NAMES_FRENCH[$month];
 
 			default: // CAL_MONTH_GREGORIAN_SHORT and anything else
-				return self::$gregorian_calendar->jdMonthNameAbbreviated($julian_day);
+				list(, $month) = self::$gregorian_calendar->jdToYmd($julian_day);
+				return self::$MONTH_NAMES_ABBREVIATED[$month];
 		}
 	}
 
 	/**
 	 * Converts a Julian Day Count to the French Republican Calendar.
 	 *
-	 * Shim implementation of \JDToFrench()
+	 * Shim implementation of JDToFrench()
 	 *
 	 * @link https://php.net/JDToFrench
 	 *
@@ -426,7 +644,7 @@ class Shim {
 	/**
 	 * Converts Julian Day Count to Gregorian date.
 	 *
-	 * Shim implementation of \JDToGregorian()
+	 * Shim implementation of JDToGregorian()
 	 *
 	 * @link https://php.net/JDToGregorian
 	 *
@@ -450,7 +668,7 @@ class Shim {
 	/**
 	 * Converts a Julian day count to a Jewish calendar date.
 	 *
-	 * Shim implementation of \JdtoJjewish()
+	 * Shim implementation of JdtoJjewish()
 	 *
 	 * @link https://php.net/JdtoJewish
 	 *
@@ -482,7 +700,7 @@ class Shim {
 	/**
 	 * Converts a Julian Day Count to a Julian Calendar Date.
 	 *
-	 * Shim implementation of \JDToJulian()
+	 * Shim implementation of JDToJulian()
 	 *
 	 * @link https://php.net/JDToJulian
 	 *
@@ -506,7 +724,7 @@ class Shim {
 	/**
 	 * Convert Julian Day to Unix timestamp.
 	 *
-	 * Shim implementation of \jdtounix()
+	 * Shim implementation of jdtounix()
 	 *
 	 * @link https://php.net/jdtounix
 	 *
@@ -525,7 +743,7 @@ class Shim {
 	/**
 	 * Converts a date in the Jewish Calendar to Julian Day Count.
 	 *
-	 * Shim implementation of \JewishToJD()
+	 * Shim implementation of JewishToJD()
 	 *
 	 * @link https://php.net/JewishToJD
 	 *
@@ -546,7 +764,7 @@ class Shim {
 	/**
 	 * Converts a Julian Calendar date to Julian Day Count.
 	 *
-	 * Shim implementation of \JdToJulian()
+	 * Shim implementation of JdToJulian()
 	 *
 	 * @link https://php.net/JdToJulian
 	 *
@@ -567,7 +785,7 @@ class Shim {
 	/**
 	 * Convert Unix timestamp to Julian Day.
 	 *
-	 * Shim implementation of \unixtojd()
+	 * Shim implementation of unixtojd()
 	 *
 	 * @link https://php.net/unixtojd
 	 *

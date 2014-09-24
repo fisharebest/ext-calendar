@@ -26,6 +26,16 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class ArabicCalendarTest extends TestCase {
 	/**
+	 * Create the shim functions, so we can run tests on servers which do
+	 * not have the ext/calendar library installed.  For example HHVM.
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		Shim::create();
+	}
+
+	/**
 	 * Test the class constants.
 	 *
 	 * @coversNone
@@ -35,39 +45,7 @@ class ArabicCalendarTest extends TestCase {
 	public function testConstants() {
 		$arabic = new ArabicCalendar;
 
-		$this->assertSame($arabic::PHP_CALENDAR_NAME, 'Arabic');
-		$this->assertSame($arabic::PHP_CALENDAR_NUMBER, 4);
 		$this->assertSame($arabic::GEDCOM_CALENDAR_ESCAPE, '@#DHIJRI@');
-	}
-
-	/**
-	 * Test the PHP calendar information function (if php_info() supported this calendar)!
-	 *
-	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 * @covers Fisharebest\ExtCalendar\ArabicCalendar::monthNames
-	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
-	 *
-	 * @return void
-	 */
-	public function testPhpCalInfo() {
-		$arabic = new ArabicCalendar;
-
-		$cal_info = array(
-			'months' => array(
-				1 => 'Muharram', 'Safar', 'Rabi‘ I', 'Rabi‘ II', 'Jumada I', 'Jumada II',
-				'Rajab', 'Sha‘aban', 'Ramadan', 'Shawwal', 'Dhu al-Qi‘dah', 'Dhu al-Hijjah',
-			),
-			'abbrevmonths' => array(
-				1 => 'Muharram', 'Safar', 'Rabi‘ I', 'Rabi‘ II', 'Jumada I', 'Jumada II',
-				'Rajab', 'Sha‘aban', 'Ramadan', 'Shawwal', 'Dhu al-Qi‘dah', 'Dhu al-Hijjah',
-			),
-			'maxdaysinmonth' => 30,
-			'calname' => 'Arabic',
-			'calsymbol' => 'CAL_ARABIC',
-		);
-
-
-		$this->assertSame($arabic->phpCalInfo(), $cal_info);
 	}
 
 	/**
@@ -149,51 +127,67 @@ class ArabicCalendarTest extends TestCase {
 	}
 
 	/**
-	 * Test the calculation of the number of days in each month.
-	 *
-	 * @expectedException        InvalidArgumentException
-	 * @expectedExceptionMessage Month 13 is invalid for this calendar
+	 * Test the calculation of the number of days in each month against the reference implementation.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
 	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 0 is invalid for this calendar
+	 *
 	 * @return void
 	 */
-	public function testDaysInMonthInvalidMonth() {
+	public function testDaysInMonthMonthZero() {
 		$arabic = new ArabicCalendar;
 
-		$arabic->daysInMonth(1234, 13);
+		$arabic->daysInMonth(1501, 0);
 	}
 
 	/**
-	 * Test the calculation of the number of days in each month.
+	 * Test the calculation of the number of days in each month against the reference implementation.
 	 *
-	 * @expectedException        InvalidArgumentException
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthFourteen() {
+		$arabic = new ArabicCalendar;
+
+		$arabic->daysInMonth(1501, 14);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
 	 * @expectedExceptionMessage Year 0 is invalid for this calendar
 	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
-	 *
 	 * @return void
 	 */
-	public function testDaysInMonthZeroYear() {
+	public function testDaysInMonthYearZero() {
 		$arabic = new ArabicCalendar;
 
-		$arabic->daysInMonth(0, 1);
+		$arabic->daysInMonth(0, 6);
 	}
 
 	/**
-	 * Test the calculation of the number of days in each month.
-	 *
-	 * @expectedException        InvalidArgumentException
-	 * @expectedExceptionMessage Year -1 is invalid for this calendar
+	 * Test the calculation of the number of days in each month against the reference implementation.
 	 *
 	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
 	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Year -1 is invalid for this calendar
+	 *
 	 * @return void
 	 */
-	public function testDaysInMonthNegativeYear() {
+	public function testDaysInMonthYearMinusOne() {
 		$arabic = new ArabicCalendar;
 
-		$arabic->daysInMonth(-1, 1);
+		$arabic->daysInMonth(-1, 6);
 	}
 
 	/**

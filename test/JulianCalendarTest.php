@@ -25,6 +25,16 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class JulianCalendarTest extends TestCase {
 	/**
+	 * Create the shim functions, so we can run tests on servers which do
+	 * not have the ext/calendar library installed.  For example HHVM.
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		Shim::create();
+	}
+
+	/**
 	 * Test the class constants.
 	 *
 	 * @coversNone
@@ -34,24 +44,7 @@ class JulianCalendarTest extends TestCase {
 	public function testConstants() {
 		$julian = new JulianCalendar;
 
-		$this->assertSame($julian::PHP_CALENDAR_NAME, 'Julian');
-		$this->assertSame($julian::PHP_CALENDAR_NUMBER, CAL_JULIAN);
 		$this->assertSame($julian::GEDCOM_CALENDAR_ESCAPE, '@#DJULIAN@');
-	}
-
-	/**
-	 * Test the PHP calendar information function.
-	 *
-	 * @covers Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 * @covers Fisharebest\ExtCalendar\JulianCalendar::monthNames
-	 * @covers Fisharebest\ExtCalendar\Calendar::monthNamesAbbreviated
-	 *
-	 * @return void
-	 */
-	public function testPhpCalInfo() {
-		$julian = new JulianCalendar;
-
-		$this->assertSame($julian->phpCalInfo(), \cal_info($julian::PHP_CALENDAR_NUMBER));
 	}
 
 	/**
@@ -96,7 +89,7 @@ class JulianCalendarTest extends TestCase {
 		$julian = new JulianCalendar;
 
 		foreach (array(2037, 2036, 2029, 1972, -4, -5, -9, -19, -20, -23, -175) as $year) {
-			$this->assertSame($julian->easterDays($year), \easter_days($year, CAL_EASTER_ALWAYS_JULIAN));
+			$this->assertSame($julian->easterDays($year), easter_days($year, CAL_EASTER_ALWAYS_JULIAN));
 		}
 	}
 
@@ -111,7 +104,7 @@ class JulianCalendarTest extends TestCase {
 		$julian = new JulianCalendar;
 
 		for ($year = 1970; $year <= 2037; ++$year) {
-			$this->assertSame($julian->easterDays($year), \easter_days($year, CAL_EASTER_ALWAYS_JULIAN));
+			$this->assertSame($julian->easterDays($year), easter_days($year, CAL_EASTER_ALWAYS_JULIAN));
 		}
 	}
 
@@ -127,15 +120,62 @@ class JulianCalendarTest extends TestCase {
 
 		foreach (array(-5, -4, -1, 1, 1500, 1600, 1700, 1800, 1900, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2100, 2200) as $year) {
 			for ($month = 1; $month <= 12; ++$month) {
-				$this->assertSame($julian->daysInMonth($year, $month), \cal_days_in_month(CAL_JULIAN, $month, $year));
+				$this->assertSame($julian->daysInMonth($year, $month), cal_days_in_month(CAL_JULIAN, $month, $year));
 			}
 		}
 	}
 
 	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 0 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthZero() {
+		$julian = new JulianCalendar;
+
+		$julian->daysInMonth(2001, 0);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 13 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthMonthThirteen() {
+		$julian = new JulianCalendar;
+
+		$julian->daysInMonth(2001, 13);
+	}
+
+	/**
+	 * Test the calculation of the number of days in each month against the reference implementation.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::daysInMonth
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Year 0 is invalid for this calendar
+	 *
+	 * @return void
+	 */
+	public function testDaysInMonthYearZero() {
+		$julian = new JulianCalendar;
+
+		$julian->daysInMonth(0, 6);
+	}
+
+	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -146,12 +186,11 @@ class JulianCalendarTest extends TestCase {
 
 		foreach (array(2012, 2014) as $year) {
 			for ($day = 1; $day <= 28; ++$day) {
-				$jd = \JulianToJD(8, $day, $year);
+				$jd = JulianToJD(8, $day, $year);
 				$ymd = $julian->jdToYmd($jd);
 
 				$this->assertSame($julian->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJulian($jd));
-				$this->assertSame($julian->calFromJd($jd), \cal_from_jd($jd, CAL_JULIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
 			}
 		}
 	}
@@ -159,7 +198,6 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -170,12 +208,11 @@ class JulianCalendarTest extends TestCase {
 
 		for ($month=1; $month<=12; ++$month) {
 			foreach (array(2012, 2014) as $year) {
-				$jd = \JulianToJD($month, 9, $year);
+				$jd = JulianToJD($month, 9, $year);
 				$ymd = $julian->jdToYmd($jd);
 
 				$this->assertSame($julian->ymdToJd($year, $month, 9), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJulian($jd));
-				$this->assertSame($julian->calFromJd($jd), \cal_from_jd($jd, CAL_JULIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
 			}
 		}
 	}
@@ -183,7 +220,6 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -193,19 +229,17 @@ class JulianCalendarTest extends TestCase {
 		$julian = new JulianCalendar;
 
 		for ($year=1970; $year<=2037; ++$year) {
-			$jd = \JulianToJD(8, 9, $year);
+			$jd = JulianToJD(8, 9, $year);
 			$ymd = $julian->jdToYmd($jd);
 
 			$this->assertSame($julian->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJulian($jd));
-			$this->assertSame($julian->calFromJd($jd), \cal_from_jd($jd, CAL_JULIAN));
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
 		}
 	}
 
 	/**
 	 * Test the conversion of calendar dates into Julian days against the reference implementation.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::calFromJd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::ymdToJd
 	 *
@@ -216,73 +250,18 @@ class JulianCalendarTest extends TestCase {
 
 		for ($year=-5; $year<=5; ++$year) {
 			if ($year != 0) {
-				$jd = \JulianToJD(1, 1, $year);
+				$jd = JulianToJD(1, 1, $year);
 				$ymd = $julian->jdToYmd($jd);
 
 				$this->assertSame($julian->ymdToJd($year, 1, 1), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJulian($jd));
-				$this->assertSame($julian->calFromJd($jd), \cal_from_jd($jd, CAL_JULIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
 
-				$jd = \JulianToJD(12, 31, $year);
+				$jd = JulianToJD(12, 31, $year);
 				$ymd = $julian->jdToYmd($jd);
 
 				$this->assertSame($julian->ymdToJd($year, 12, 31), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], \JDToJulian($jd));
-				$this->assertSame($julian->calFromJd($jd), \cal_from_jd($jd, CAL_JULIAN));
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
 			}
-		}
-	}
-
-	/**
-	 * Test the implementation of Julian::calInfo() against \cal_info()
-	 *
-	 * @covers \Fisharebest\ExtCalendar\Calendar::phpCalInfo
-	 *
-	 * @return void
-	 */
-	public function testCalInfo() {
-		$julian = new JulianCalendar;
-
-		$this->assertSame($julian->phpCalInfo(), cal_info(CAL_JULIAN));
-	}
-
-/////////////////////////////////////////////////////////
-
-	/**
-	 * To iterate over large ranges of test data, use a prime-number interval to
-	 * avoid any synchronisation problems.
-	 */
-	const LARGE_PRIME = 235741;
-
-	/**
-	 * Test the implementation of Julian::jDMonthName() against \JDMonthName()
-	 *
-	 * @return void
-	 */
-	public function testJdMonthName() {
-		$julian = new JulianCalendar;
-
-		$start_jd = 1; // 25 November 4715 B.C.E.
-		$end_jd = 5373484; // 31 December 9999
-
-		for ($jd = $start_jd; $jd <= $end_jd; $jd += static::LARGE_PRIME) {
-			$this->assertSame($julian->jDMonthName($jd), \JDMonthName($jd, CAL_MONTH_JULIAN_LONG));
-		}
-	}
-
-	/**
-	 * Test the implementation of Julian::jDMonthName() against \JDMonthName()
-	 *
-	 * @return void
-	 */
-	public function testJdMonthNameAbbreviated() {
-		$julian = new JulianCalendar;
-
-		$start_jd = 1; // 25 November 4715 B.C.E.
-		$end_jd = 5373484; // 31 December 9999
-
-		for ($jd = $start_jd; $jd <= $end_jd; $jd += static::LARGE_PRIME) {
-			$this->assertSame($julian->jDMonthNameAbbreviated($jd), \JDMonthName($jd, CAL_MONTH_JULIAN_SHORT));
 		}
 	}
 }

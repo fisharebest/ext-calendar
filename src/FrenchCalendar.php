@@ -20,15 +20,6 @@ namespace Fisharebest\ExtCalendar;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class FrenchCalendar extends Calendar implements CalendarInterface {
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NAME = 'French';
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_NUMBER = 3;
-
-	/** Same as PHP’s ext/calendar extension */
-	const PHP_CALENDAR_SYMBOL = 'CAL_FRENCH';
-
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DFRENCH R@';
 
@@ -41,9 +32,6 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	/** The maximum number of months in any year */
 	const MAX_MONTHS_IN_YEAR = 13;
 
-	/** The maximum number of days in any month */
-	const MAX_DAYS_IN_MONTH = 30;
-
 	/**
 	 * Month lengths for regular years and leap-years.
 	 *
@@ -53,18 +41,6 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 		0 => array(1 => 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 5),
 		1 => array(1 => 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 6),
 	);
-
-	/**
-	 * Month names for the calendar.
-	 *
-	 * @return string[]
-	 */
-	public function monthNames() {
-		return array(
-			1 => 'Vendemiaire', 'Brumaire', 'Frimaire', 'Nivose', 'Pluviose', 'Ventose',
-			'Germinal', 'Floreal', 'Prairial', 'Messidor', 'Thermidor', 'Fructidor', 'Extra',
-		);
-	}
 
 	/**
 	 * Determine whether a year is a leap year.
