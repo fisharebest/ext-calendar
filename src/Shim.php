@@ -24,12 +24,39 @@ use InvalidArgumentException;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class Shim {
+	/** @var FrenchCalendar */
+	private static $french_calendar;
+
+	/** @var GregorianCalendar */
+	private static $gregorian_calendar;
+
+	/** @var JewishCalendar */
+	private static $jewish_calendar;
+
+	/** @var JulianCalendar */
+	private static $julian_calendar;
+
 	/**
 	 * Create the necessary shims to emulate the ext/calendar packate.
 	 *
+	 * @param FrenchCalendar    $french_calendar
+	 * @param GregorianCalendar $gregorian_calendar
+	 * @param JewishCalendar    $jewish_calendar
+	 * @param JulianCalendar    $julian_calendar
+	 *
 	 * @return void
 	 */
-	public static function create() {
+	public static function create(
+		FrenchCalendar    $french_calendar    = null,
+		GregorianCalendar $gregorian_calendar = null,
+		JewishCalendar    $jewish_calendar    = null,
+		JulianCalendar    $julian_calendar    = null
+	) {
+		self::$french_calendar    = $french_calendar    ?: new FrenchCalendar;
+		self::$gregorian_calendar = $gregorian_calendar ?: new GregorianCalendar;
+		self::$jewish_calendar    = $jewish_calendar    ?: new JewishCalendar;
+		self::$julian_calendar    = $julian_calendar    ?: new JulianCalendar;
+
 		function_exists('cal_info')|| require __DIR__ . '/shims.php';
 	}
 
@@ -65,6 +92,20 @@ class Shim {
 	}
 
 	/**
+	 * Do we need to emulate PHP bug #67976?
+	 *
+	 * This bug relates to the number of days in the month 13 of year 14 in
+	 * the French calendar.
+	 *
+	 * @link https://bugs.php.net/bug.php?id=67976
+	 *
+	 * @return bool
+	 */
+	public static function emulateBug67976() {
+		return true;
+	}
+
+	/**
 	 * Create a calendar object for a specified calendar ID.
 	 *
 	 * @param int $calendar_id A PHP calendar ID
@@ -73,19 +114,19 @@ class Shim {
 	 */
 	private static function calendarFromId($calendar_id) {
 		switch ($calendar_id) {
-			case CAL_GREGORIAN:
-				return new GregorianCalendar;
+		case CAL_FRENCH:
+			return self::$french_calendar;
 
-			case CAL_JULIAN:
-				return new JulianCalendar;
-
-			case CAL_FRENCH:
-				return new FrenchCalendar();
+		case CAL_GREGORIAN:
+				return self::$gregorian_calendar;
 
 			case CAL_JEWISH:
-				return new JewishCalendar();
+				return self::$jewish_calendar;
 
-			default:
+		case CAL_JULIAN:
+			return self::$julian_calendar;
+
+		default:
 				return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
 		}
 	}
@@ -105,7 +146,7 @@ class Shim {
 	 * @return int The number of days in the specified month
 	 */
 	public static function calDaysInMonth($calendar_id, $month, $year) {
-		if ($calendar_id == CAL_FRENCH && $month == 13 && $year == 14) {
+		if ($calendar_id == CAL_FRENCH && $month == 13 && $year == 14 && self::emulateBug67976()) {
 			// Emulate PHP bug 67976.
 			return -2380948;
 		} elseif ($calendar_id == CAL_FRENCH && $year > 14) {
@@ -150,10 +191,10 @@ class Shim {
 	public static function calInfo($calendar_id) {
 		if ($calendar_id == -1) {
 			return array(
-				CAL_GREGORIAN => static::calInfo(CAL_GREGORIAN),
-				CAL_JULIAN => static::calInfo(CAL_JULIAN),
-				CAL_JEWISH => static::calInfo(CAL_JEWISH),
-				CAL_FRENCH => static::calInfo(CAL_FRENCH),
+				CAL_GREGORIAN => self::calInfo(CAL_GREGORIAN),
+				CAL_JULIAN => self::calInfo(CAL_JULIAN),
+				CAL_JEWISH => self::calInfo(CAL_JEWISH),
+				CAL_FRENCH => self::calInfo(CAL_FRENCH),
 			);
 		} else {
 			return self::calendarFromId($calendar_id)->phpCalInfo();
@@ -209,17 +250,16 @@ class Shim {
 			return trigger_error('This function is only valid for years between 1970 and 2037 inclusive', E_USER_WARNING);
 		}
 
-		$gregorian = new GregorianCalendar;
-		$days = $gregorian->easterDays($year);
+		$days = self::$gregorian_calendar->easterDays($year);
 
 		// Calculate time-zone offset
 		$date_time = new \DateTime('now', new \DateTimeZone(date_default_timezone_get()));
 		$offset_seconds = $date_time->format('Z');
 
 		if ($days < 11) {
-			return jdtounix($gregorian->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
+			return jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
 		} else {
-			return jdtounix($gregorian->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
+			return jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
 		}
 	}
 
@@ -236,27 +276,24 @@ class Shim {
 	 * @return int
 	 */
 	public static function easterDays($year, $method) {
-		$julian = new JulianCalendar;
-		$gregorian = new GregorianCalendar;
-
 		switch ($method) {
 			case CAL_EASTER_ROMAN:
 				if ($year <= 1582) {
-					return $julian->easterDays($year);
+					return self::$julian_calendar->easterDays($year);
 				} else {
-					return $gregorian->easterDays($year);
+					return self::$gregorian_calendar->easterDays($year);
 				}
 			case CAL_EASTER_ALWAYS_GREGORIAN:
-				return $gregorian->easterDays($year);
+				return self::$gregorian_calendar->easterDays($year);
 
 			case CAL_EASTER_ALWAYS_JULIAN:
-				return $julian->easterDays($year);
+				return self::$julian_calendar->easterDays($year);
 
 			default: // CAL_EASTER_DEFAULT or any other value
 				if ($year <= 1752) {
-					return $julian->easterDays($year);
+					return self::$julian_calendar->easterDays($year);
 				} else {
-					return $gregorian->easterDays($year);
+					return self::$gregorian_calendar->easterDays($year);
 				}
 		}
 	}
@@ -278,9 +315,7 @@ class Shim {
 		if ($year <= 0) {
 			return 0;
 		} else {
-			$french = new FrenchCalendar;
-
-			return $french->ymdToJd($year, $month, $day);
+			return self::$french_calendar->ymdToJd($year, $month, $day);
 		}
 	}
 
@@ -301,9 +336,7 @@ class Shim {
 		if ($year == 0) {
 			return 0;
 		} else {
-			$gregorian = new GregorianCalendar;
-
-			return $gregorian->ymdToJd($year, $month, $day);
+			return self::$gregorian_calendar->ymdToJd($year, $month, $day);
 		}
 	}
 
@@ -321,14 +354,13 @@ class Shim {
 	 * @return mixed
 	 */
 	public static function jdDayOfWeek($julianday, $mode) {
-		$julian = new JulianCalendar;
-		$dow = $julian->dayOfWeek($julianday);
+		$dow = self::$julian_calendar->dayOfWeek($julianday);
 
 		switch ($mode) {
 			case 1: // 1, not CAL_DOW_LONG - see bug 67960
-				return $julian->dayName($dow);
+				return self::$julian_calendar->dayName($dow);
 			case 2: // 2, not CAL_DOW_SHORT - see bug 67960
-				return $julian->dayNameAbbreviated($dow);
+				return self::$julian_calendar->dayNameAbbreviated($dow);
 			default: // CAL_DOW_DAYNO or anything else
 				return $dow;
 		}
@@ -349,28 +381,22 @@ class Shim {
 	public static function jdMonthName($julianday, $mode) {
 		switch ($mode) {
 			case CAL_MONTH_GREGORIAN_LONG:
-				$gregorian = new GregorianCalendar;
-				return $gregorian->jdMonthName($julianday);
+				return self::$gregorian_calendar->jdMonthName($julianday);
 
 			case CAL_MONTH_JULIAN_LONG:
-				$julian = new JulianCalendar;
-				return $julian->jdMonthName($julianday);
+				return self::$julian_calendar->jdMonthName($julianday);
 
 			case CAL_MONTH_JULIAN_SHORT:
-				$julian = new JulianCalendar;
-				return $julian->jdMonthNameAbbreviated($julianday);
+				return self::$julian_calendar->jdMonthNameAbbreviated($julianday);
 
 			case CAL_MONTH_JEWISH:
-				$jewish = new JewishCalendar;
-				return $jewish->jdMonthName($julianday);
+				return self::$jewish_calendar->jdMonthName($julianday);
 
 			case CAL_MONTH_FRENCH:
-				$french = new FrenchCalendar;
-				return $french->jdMonthName($julianday);
+				return self::$french_calendar->jdMonthName($julianday);
 
 			default: // CAL_MONTH_GREGORIAN_SHORT and anything else
-				$gregorian = new GregorianCalendar;
-				return $gregorian->jdMonthNameAbbreviated($julianday);
+				return self::$gregorian_calendar->jdMonthNameAbbreviated($julianday);
 		}
 	}
 
@@ -387,8 +413,7 @@ class Shim {
 	 */
 	public static function jdToFrench($juliandaycount) {
 		if ($juliandaycount >= FrenchCalendar::JD_START && $juliandaycount <= FrenchCalendar::JD_END) {
-			$french = new FrenchCalendar;
-			$cal = $french->calFromJd($juliandaycount);
+			$cal = self::$french_calendar->calFromJd($juliandaycount);
 
 			return $cal['date'];
 		} else {
@@ -408,8 +433,7 @@ class Shim {
 	 * @return string A string of the form "month/day/year"
 	 */
 	public static function jdToGregorian($julianday) {
-		$gregorian = new GregorianCalendar;
-		$cal = $gregorian->calFromJd($julianday);
+		$cal = self::$gregorian_calendar->calFromJd($julianday);
 
 		return $cal['date'];
 	}
@@ -428,16 +452,14 @@ class Shim {
 	 * @return string A string of the form "month/day/year"
 	 */
 	public static function jdToJewish($juliandaycount, $hebrew, $fl) {
-		$jewish = new JewishCalendar;
-
 		if ($hebrew) {
 			if ($juliandaycount < 347998 || $juliandaycount > 4000075) {
 				return trigger_error('Year out of range (0-9999).', E_USER_WARNING);
 			}
 
-			return $jewish->jdToHebrew($juliandaycount, $fl & CAL_JEWISH_ADD_ALAFIM_GERESH, $fl & CAL_JEWISH_ADD_ALAFIM, $fl & CAL_JEWISH_ADD_GERESHAYIM);
+			return self::$jewish_calendar->jdToHebrew($juliandaycount, $fl & CAL_JEWISH_ADD_ALAFIM_GERESH, $fl & CAL_JEWISH_ADD_ALAFIM, $fl & CAL_JEWISH_ADD_GERESHAYIM);
 		} else {
-			list($year, $month, $day) = $jewish->jdToYmd($juliandaycount);
+			list($year, $month, $day) = self::$jewish_calendar->jdToYmd($juliandaycount);
 
 			return $month . '/' . $day . '/' . $year;
 		}
@@ -455,8 +477,7 @@ class Shim {
 	 * @return string A string of the form "month/day/year"
 	 */
 	public static function jdToJulian($julianday) {
-		$julian = new JulianCalendar;
-		$cal = $julian->calFromJd($julianday);
+		$cal = self::$julian_calendar->calFromJd($julianday);
 
 		return $cal['date'];
 	}
@@ -497,9 +518,7 @@ class Shim {
 		if ($year <= 0) {
 			return 0;
 		} else {
-			$jewish = new JewishCalendar;
-
-			return $jewish->ymdToJd($year, $month, $day);
+			return self::$jewish_calendar->ymdToJd($year, $month, $day);
 		}
 	}
 
@@ -520,9 +539,7 @@ class Shim {
 		if ($year == 0) {
 			return 0;
 		} else {
-			$julian = new JulianCalendar;
-
-			return $julian->ymdToJd($year, $month, $day);
+			return self::$julian_calendar->ymdToJd($year, $month, $day);
 		}
 	}
 
@@ -542,7 +559,7 @@ class Shim {
 			return false;
 		} else {
 			// Convert timestamp based on local timezone
-			return static::GregorianToJd(gmdate('n', $timestamp), gmdate('j', $timestamp), gmdate('Y', $timestamp));
+			return self::GregorianToJd(gmdate('n', $timestamp), gmdate('j', $timestamp), gmdate('Y', $timestamp));
 		}
 	}
 }
