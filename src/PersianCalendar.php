@@ -58,27 +58,27 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param $jd
+	 * @param $julian_day
 	 *
 	 * @return int[];
 	 */
-	public function jdToYmd($jd) {
-		$depoch = $jd - 2121447;
-		$cycle = (int)($depoch / 1029983);
-		$cyear = $depoch % 1029983;
+	public function jdToYmd($julian_day) {
+		$depoch = $julian_day - 2121447;
+		$cycle  = (int)($depoch / 1029983);
+		$cyear  = $depoch % 1029983;
 		if ($cyear == 1029982) {
 			$ycycle = 2820;
 		} else {
-			$aux1 = (int)($cyear / 366);
-			$aux2 = $cyear % 366;
-			$ycycle = (int)(((2134 * $aux1) + (2816 * $aux2) + 2815) / 1028522) +
-				$aux1 + 1;
+			$aux1   = (int)($cyear / 366);
+			$aux2   = $cyear % 366;
+			$ycycle = (int)(((2134 * $aux1) + (2816 * $aux2) + 2815) / 1028522) + $aux1 + 1;
 		}
 		$year = $ycycle + (2820 * $cycle) + 474;
+
 		// If we allowed negative years, we would deal with them here.
-		$yday = ($jd - $this->ymdToJd($year, 1, 1)) + 1;
+		$yday  = ($julian_day - $this->ymdToJd($year, 1, 1)) + 1;
 		$month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
-		$day = ($jd - $this->ymdToJd($year, $month, 1)) + 1;
+		$day   = ($julian_day - $this->ymdToJd($year, $month, 1)) + 1;
 
 		return array($year, (int)$month, (int)$day);
 	}

@@ -49,14 +49,14 @@ class ArabicCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param $jd
+	 * @param int $julian_day
 	 *
 	 * @return int[];
 	 */
-	public function jdToYmd($jd) {
-		$year = (int)((30 * ($jd - 1948439) + 10646) / 10631);
-		$month = (int)((11 * ($jd - $year * 354 - (int)((3 + 11 * $year) / 30) - 1948085) + 330) / 325);
-		$day = $jd - 29 * ($month - 1) - (int)((6 * $month - 1) / 11) - $year * 354 - (int)((3 + 11 * $year) / 30) - 1948084;
+	public function jdToYmd($julian_day) {
+		$year  = (int)((30 * ($julian_day - 1948439) + 10646) / 10631);
+		$month = (int)((11 * ($julian_day - $year * 354 - (int)((3 + 11 * $year) / 30) - 1948085) + 330) / 325);
+		$day   = $julian_day - 29 * ($month - 1) - (int)((6 * $month - 1) / 11) - $year * 354 - (int)((3 + 11 * $year) / 30) - 1948084;
 
 		return array($year, $month, $day);
 	}

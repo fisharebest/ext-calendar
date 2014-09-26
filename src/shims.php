@@ -44,45 +44,45 @@ define('CAL_JEWISH_ADD_ALAFIM', 4);
 define('CAL_JEWISH_ADD_GERESHAYIM', 8);
 
 /**
- * @param int $calendar
+ * @param int $calendar_id
  * @param int $month
  * @param int $year
  *
  * @return int
  */
-function cal_days_in_month($calendar, $month, $year) {
-	return Shim::calDaysInMonth($calendar, $month, $year);
+function cal_days_in_month($calendar_id, $month, $year) {
+	return Shim::calDaysInMonth($calendar_id, $month, $year);
 }
 
 /**
- * @param int $jd
- * @param int $calendar
+ * @param int $julian_day
+ * @param int $calendar_id
  *
  * @return array
  */
-function cal_from_jd($jd, $calendar) {
-	return Shim::calFromJd($jd, $calendar);
+function cal_from_jd($julian_day, $calendar_id) {
+	return Shim::calFromJd($julian_day, $calendar_id);
 }
 
 /**
- * @param int $calendar
+ * @param int $calendar_id
  *
  * @return array
  */
-function cal_info($calendar = -1) {
-	return Shim::calInfo($calendar);
+function cal_info($calendar_id = -1) {
+	return Shim::calInfo($calendar_id);
 }
 
 /**
- * @param int $calendar
+ * @param int $calendar_id
  * @param int $month
  * @param int $day
  * @param int $year
  *
  * @return int
  */
-function cal_to_jd($calendar, $month, $day, $year) {
-	return Shim::calToJd($calendar, $month, $day, $year);
+function cal_to_jd($calendar_id, $month, $day, $year) {
+	return Shim::calToJd($calendar_id, $month, $day, $year);
 }
 
 /**
@@ -100,7 +100,7 @@ function easter_date($year = null) {
  *
  * @return int
  */
-function easter_days($year=null, $method=CAL_EASTER_DEFAULT) {
+function easter_days($year = null, $method = CAL_EASTER_DEFAULT) {
 	return Shim::easterDays($year ? $year : date('Y'), $method);
 }
 
@@ -127,70 +127,70 @@ function GregorianToJD($month, $day, $year) {
 }
 
 /**
- * @param int $julianday
+ * @param int $julian_day
  * @param int $mode
  *
  * @return mixed
  */
-function JDDayOfWeek($julianday, $mode = CAL_DOW_DAYNO) {
-	return Shim::JDDayOfWeek($julianday, $mode);
+function JDDayOfWeek($julian_day, $mode = CAL_DOW_DAYNO) {
+	return Shim::JDDayOfWeek($julian_day, $mode);
 }
 
 /**
- * @param int $julianday
+ * @param int $julian_day
  * @param int $mode
  *
  * @return string
  */
-function JDMonthName($julianday, $mode) {
-	return Shim::JDMonthName($julianday, $mode);
+function JDMonthName($julian_day, $mode) {
+	return Shim::JDMonthName($julian_day, $mode);
 }
 
 /**
- * @param int $juliandaycount
+ * @param int $julian_day
  *
  * @return string
  */
-function JDToFrench($juliandaycount) {
-	return Shim::JDToFrench($juliandaycount);
+function JDToFrench($julian_day) {
+	return Shim::JDToFrench($julian_day);
 }
 
 /**
- * @param int $julianday
+ * @param int $julian_day
  *
  * @return string
  */
-function JDToGregorian($julianday) {
-	return Shim::JDToGregorian($julianday);
+function JDToGregorian($julian_day) {
+	return Shim::JDToGregorian($julian_day);
 }
 
 /**
- * @param int  $juliandaycount
+ * @param int  $julian_day
  * @param bool $hebrew
- * @param int  $fl
+ * @param int  $flags
  *
  * @return string
  */
-function jdtojewish($juliandaycount, $hebrew = false, $fl = 0) {
-	return Shim::jdtojewish($juliandaycount, $hebrew, $fl);
+function jdtojewish($julian_day, $hebrew = false, $flags = 0) {
+	return Shim::jdtojewish($julian_day, $hebrew, $flags);
 }
 
 /**
- * @param int $julianday
+ * @param int $julian_day
  *
  * @return string
  */
-function JDToJulian($julianday) {
-	return Shim::JDToJulian($julianday);
+function JDToJulian($julian_day) {
+	return Shim::JDToJulian($julian_day);
 }
 
 /**
- * @param int $jday
+ * @param int $julian_day
  *
  * @return int
  */
-function jdtounix($jday) {
-	return Shim::jdtounix($jday);
+function jdtounix($julian_day) {
+	return Shim::jdtounix($julian_day);
 }
 
 /**

@@ -53,20 +53,21 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param $jd
+	 * @param $julian_day
 	 *
 	 * @return int[];
 	 */
-	public function jdToYmd($jd) {
-		$c = $jd + 32082;
+	public function jdToYmd($julian_day) {
+		$c = $julian_day + 32082;
 		$d = (int)((4 * $c + 3) / 1461);
 		$e = $c - (int)(1461 * $d / 4);
 		$m = (int)((5 * $e + 2) / 153);
-		$day = $e - (int)((153 * $m + 2) / 5) + 1;
+
+		$day   = $e - (int)((153 * $m + 2) / 5) + 1;
 		$month = $m + 3 - 12 * (int)($m / 10);
-		$year = $d - 4800 + (int)($m / 10);
+		$year  = $d - 4800 + (int)($m / 10);
 		if ($year < 1) {
-			// 0=1BC, -1=2BC, etc.
+			// 0 is 1 BCE, -1 is 2 BCE, etc.
 			$year--;
 		}
 
@@ -84,7 +85,7 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	 */
 	public function ymdToJd($year, $month, $day) {
 		if ($year < 0) {
-			// 1 B.C.E. => 0, 2 B.C.E> => 1, etc.
+			// 1 BCE is 0, 2 BCE is -1, etc.
 			++$year;
 		}
 		$a = (int)((14 - $month) / 12);
@@ -120,7 +121,7 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 		}
 
 		// The corrected “Paschal full moon” date
-		if ($pfm == 29 || $pfm == 28 && $golden > 11) {
+		if ($pfm === 29 || $pfm === 28 && $golden > 11) {
 			$pfm--;
 		}
 

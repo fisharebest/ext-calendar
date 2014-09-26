@@ -170,11 +170,11 @@ class FrenchCalendarTest extends TestCase {
 
 		foreach (array(3, 4) as $year) {
 			for ($day = 1; $day <= 30; ++$day) {
-				$jd = FrenchToJD(8, $day, $year);
-				$ymd = $french->jdToYmd($jd);
+				$julian_day = FrenchToJD(8, $day, $year);
+				$ymd = $french->jdToYmd($julian_day);
 
-				$this->assertSame($french->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
+				$this->assertSame($french->ymdToJd($year, 8, $day), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($julian_day));
 			}
 		}
 	}
@@ -191,17 +191,17 @@ class FrenchCalendarTest extends TestCase {
 		$french = new FrenchCalendar;
 
 		for ($month=1; $month<=12; ++$month) {
-			$jd = FrenchToJD($month, 9, 5);
-			$ymd = $french->jdToYmd($jd);
+			$julian_day = FrenchToJD($month, 9, 5);
+			$ymd = $french->jdToYmd($julian_day);
 
-			$this->assertSame($french->ymdToJd(5, $month, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
+			$this->assertSame($french->ymdToJd(5, $month, 9), $julian_day);
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($julian_day));
 
-			$jd = FrenchToJD($month, 9, 5);
-			$ymd = $french->jdToYmd($jd);
+			$julian_day = FrenchToJD($month, 9, 5);
+			$ymd = $french->jdToYmd($julian_day);
 
-			$this->assertSame($french->ymdToJd(5, $month, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
+			$this->assertSame($french->ymdToJd(5, $month, 9), $julian_day);
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($julian_day));
 		}
 	}
 
@@ -217,11 +217,11 @@ class FrenchCalendarTest extends TestCase {
 		$french = new FrenchCalendar;
 
 		for ($year=1; $year<=14; ++$year) {
-			$jd = FrenchToJD(8, 9, $year);
-			$ymd = $french->jdToYmd($jd);
+			$julian_day = FrenchToJD(8, 9, $year);
+			$ymd = $french->jdToYmd($julian_day);
 
-			$this->assertSame($french->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($jd));
+			$this->assertSame($french->ymdToJd($year, 8, 9), $julian_day);
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($julian_day));
 		}
 	}
 }

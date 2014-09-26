@@ -38,7 +38,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	const MAX_MONTHS_IN_YEAR = 13;
 
 	/** Place this symbol before the final letter of a sequence of numerals. */
-	const GERSHAYIM = "\"";  // The gershayim symbol - ״
+	const GERSHAYIM = '"';  // The gershayim symbol - ״
 
 	/** Place this symbol after a single numeral. */
 	const GERESH = "'"; // The geresh symbol - ׳
@@ -154,16 +154,16 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year.
 	 *
-	 * @param int $jd
+	 * @param int $julian_day
 	 *
 	 * @return int;
 	 */
-	protected function jdToY($jd) {
+	protected function jdToY($julian_day) {
 		// Generate an approximate year - may be out by one either way.  Add one to it.
-		$year = (int)(($jd - 347998) / 365) + 1;
+		$year = (int)(($julian_day - 347998) / 365) + 1;
 
 		// Adjust by subtracting years;
-		while ($this->yToJd($year) > $jd) {
+		while ($this->yToJd($year) > $julian_day) {
 			$year--;
 		}
 
@@ -173,25 +173,25 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param int $jd
+	 * @param int $julian_day
 	 *
 	 * @return int[];
 	 */
-	public function jdToYmd($jd) {
+	public function jdToYmd($julian_day) {
 		// Find the year
-		$year = $this->jdToY($jd);
+		$year = $this->jdToY($julian_day);
 
 		// Add one month at a time, to use up the remaining days.
 		$month = 1;
-		$day = $jd - $this->yToJd($year) + 1;
+		$day = $julian_day - $this->yToJd($year) + 1;
 
 		while ($day > $this->daysInMonth($year, $month)) {
 			$day -= $this->daysInMonth($year, $month);
-			$month += 1;
+			$month++;
 		}
 
 		// PHP 5.4 and earlier converted non leap-year Adar into month 6, instead of month 7.
-		$month -= (Shim::emulateBug54254() && $month == 7 && !$this->leapYear($year)) ? 1 : 0;
+		$month -= (Shim::emulateBug54254() && $month === 7 && !$this->leapYear($year)) ? 1 : 0;
 
 		return array($year, $month, $day);
 	}
@@ -210,18 +210,18 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 		$parts = 204 + 793 * ($months % 1080);
 		$hours = 5 + 12 * $months + 793 * (int)($months / 1080) + (int)($parts / 1080);
 		$conjunction = 1080 * ($hours % 24) + ($parts % 1080);
-		$jd = 1 + 29 * $months + (int)($hours / 24);
+		$julian_day = 1 + 29 * $months + (int)($hours / 24);
 
 		if (
 			$conjunction >= 19440 ||
-			$jd % 7 === 2 && $conjunction >= 9924 && !$this->leapYear($year) ||
-			$jd % 7 === 1 && $conjunction >= 16789 && $this->leapYear($year - 1)
+			$julian_day % 7 === 2 && $conjunction >= 9924 && !$this->leapYear($year) ||
+			$julian_day % 7 === 1 && $conjunction >= 16789 && $this->leapYear($year - 1)
 		) {
-			$jd++;
+			$julian_day++;
 		}
 
 		// The actual year start depends on the day of the week
-		return $jd + self::$ROSH_HASHANAH[$jd % 7];
+		return $julian_day + self::$ROSH_HASHANAH[$julian_day % 7];
 	}
 
 	/**
@@ -452,15 +452,15 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian Day number into a Hebrew date.
 	 *
-	 * @param int  $jd
+	 * @param int  $julian_day
 	 * @param bool $alafim_garesh
 	 * @param bool $alafim
 	 * @param bool $gereshayim
 	 *
 	 * @return string $string
 	 */
-	public function jdToHebrew($jd, $alafim_garesh, $alafim, $gereshayim) {
-		list($year, $month, $day) = $this->jdToYmd($jd);
+	public function jdToHebrew($julian_day, $alafim_garesh, $alafim, $gereshayim) {
+		list($year, $month, $day) = $this->jdToYmd($julian_day);
 
 		return
 			$this->numberToHebrewNumerals($day, $gereshayim) . ' ' .

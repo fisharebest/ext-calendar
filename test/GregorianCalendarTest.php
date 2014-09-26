@@ -186,11 +186,11 @@ class GregorianCalendarTest extends TestCase {
 
 		foreach (array(2012, 2014) as $year) {
 			for ($day = 1; $day <= 28; ++$day) {
-				$jd = GregorianToJD(8, $day, $year);
-				$ymd = $gregorian->jdToYmd($jd);
+				$julian_day = GregorianToJD(8, $day, $year);
+				$ymd = $gregorian->jdToYmd($julian_day);
 
-				$this->assertSame($gregorian->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
+				$this->assertSame($gregorian->ymdToJd($year, 8, $day), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($julian_day));
 			}
 		}
 	}
@@ -208,11 +208,11 @@ class GregorianCalendarTest extends TestCase {
 
 		foreach (array(2012, 2014) as $year) {
 			for ($month=1; $month<=12; ++$month) {
-				$jd = GregorianToJD($month, 9, $year);
-				$ymd = $gregorian->jdToYmd($jd);
+				$julian_day = GregorianToJD($month, 9, $year);
+				$ymd = $gregorian->jdToYmd($julian_day);
 
-				$this->assertSame($gregorian->ymdToJd($year, $month, 9), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
+				$this->assertSame($gregorian->ymdToJd($year, $month, 9), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($julian_day));
 			}
 		}
 	}
@@ -229,11 +229,11 @@ class GregorianCalendarTest extends TestCase {
 		$gregorian = new GregorianCalendar;
 
 		for ($year=1970; $year<=2037; ++$year) {
-			$jd = GregorianToJD(8, 9, $year);
-			$ymd = $gregorian->jdToYmd($jd);
+			$julian_day = GregorianToJD(8, 9, $year);
+			$ymd = $gregorian->jdToYmd($julian_day);
 
-			$this->assertSame($gregorian->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
+			$this->assertSame($gregorian->ymdToJd($year, 8, 9), $julian_day);
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($julian_day));
 		}
 	}
 
@@ -250,17 +250,17 @@ class GregorianCalendarTest extends TestCase {
 
 		for ($year=-5; $year<=5; ++$year) {
 			if ($year != 0) {
-				$jd = GregorianToJD(1, 1, $year);
-				$ymd = $gregorian->jdToYmd($jd);
+				$julian_day = GregorianToJD(1, 1, $year);
+				$ymd = $gregorian->jdToYmd($julian_day);
 
-				$this->assertSame($gregorian->ymdToJd($year, 1, 1), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
+				$this->assertSame($gregorian->ymdToJd($year, 1, 1), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($julian_day));
 
-				$jd = GregorianToJD(12, 31, $year);
-				$ymd = $gregorian->jdToYmd($jd);
+				$julian_day = GregorianToJD(12, 31, $year);
+				$ymd = $gregorian->jdToYmd($julian_day);
 
-				$this->assertSame($gregorian->ymdToJd($year, 12, 31), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($jd));
+				$this->assertSame($gregorian->ymdToJd($year, 12, 31), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($julian_day));
 			}
 		}
 	}

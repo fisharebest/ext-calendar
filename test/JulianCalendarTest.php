@@ -186,11 +186,11 @@ class JulianCalendarTest extends TestCase {
 
 		foreach (array(2012, 2014) as $year) {
 			for ($day = 1; $day <= 28; ++$day) {
-				$jd = JulianToJD(8, $day, $year);
-				$ymd = $julian->jdToYmd($jd);
+				$julian_day = JulianToJD(8, $day, $year);
+				$ymd = $julian->jdToYmd($julian_day);
 
-				$this->assertSame($julian->ymdToJd($year, 8, $day), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
+				$this->assertSame($julian->ymdToJd($year, 8, $day), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($julian_day));
 			}
 		}
 	}
@@ -208,11 +208,11 @@ class JulianCalendarTest extends TestCase {
 
 		for ($month=1; $month<=12; ++$month) {
 			foreach (array(2012, 2014) as $year) {
-				$jd = JulianToJD($month, 9, $year);
-				$ymd = $julian->jdToYmd($jd);
+				$julian_day = JulianToJD($month, 9, $year);
+				$ymd = $julian->jdToYmd($julian_day);
 
-				$this->assertSame($julian->ymdToJd($year, $month, 9), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
+				$this->assertSame($julian->ymdToJd($year, $month, 9), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($julian_day));
 			}
 		}
 	}
@@ -229,11 +229,11 @@ class JulianCalendarTest extends TestCase {
 		$julian = new JulianCalendar;
 
 		for ($year=1970; $year<=2037; ++$year) {
-			$jd = JulianToJD(8, 9, $year);
-			$ymd = $julian->jdToYmd($jd);
+			$julian_day = JulianToJD(8, 9, $year);
+			$ymd = $julian->jdToYmd($julian_day);
 
-			$this->assertSame($julian->ymdToJd($year, 8, 9), $jd);
-			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
+			$this->assertSame($julian->ymdToJd($year, 8, 9), $julian_day);
+			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($julian_day));
 		}
 	}
 
@@ -250,17 +250,17 @@ class JulianCalendarTest extends TestCase {
 
 		for ($year=-5; $year<=5; ++$year) {
 			if ($year != 0) {
-				$jd = JulianToJD(1, 1, $year);
-				$ymd = $julian->jdToYmd($jd);
+				$julian_day = JulianToJD(1, 1, $year);
+				$ymd = $julian->jdToYmd($julian_day);
 
-				$this->assertSame($julian->ymdToJd($year, 1, 1), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
+				$this->assertSame($julian->ymdToJd($year, 1, 1), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($julian_day));
 
-				$jd = JulianToJD(12, 31, $year);
-				$ymd = $julian->jdToYmd($jd);
+				$julian_day = JulianToJD(12, 31, $year);
+				$ymd = $julian->jdToYmd($julian_day);
 
-				$this->assertSame($julian->ymdToJd($year, 12, 31), $jd);
-				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($jd));
+				$this->assertSame($julian->ymdToJd($year, 12, 31), $julian_day);
+				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToJulian($julian_day));
 			}
 		}
 	}

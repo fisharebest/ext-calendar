@@ -59,14 +59,14 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param $jd
+	 * @param $julian_day
 	 *
 	 * @return int[];
 	 */
-	public function jdToYmd($jd) {
-		$year = (int)(($jd - 2375109) * 4 / 1461) - 1;
-		$month = (int)(($jd - 2375475 - $year * 365 - (int)($year / 4)) / 30) + 1;
-		$day = $jd - 2375444 - $month * 30 - $year * 365 - (int)($year / 4);
+	public function jdToYmd($julian_day) {
+		$year  = (int)(($julian_day - 2375109) * 4 / 1461) - 1;
+		$month = (int)(($julian_day - 2375475 - $year * 365 - (int)($year / 4)) / 30) + 1;
+		$day   = $julian_day - 2375444 - $month * 30 - $year * 365 - (int)($year / 4);
 
 		return array($year, $month, $day);
 	}

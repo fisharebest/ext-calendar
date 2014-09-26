@@ -36,11 +36,11 @@ interface CalendarInterface {
 	/**
 	 * Convert a Julian day number into a year/month/day.
 	 *
-	 * @param int $jd
+	 * @param int $julian_day
 	 *
 	 * @return int[]
 	 */
-	public function jdToYmd($jd);
+	public function jdToYmd($julian_day);
 
 	/**
 	 * Determine whether or not a given year is a leap-year.
