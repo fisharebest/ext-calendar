@@ -4,7 +4,7 @@ namespace Fisharebest\ExtCalendar;
 use InvalidArgumentException;
 
 /**
- * class Calendar - generic base class for specific calendars.
+ * class AbstractCalendar - generic base class for specific calendars.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -21,7 +21,7 @@ use InvalidArgumentException;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-abstract class Calendar {
+abstract class AbstractCalendar {
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DUNKNOWN@';
 
@@ -53,7 +53,7 @@ abstract class Calendar {
 		} elseif ($month < 1 || $month > static::MAX_MONTHS_IN_YEAR) {
 			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
 		} else {
-			return static::$DAYS_IN_MONTH[$this->leapYear($year)][$month];
+			return static::$DAYS_IN_MONTH[$this->isLeapYear($year)][$month];
 		}
 	}
 }

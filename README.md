@@ -80,7 +80,7 @@ $julian_day = $calendar->ymdToJd($year, $month, $day);
 list($year, $month, $day) = $calendar->jdToYmd($julian_day);
 
 // Information functions
-$is_leap_year = $calendar->leapYear($year);
+$is_leap_year = $calendar->isLeapYear($year);
 $month_length = $calendar->daysInMonth($year, $month);
 ```
 

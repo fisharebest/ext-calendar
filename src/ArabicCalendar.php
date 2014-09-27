@@ -2,7 +2,7 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * class ArabicCalendar - calculations for the Arabic (Hijri) calendar.
+ * Class ArabicCalendar - calculations for the Arabic (Hijri) calendar.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -19,7 +19,7 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class ArabicCalendar extends Calendar implements CalendarInterface {
+class ArabicCalendar extends AbstractCalendar implements CalendarInterface {
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DHIJRI@';
 
@@ -42,7 +42,7 @@ class ArabicCalendar extends Calendar implements CalendarInterface {
 	 * @param  int  $year
 	 * @return bool
 	 */
-	public function leapYear($year) {
+	public function isLeapYear($year) {
 		return ((11 * $year + 14) % 30) < 11;
 	}
 

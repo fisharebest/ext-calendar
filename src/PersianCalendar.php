@@ -2,7 +2,7 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * class PersianCalendar - calculations for the Persian (Jalali) calendar.
+ * Class PersianCalendar - calculations for the Persian (Jalali) calendar.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -19,7 +19,7 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class PersianCalendar extends Calendar implements CalendarInterface {
+class PersianCalendar extends AbstractCalendar implements CalendarInterface {
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DJALALI@';
 
@@ -51,7 +51,7 @@ class PersianCalendar extends Calendar implements CalendarInterface {
 	 * @param  int  $year
 	 * @return bool
 	 */
-	public function leapYear($year) {
+	public function isLeapYear($year) {
 		return in_array((($year + 2346) % 2820) % 128, self::$LEAP_YEAR_CYCLE);
 	}
 

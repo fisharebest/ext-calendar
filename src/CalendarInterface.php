@@ -2,10 +2,10 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * interface CalendarInterface - each calendar implementation needs to provide
+ * Interface CalendarInterface - each calendar implementation needs to provide
  * these methods.
  *
- * Many of them are actually provided by the Calendar base class.
+ * Many of them are actually provided by the AbstractCalendar base class.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -49,7 +49,7 @@ interface CalendarInterface {
 	 *
 	 * @return bool
 	 */
-	public function leapYear($year);
+	public function isLeapYear($year);
 
 	/**
 	 * Convert a year/month/day to a Julian day number.

@@ -38,7 +38,7 @@ class GregorianCalendar extends JulianCalendar implements CalendarInterface {
 	 * @param  int  $year
 	 * @return bool
 	 */
-	public function leapYear($year) {
+	public function isLeapYear($year) {
 		if ($year < 0) {
 			$year++;
 		}

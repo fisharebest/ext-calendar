@@ -50,32 +50,32 @@ class JulianCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::leapYear
+	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
-	public function testLeapYear() {
+	public function testIsLeapYear() {
 		$julian = new JulianCalendar;
 
-		$this->assertSame($julian->leapYear(-5), true);
-		$this->assertSame($julian->leapYear(-4), false);
-		$this->assertSame($julian->leapYear(-3), false);
-		$this->assertSame($julian->leapYear(-2), false);
-		$this->assertSame($julian->leapYear(-1), true);
-		$this->assertSame($julian->leapYear(1500), true);
-		$this->assertSame($julian->leapYear(1600), true);
-		$this->assertSame($julian->leapYear(1700), true);
-		$this->assertSame($julian->leapYear(1800), true);
-		$this->assertSame($julian->leapYear(1900), true);
-		$this->assertSame($julian->leapYear(1999), false);
-		$this->assertSame($julian->leapYear(2000), true);
-		$this->assertSame($julian->leapYear(2001), false);
-		$this->assertSame($julian->leapYear(2002), false);
-		$this->assertSame($julian->leapYear(2003), false);
-		$this->assertSame($julian->leapYear(2004), true);
-		$this->assertSame($julian->leapYear(2005), false);
-		$this->assertSame($julian->leapYear(2100), true);
-		$this->assertSame($julian->leapYear(2200), true);
+		$this->assertSame($julian->isLeapYear(-5), true);
+		$this->assertSame($julian->isLeapYear(-4), false);
+		$this->assertSame($julian->isLeapYear(-3), false);
+		$this->assertSame($julian->isLeapYear(-2), false);
+		$this->assertSame($julian->isLeapYear(-1), true);
+		$this->assertSame($julian->isLeapYear(1500), true);
+		$this->assertSame($julian->isLeapYear(1600), true);
+		$this->assertSame($julian->isLeapYear(1700), true);
+		$this->assertSame($julian->isLeapYear(1800), true);
+		$this->assertSame($julian->isLeapYear(1900), true);
+		$this->assertSame($julian->isLeapYear(1999), false);
+		$this->assertSame($julian->isLeapYear(2000), true);
+		$this->assertSame($julian->isLeapYear(2001), false);
+		$this->assertSame($julian->isLeapYear(2002), false);
+		$this->assertSame($julian->isLeapYear(2003), false);
+		$this->assertSame($julian->isLeapYear(2004), true);
+		$this->assertSame($julian->isLeapYear(2005), false);
+		$this->assertSame($julian->isLeapYear(2100), true);
+		$this->assertSame($julian->isLeapYear(2200), true);
 	}
 
 	/**

@@ -2,7 +2,7 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * class FrenchCalendar - calculations for the French Republican calendar.
+ * Class FrenchCalendar - calculations for the French Republican calendar.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -19,7 +19,7 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class FrenchCalendar extends Calendar implements CalendarInterface {
+class FrenchCalendar extends AbstractCalendar implements CalendarInterface {
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DFRENCH R@';
 
@@ -52,7 +52,7 @@ class FrenchCalendar extends Calendar implements CalendarInterface {
 	 * @param  int  $year
 	 * @return bool
 	 */
-	public function leapYear($year) {
+	public function isLeapYear($year) {
 		return $year % 4 == 3;
 	}
 

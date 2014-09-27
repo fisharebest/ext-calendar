@@ -51,43 +51,43 @@ class ArabicCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers Fisharebest\ExtCalendar\ArabicCalendar::leapYear
+	 * @covers Fisharebest\ExtCalendar\ArabicCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
-	public function testLeapYear() {
+	public function testIsLeapYear() {
 		$arabic = new ArabicCalendar;
 
-		$this->assertSame($arabic->leapYear(1201), false);
-		$this->assertSame($arabic->leapYear(1202), true);
-		$this->assertSame($arabic->leapYear(1203), false);
-		$this->assertSame($arabic->leapYear(1204), false);
-		$this->assertSame($arabic->leapYear(1205), true);
-		$this->assertSame($arabic->leapYear(1206), false);
-		$this->assertSame($arabic->leapYear(1207), true);
-		$this->assertSame($arabic->leapYear(1208), false);
-		$this->assertSame($arabic->leapYear(1209), false);
-		$this->assertSame($arabic->leapYear(1210), true);
-		$this->assertSame($arabic->leapYear(1211), false);
-		$this->assertSame($arabic->leapYear(1212), false);
-		$this->assertSame($arabic->leapYear(1213), true);
-		$this->assertSame($arabic->leapYear(1214), false);
-		$this->assertSame($arabic->leapYear(1215), false);
-		$this->assertSame($arabic->leapYear(1216), true);
-		$this->assertSame($arabic->leapYear(1217), false);
-		$this->assertSame($arabic->leapYear(1218), true);
-		$this->assertSame($arabic->leapYear(1219), false);
-		$this->assertSame($arabic->leapYear(1220), false);
-		$this->assertSame($arabic->leapYear(1221), true);
-		$this->assertSame($arabic->leapYear(1222), false);
-		$this->assertSame($arabic->leapYear(1223), false);
-		$this->assertSame($arabic->leapYear(1224), true);
-		$this->assertSame($arabic->leapYear(1225), false);
-		$this->assertSame($arabic->leapYear(1226), true);
-		$this->assertSame($arabic->leapYear(1227), false);
-		$this->assertSame($arabic->leapYear(1228), false);
-		$this->assertSame($arabic->leapYear(1229), true);
-		$this->assertSame($arabic->leapYear(1230), false);
+		$this->assertSame($arabic->isLeapYear(1201), false);
+		$this->assertSame($arabic->isLeapYear(1202), true);
+		$this->assertSame($arabic->isLeapYear(1203), false);
+		$this->assertSame($arabic->isLeapYear(1204), false);
+		$this->assertSame($arabic->isLeapYear(1205), true);
+		$this->assertSame($arabic->isLeapYear(1206), false);
+		$this->assertSame($arabic->isLeapYear(1207), true);
+		$this->assertSame($arabic->isLeapYear(1208), false);
+		$this->assertSame($arabic->isLeapYear(1209), false);
+		$this->assertSame($arabic->isLeapYear(1210), true);
+		$this->assertSame($arabic->isLeapYear(1211), false);
+		$this->assertSame($arabic->isLeapYear(1212), false);
+		$this->assertSame($arabic->isLeapYear(1213), true);
+		$this->assertSame($arabic->isLeapYear(1214), false);
+		$this->assertSame($arabic->isLeapYear(1215), false);
+		$this->assertSame($arabic->isLeapYear(1216), true);
+		$this->assertSame($arabic->isLeapYear(1217), false);
+		$this->assertSame($arabic->isLeapYear(1218), true);
+		$this->assertSame($arabic->isLeapYear(1219), false);
+		$this->assertSame($arabic->isLeapYear(1220), false);
+		$this->assertSame($arabic->isLeapYear(1221), true);
+		$this->assertSame($arabic->isLeapYear(1222), false);
+		$this->assertSame($arabic->isLeapYear(1223), false);
+		$this->assertSame($arabic->isLeapYear(1224), true);
+		$this->assertSame($arabic->isLeapYear(1225), false);
+		$this->assertSame($arabic->isLeapYear(1226), true);
+		$this->assertSame($arabic->isLeapYear(1227), false);
+		$this->assertSame($arabic->isLeapYear(1228), false);
+		$this->assertSame($arabic->isLeapYear(1229), true);
+		$this->assertSame($arabic->isLeapYear(1230), false);
 	}
 
 	/**

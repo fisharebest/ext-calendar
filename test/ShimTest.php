@@ -76,8 +76,8 @@ class ShimTest extends TestCase {
 		$this->assertSame(3, CAL_FRENCH);
 		$this->assertSame(4, CAL_NUM_CALS);
 		$this->assertSame(0, CAL_DOW_DAYNO);
-		$this->assertSame(Shim::emulateBug67960() ? 1 : 2, CAL_DOW_SHORT);
-		$this->assertSame(Shim::emulateBug67960() ? 2 : 1, CAL_DOW_LONG);
+		$this->assertSame(Shim::shouldEmulateBug67960() ? 1 : 2, CAL_DOW_SHORT);
+		$this->assertSame(Shim::shouldEmulateBug67960() ? 2 : 1, CAL_DOW_LONG);
 		$this->assertSame(0, CAL_MONTH_GREGORIAN_SHORT);
 		$this->assertSame(1, CAL_MONTH_GREGORIAN_LONG);
 		$this->assertSame(2, CAL_MONTH_JULIAN_SHORT);
@@ -713,8 +713,8 @@ class ShimTest extends TestCase {
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), 'Sunday');
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 2), 'Sun');
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 0);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Sun' : 'Sunday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Sunday' : 'Sun');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Sun' : 'Sunday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Sunday' : 'Sun');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));
@@ -732,8 +732,8 @@ class ShimTest extends TestCase {
 		$julian_day = GregorianToJD(9, 1, 2014); // 2456902
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 1);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Mon' : 'Monday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Monday' : 'Mon');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Mon' : 'Monday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Monday' : 'Mon');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));
@@ -751,8 +751,8 @@ class ShimTest extends TestCase {
 		$julian_day = GregorianToJD(9, 2, 2014); // 2456903
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 2);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Tue' : 'Tuesday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Tuesday' : 'Tue');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Tue' : 'Tuesday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Tuesday' : 'Tue');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));
@@ -770,8 +770,8 @@ class ShimTest extends TestCase {
 		$julian_day = GregorianToJD(9, 3, 2014); // 2456904
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 3);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Wed' : 'Wednesday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Wednesday' : 'Wed');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Wed' : 'Wednesday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Wednesday' : 'Wed');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));
@@ -789,8 +789,8 @@ class ShimTest extends TestCase {
 		$julian_day = GregorianToJD(9, 4, 2014); // 2456905
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 4);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Thu' : 'Thursday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Thursday' : 'Thu');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Thu' : 'Thursday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Thursday' : 'Thu');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));
@@ -808,8 +808,8 @@ class ShimTest extends TestCase {
 		$julian_day = GregorianToJD(9, 5, 2014); // 2456906
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 5);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Fri' : 'Friday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Friday' : 'Fri');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Fri' : 'Friday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Friday' : 'Fri');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));
@@ -827,8 +827,8 @@ class ShimTest extends TestCase {
 		$julian_day = GregorianToJD(9, 6, 2014); // 2456907
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_DAYNO), 6);
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::emulateBug67960() ? 'Sat' : 'Saturday');
-		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::emulateBug67960() ? 'Saturday' : 'Sat');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_LONG), Shim::shouldEmulateBug67960() ? 'Sat' : 'Saturday');
+		$this->assertSame(Shim::jdDayOfWeek($julian_day, CAL_DOW_SHORT), Shim::shouldEmulateBug67960() ? 'Saturday' : 'Sat');
 
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 0), JDDayOfWeek($julian_day, 0));
 		$this->assertSame(Shim::jdDayOfWeek($julian_day, 1), JDDayOfWeek($julian_day, 1));

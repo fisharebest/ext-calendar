@@ -50,32 +50,32 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::leapYear
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
-	public function testLeapYear() {
+	public function testIsLeapYear() {
 		$gregorian = new GregorianCalendar;
 
-		$this->assertSame($gregorian->leapYear(-5), true);
-		$this->assertSame($gregorian->leapYear(-4), false);
-		$this->assertSame($gregorian->leapYear(-3), false);
-		$this->assertSame($gregorian->leapYear(-2), false);
-		$this->assertSame($gregorian->leapYear(-1), true);
-		$this->assertSame($gregorian->leapYear(1500), false);
-		$this->assertSame($gregorian->leapYear(1600), true);
-		$this->assertSame($gregorian->leapYear(1700), false);
-		$this->assertSame($gregorian->leapYear(1800), false);
-		$this->assertSame($gregorian->leapYear(1900), false);
-		$this->assertSame($gregorian->leapYear(1999), false);
-		$this->assertSame($gregorian->leapYear(2000), true);
-		$this->assertSame($gregorian->leapYear(2001), false);
-		$this->assertSame($gregorian->leapYear(2002), false);
-		$this->assertSame($gregorian->leapYear(2003), false);
-		$this->assertSame($gregorian->leapYear(2004), true);
-		$this->assertSame($gregorian->leapYear(2005), false);
-		$this->assertSame($gregorian->leapYear(2100), false);
-		$this->assertSame($gregorian->leapYear(2200), false);
+		$this->assertSame($gregorian->isLeapYear(-5), true);
+		$this->assertSame($gregorian->isLeapYear(-4), false);
+		$this->assertSame($gregorian->isLeapYear(-3), false);
+		$this->assertSame($gregorian->isLeapYear(-2), false);
+		$this->assertSame($gregorian->isLeapYear(-1), true);
+		$this->assertSame($gregorian->isLeapYear(1500), false);
+		$this->assertSame($gregorian->isLeapYear(1600), true);
+		$this->assertSame($gregorian->isLeapYear(1700), false);
+		$this->assertSame($gregorian->isLeapYear(1800), false);
+		$this->assertSame($gregorian->isLeapYear(1900), false);
+		$this->assertSame($gregorian->isLeapYear(1999), false);
+		$this->assertSame($gregorian->isLeapYear(2000), true);
+		$this->assertSame($gregorian->isLeapYear(2001), false);
+		$this->assertSame($gregorian->isLeapYear(2002), false);
+		$this->assertSame($gregorian->isLeapYear(2003), false);
+		$this->assertSame($gregorian->isLeapYear(2004), true);
+		$this->assertSame($gregorian->isLeapYear(2005), false);
+		$this->assertSame($gregorian->isLeapYear(2100), false);
+		$this->assertSame($gregorian->isLeapYear(2200), false);
 	}
 
 	/**

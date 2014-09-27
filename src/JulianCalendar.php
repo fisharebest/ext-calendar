@@ -2,7 +2,7 @@
 namespace Fisharebest\ExtCalendar;
 
 /**
- * class JulianCalendar - calculations for the Julian calendar.
+ * Class JulianCalendar - calculations for the Julian calendar.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014 Greg Roach
@@ -19,7 +19,7 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class JulianCalendar extends Calendar implements CalendarInterface {
+class JulianCalendar extends AbstractCalendar implements CalendarInterface {
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DJULIAN@';
 
@@ -42,7 +42,7 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 	 * @param  int  $year
 	 * @return bool
 	 */
-	public function leapYear($year) {
+	public function isLeapYear($year) {
 		if ($year < 0) {
 			$year++;
 		}
@@ -88,8 +88,8 @@ class JulianCalendar extends Calendar implements CalendarInterface {
 			// 1 BCE is 0, 2 BCE is -1, etc.
 			++$year;
 		}
-		$a = (int)((14 - $month) / 12);
-		$year = $year + 4800 - $a;
+		$a     = (int)((14 - $month) / 12);
+		$year  = $year + 4800 - $a;
 		$month = $month + 12 * $a - 3;
 
 		return $day + (int)((153 * $month + 2) / 5) + 365 * $year + (int)($year / 4) - 32083;

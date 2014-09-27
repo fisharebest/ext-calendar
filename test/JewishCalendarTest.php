@@ -49,32 +49,32 @@ class JewishCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::leapYear
+	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
-	public function testLeapYear() {
+	public function testIsLeapYear() {
 		$jewish = new JewishCalendar;
 
-		$this->assertSame($jewish->leapYear(5767), false);
-		$this->assertSame($jewish->leapYear(5768), true);
-		$this->assertSame($jewish->leapYear(5769), false);
-		$this->assertSame($jewish->leapYear(5770), false);
-		$this->assertSame($jewish->leapYear(5771), true);
-		$this->assertSame($jewish->leapYear(5772), false);
-		$this->assertSame($jewish->leapYear(5773), false);
-		$this->assertSame($jewish->leapYear(5774), true);
-		$this->assertSame($jewish->leapYear(5775), false);
-		$this->assertSame($jewish->leapYear(5776), true);
-		$this->assertSame($jewish->leapYear(5777), false);
-		$this->assertSame($jewish->leapYear(5778), false);
-		$this->assertSame($jewish->leapYear(5779), true);
-		$this->assertSame($jewish->leapYear(5780), false);
-		$this->assertSame($jewish->leapYear(5781), false);
-		$this->assertSame($jewish->leapYear(5782), true);
-		$this->assertSame($jewish->leapYear(5783), false);
-		$this->assertSame($jewish->leapYear(5784), true);
-		$this->assertSame($jewish->leapYear(5785), false);
+		$this->assertSame($jewish->isLeapYear(5767), false);
+		$this->assertSame($jewish->isLeapYear(5768), true);
+		$this->assertSame($jewish->isLeapYear(5769), false);
+		$this->assertSame($jewish->isLeapYear(5770), false);
+		$this->assertSame($jewish->isLeapYear(5771), true);
+		$this->assertSame($jewish->isLeapYear(5772), false);
+		$this->assertSame($jewish->isLeapYear(5773), false);
+		$this->assertSame($jewish->isLeapYear(5774), true);
+		$this->assertSame($jewish->isLeapYear(5775), false);
+		$this->assertSame($jewish->isLeapYear(5776), true);
+		$this->assertSame($jewish->isLeapYear(5777), false);
+		$this->assertSame($jewish->isLeapYear(5778), false);
+		$this->assertSame($jewish->isLeapYear(5779), true);
+		$this->assertSame($jewish->isLeapYear(5780), false);
+		$this->assertSame($jewish->isLeapYear(5781), false);
+		$this->assertSame($jewish->isLeapYear(5782), true);
+		$this->assertSame($jewish->isLeapYear(5783), false);
+		$this->assertSame($jewish->isLeapYear(5784), true);
+		$this->assertSame($jewish->isLeapYear(5785), false);
 	}
 
 	/**

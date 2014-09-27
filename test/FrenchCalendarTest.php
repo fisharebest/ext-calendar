@@ -50,27 +50,27 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::leapYear
+	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
-	public function testLeapYear() {
+	public function testIsLeapYear() {
 		$french = new FrenchCalendar;
 
-		$this->assertSame($french->leapYear(1), false);
-		$this->assertSame($french->leapYear(2), false);
-		$this->assertSame($french->leapYear(3), true);
-		$this->assertSame($french->leapYear(4), false);
-		$this->assertSame($french->leapYear(5), false);
-		$this->assertSame($french->leapYear(6), false);
-		$this->assertSame($french->leapYear(7), true);
-		$this->assertSame($french->leapYear(8), false);
-		$this->assertSame($french->leapYear(9), false);
-		$this->assertSame($french->leapYear(10), false);
-		$this->assertSame($french->leapYear(11), true);
-		$this->assertSame($french->leapYear(12), false);
-		$this->assertSame($french->leapYear(13), false);
-		$this->assertSame($french->leapYear(14), false);
+		$this->assertSame($french->isLeapYear(1), false);
+		$this->assertSame($french->isLeapYear(2), false);
+		$this->assertSame($french->isLeapYear(3), true);
+		$this->assertSame($french->isLeapYear(4), false);
+		$this->assertSame($french->isLeapYear(5), false);
+		$this->assertSame($french->isLeapYear(6), false);
+		$this->assertSame($french->isLeapYear(7), true);
+		$this->assertSame($french->isLeapYear(8), false);
+		$this->assertSame($french->isLeapYear(9), false);
+		$this->assertSame($french->isLeapYear(10), false);
+		$this->assertSame($french->isLeapYear(11), true);
+		$this->assertSame($french->isLeapYear(12), false);
+		$this->assertSame($french->isLeapYear(13), false);
+		$this->assertSame($french->isLeapYear(14), false);
 	}
 
 	/**

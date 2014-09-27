@@ -4,7 +4,7 @@ namespace Fisharebest\ExtCalendar;
 use InvalidArgumentException;
 
 /**
- * class JewishCalendar - calculations for the Jewish calendar.
+ * Class JewishCalendar - calculations for the Jewish calendar.
  *
  * Hebrew characters in the code have ISO-8859-8 encoding (and ASCII punctuation).
  * Hebrew characters in the comments have UTF-8 encoding (and Hebrew punctuation).
@@ -24,7 +24,7 @@ use InvalidArgumentException;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class JewishCalendar extends Calendar implements CalendarInterface {
+class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	/** See the GEDCOM specification */
 	const GEDCOM_CALENDAR_ESCAPE = '@#DHEBREW@';
 
@@ -147,7 +147,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 *
 	 * @return bool
 	 */
-	public function leapYear($year) {
+	public function isLeapYear($year) {
 		return (7 * $year + 1) % 19 < 7;
 	}
 
@@ -178,12 +178,10 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @return int[];
 	 */
 	public function jdToYmd($julian_day) {
-		// Find the year
-		$year = $this->jdToY($julian_day);
-
-		// Add one month at a time, to use up the remaining days.
+		// Find the year, by adding one month at a time to use up the remaining days.
+		$year  = $this->jdToY($julian_day);
 		$month = 1;
-		$day = $julian_day - $this->yToJd($year) + 1;
+		$day   = $julian_day - $this->yToJd($year) + 1;
 
 		while ($day > $this->daysInMonth($year, $month)) {
 			$day -= $this->daysInMonth($year, $month);
@@ -191,7 +189,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 		}
 
 		// PHP 5.4 and earlier converted non leap-year Adar into month 6, instead of month 7.
-		$month -= (Shim::emulateBug54254() && $month === 7 && !$this->leapYear($year)) ? 1 : 0;
+		$month -= (Shim::shouldEmulateBug54254() && $month === 7 && !$this->isLeapYear($year)) ? 1 : 0;
 
 		return array($year, $month, $day);
 	}
@@ -206,16 +204,17 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	protected function yToJd($year) {
 		$div19 = (int)(($year - 1) / 19);
 		$mod19 = ($year - 1) % 19;
-		$months = 235 * $div19 + 12 * $mod19 + (int)((7 * $mod19 + 1) / 19);
-		$parts = 204 + 793 * ($months % 1080);
-		$hours = 5 + 12 * $months + 793 * (int)($months / 1080) + (int)($parts / 1080);
+
+		$months      = 235 * $div19 + 12 * $mod19 + (int)((7 * $mod19 + 1) / 19);
+		$parts       = 204 + 793 * ($months % 1080);
+		$hours       = 5 + 12 * $months + 793 * (int)($months / 1080) + (int)($parts / 1080);
 		$conjunction = 1080 * ($hours % 24) + ($parts % 1080);
-		$julian_day = 1 + 29 * $months + (int)($hours / 24);
+		$julian_day  = 1 + 29 * $months + (int)($hours / 24);
 
 		if (
 			$conjunction >= 19440 ||
-			$julian_day % 7 === 2 && $conjunction >= 9924 && !$this->leapYear($year) ||
-			$julian_day % 7 === 1 && $conjunction >= 16789 && $this->leapYear($year - 1)
+			$julian_day % 7 === 2 && $conjunction >= 9924 && !$this->isLeapYear($year) ||
+			$julian_day % 7 === 1 && $conjunction >= 16789 && $this->isLeapYear($year - 1)
 		) {
 			$julian_day++;
 		}
@@ -236,7 +235,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	public function ymdToJd($year, $month, $day) {
 		return
 			$this->yToJd($year) +
-			self::$CUMULATIVE_DAYS[$this->leapYear($year)][$this->yearType($year)][$month] +
+			self::$CUMULATIVE_DAYS[$this->isLeapYear($year)][$this->yearType($year)][$month] +
 			$day - 1;
 	}
 
@@ -297,7 +296,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @return int
 	 */
 	private function daysInMonthAdarI($year) {
-		if ($this->leapYear($year)) {
+		if ($this->isLeapYear($year)) {
 			return 30;
 		} else {
 			return 0;
@@ -319,11 +318,11 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
 		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
 			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
-		} elseif ($month === 2) {
+		} elseif ($month == 2) {
 			return $this->daysInMonthHeshvan($year);
-		} elseif ($month === 3) {
+		} elseif ($month == 3) {
 			return $this->daysInMonthKislev($year);
-		} elseif ($month === 6) {
+		} elseif ($month == 6) {
 			return $this->daysInMonthAdarI($year);
 		} else {
 			return self::$FIXED_MONTH_LENGTHS[$month];
@@ -340,7 +339,7 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 	 * @return string[]
 	 */
 	protected function hebrewMonthNames($year) {
-		$leap_year = $this->leapYear($year);
+		$leap_year = $this->isLeapYear($year);
 
 		return array(
 			1 => "\xfa\xf9\xf8\xe9", // Tishri - תשרי
@@ -348,8 +347,8 @@ class JewishCalendar extends Calendar implements CalendarInterface {
 			"\xeb\xf1\xec\xe5", // Kislev - כסלו
 			"\xe8\xe1\xfa", // Tevet - טבת
 			"\xf9\xe1\xe8", // Shevat - שבט
-			$leap_year ? (Shim::emulateBug54254() ? "\xe0\xe3\xf8" : "\xe0\xe3\xf8 \xe0'") : "\xe0\xe3\xf8", // Adar I - אדר - אדר א׳ - אדר
-			$leap_year ? (Shim::emulateBug54254() ? "'\xe0\xe3\xf8 \xe1" : "\xe0\xe3\xf8 \xe1'") : "\xe0\xe3\xf8", // Adar II - 'אדר ב - אדר ב׳ - אדר
+			$leap_year ? (Shim::shouldEmulateBug54254() ? "\xe0\xe3\xf8" : "\xe0\xe3\xf8 \xe0'") : "\xe0\xe3\xf8", // Adar I - אדר - אדר א׳ - אדר
+			$leap_year ? (Shim::shouldEmulateBug54254() ? "'\xe0\xe3\xf8 \xe1" : "\xe0\xe3\xf8 \xe1'") : "\xe0\xe3\xf8", // Adar II - 'אדר ב - אדר ב׳ - אדר
 			"\xf0\xe9\xf1\xef", // Nisan - ניסן
 			"\xe0\xe9\xe9\xf8", // Iyar - אייר
 			"\xf1\xe9\xe5\xef", // Sivan - סיון
