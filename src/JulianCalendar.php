@@ -55,7 +55,7 @@ class JulianCalendar extends AbstractCalendar implements CalendarInterface {
 	 *
 	 * @param $julian_day
 	 *
-	 * @return int[];
+	 * @return int[]
 	 */
 	public function jdToYmd($julian_day) {
 		$c = $julian_day + 32082;

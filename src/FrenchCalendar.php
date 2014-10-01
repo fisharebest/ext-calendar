@@ -61,7 +61,7 @@ class FrenchCalendar extends AbstractCalendar implements CalendarInterface {
 	 *
 	 * @param $julian_day
 	 *
-	 * @return int[];
+	 * @return int[]
 	 */
 	public function jdToYmd($julian_day) {
 		$year  = (int)(($julian_day - 2375109) * 4 / 1461) - 1;

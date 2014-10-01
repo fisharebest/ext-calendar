@@ -60,7 +60,7 @@ class PersianCalendar extends AbstractCalendar implements CalendarInterface {
 	 *
 	 * @param $julian_day
 	 *
-	 * @return int[];
+	 * @return int[]
 	 */
 	public function jdToYmd($julian_day) {
 		$depoch = $julian_day - 2121447;

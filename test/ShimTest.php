@@ -1241,7 +1241,7 @@ class ShimTest extends TestCase {
 	public function testJewishToJd() {
 		$this->assertSame(Shim::jewishToJD(1, 1, 0), JewishToJD(1, 1, 0));
 
-		for ($n=0; $n < static::ITERATIONS; ++$n) {
+		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(1, 9999);
 			$month = mt_rand(1, 13);
 			$day = mt_rand(1, 29);
@@ -1262,7 +1262,7 @@ class ShimTest extends TestCase {
 	public function testJulianToJd() {
 		$this->assertSame(Shim::julianToJd(1, 1, 0), JulianToJd(1, 1, 0));
 
-		for ($n=0; $n < static::ITERATIONS; ++$n) {
+		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$year = mt_rand(-4713, 9999);
 			$month = mt_rand(1, 12);
 			$day = mt_rand(1, 30);
@@ -1278,7 +1278,7 @@ class ShimTest extends TestCase {
 	 * @return void
 	 */
 	public function testUnixToJd() {
-		for ($n=0; $n < static::ITERATIONS; ++$n) {
+		for ($n = 0; $n < static::ITERATIONS; ++$n) {
 			$unix = mt_rand(1, 2147483647);
 			$this->assertSame(Shim::unixToJd($unix), unixtojd($unix));
 		}

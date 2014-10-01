@@ -51,7 +51,7 @@ class ArabicCalendar extends AbstractCalendar implements CalendarInterface {
 	 *
 	 * @param int $julian_day
 	 *
-	 * @return int[];
+	 * @return int[]
 	 */
 	public function jdToYmd($julian_day) {
 		$year  = (int)((30 * ($julian_day - 1948439) + 10646) / 10631);

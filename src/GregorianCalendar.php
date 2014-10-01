@@ -51,7 +51,7 @@ class GregorianCalendar extends JulianCalendar implements CalendarInterface {
 	 *
 	 * @param $julian_day
 	 *
-	 * @return int[];
+	 * @return int[]
 	 */
 	public function jdToYmd($julian_day) {
 		$a = $julian_day + 32044;

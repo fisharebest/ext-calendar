@@ -399,7 +399,7 @@ class Shim {
 
 		// Calculate time-zone offset
 		$date_time      = new \DateTime('now', new \DateTimeZone(date_default_timezone_get()));
-		$offset_seconds = $date_time->format('Z');
+		$offset_seconds = (int)$date_time->format('Z');
 
 		if ($days < 11) {
 			return jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;

@@ -156,7 +156,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	 *
 	 * @param int $julian_day
 	 *
-	 * @return int;
+	 * @return int
 	 */
 	protected function jdToY($julian_day) {
 		// Generate an approximate year - may be out by one either way.  Add one to it.
@@ -175,7 +175,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	 *
 	 * @param int $julian_day
 	 *
-	 * @return int[];
+	 * @return int[]
 	 */
 	public function jdToYmd($julian_day) {
 		// Find the year, by adding one month at a time to use up the remaining days.
