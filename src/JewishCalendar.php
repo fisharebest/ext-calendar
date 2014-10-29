@@ -109,24 +109,24 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	 */
 	private static $CUMULATIVE_DAYS = array(
 		0 => array( // Non-leap years
-			-1 => array( // Deficient years
+			self::DEFECTIVE_YEAR => array(
 				1 => 0, 30, 59, 88, 117, 147, 147, 176, 206, 235, 265, 294, 324
 			),
-			0  => array( // Regular years
+			self::REGULAR_YEAR => array(
 				1 => 0, 30, 59, 89, 118, 148, 148, 177, 207, 236, 266, 295, 325
 			),
-			1  => array( // Complete years
+			self::COMPLETE_YEAR => array(
 				1 => 0, 30, 60, 90, 119, 149, 149, 178, 208, 237, 267, 296, 326
 			),
 		),
 		1 => array( // Leap years
-			-1 => array( // Deficient years
+			self::DEFECTIVE_YEAR => array(
 				1 => 0, 30, 59, 88, 117, 147, 177, 206, 236, 265, 295, 324, 354
 			),
-			0  => array( // Regular years
+			self::REGULAR_YEAR => array(
 				1 => 0, 30, 59, 89, 118, 148, 178, 207, 237, 266, 296, 325, 355
 			),
-			1  => array( // Complete years
+			self::COMPLETE_YEAR => array(
 				1 => 0, 30, 60, 90, 119, 149, 179, 208, 238, 267, 297, 326, 356
 			),
 		),
