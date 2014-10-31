@@ -107,7 +107,9 @@ class Shim {
 	) {
 		self::$french_calendar    = $french_calendar ?: new FrenchCalendar;
 		self::$gregorian_calendar = $gregorian_calendar ?: new GregorianCalendar;
-		self::$jewish_calendar    = $jewish_calendar ?: new JewishCalendar;
+		self::$jewish_calendar    = $jewish_calendar ?: new JewishCalendar(array(
+				JewishCalendar::EMULATE_BUG_54254 => self::shouldEmulateBug54254(),
+		));
 		self::$julian_calendar    = $julian_calendar ?: new JulianCalendar;
 
 		defined('CAL_NUM_CALS') || require __DIR__ . '/shims.php';
@@ -404,9 +406,9 @@ class Shim {
 		$offset_seconds = (int)$date_time->format('Z');
 
 		if ($days < 11) {
-			return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
+			return Shim::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
 		} else {
-			return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
+			return Shim::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
 		}
 	}
 

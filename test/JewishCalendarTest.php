@@ -23,6 +23,9 @@ use PHPUnit_Framework_TestCase as TestCase;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class JewishCalendarTest extends TestCase {
+	/** @var CalendarJewish */
+	private $jewish;
+
 	/**
 	 * Create the shim functions, so we can run tests on servers which do
 	 * not have the ext/calendar library installed.  For example HHVM.
@@ -31,6 +34,9 @@ class JewishCalendarTest extends TestCase {
 	 */
 	public function setUp() {
 		Shim::create();
+		$this->jewish = new JewishCalendar(array(
+			JewishCalendar::EMULATE_BUG_54254 => Shim::shouldEmulateBug54254(),
+		));
 	}
 
 	/**
@@ -41,9 +47,7 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstants() {
-		$jewish = new JewishCalendar;
-
-		$this->assertSame($jewish::GEDCOM_CALENDAR_ESCAPE, '@#DHEBREW@');
+		$this->assertSame(JewishCalendar::GEDCOM_CALENDAR_ESCAPE, '@#DHEBREW@');
 	}
 
 	/**
@@ -54,27 +58,25 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testIsLeapYear() {
-		$jewish = new JewishCalendar;
-
-		$this->assertSame($jewish->isLeapYear(5767), false);
-		$this->assertSame($jewish->isLeapYear(5768), true);
-		$this->assertSame($jewish->isLeapYear(5769), false);
-		$this->assertSame($jewish->isLeapYear(5770), false);
-		$this->assertSame($jewish->isLeapYear(5771), true);
-		$this->assertSame($jewish->isLeapYear(5772), false);
-		$this->assertSame($jewish->isLeapYear(5773), false);
-		$this->assertSame($jewish->isLeapYear(5774), true);
-		$this->assertSame($jewish->isLeapYear(5775), false);
-		$this->assertSame($jewish->isLeapYear(5776), true);
-		$this->assertSame($jewish->isLeapYear(5777), false);
-		$this->assertSame($jewish->isLeapYear(5778), false);
-		$this->assertSame($jewish->isLeapYear(5779), true);
-		$this->assertSame($jewish->isLeapYear(5780), false);
-		$this->assertSame($jewish->isLeapYear(5781), false);
-		$this->assertSame($jewish->isLeapYear(5782), true);
-		$this->assertSame($jewish->isLeapYear(5783), false);
-		$this->assertSame($jewish->isLeapYear(5784), true);
-		$this->assertSame($jewish->isLeapYear(5785), false);
+		$this->assertSame($this->jewish->isLeapYear(5767), false);
+		$this->assertSame($this->jewish->isLeapYear(5768), true);
+		$this->assertSame($this->jewish->isLeapYear(5769), false);
+		$this->assertSame($this->jewish->isLeapYear(5770), false);
+		$this->assertSame($this->jewish->isLeapYear(5771), true);
+		$this->assertSame($this->jewish->isLeapYear(5772), false);
+		$this->assertSame($this->jewish->isLeapYear(5773), false);
+		$this->assertSame($this->jewish->isLeapYear(5774), true);
+		$this->assertSame($this->jewish->isLeapYear(5775), false);
+		$this->assertSame($this->jewish->isLeapYear(5776), true);
+		$this->assertSame($this->jewish->isLeapYear(5777), false);
+		$this->assertSame($this->jewish->isLeapYear(5778), false);
+		$this->assertSame($this->jewish->isLeapYear(5779), true);
+		$this->assertSame($this->jewish->isLeapYear(5780), false);
+		$this->assertSame($this->jewish->isLeapYear(5781), false);
+		$this->assertSame($this->jewish->isLeapYear(5782), true);
+		$this->assertSame($this->jewish->isLeapYear(5783), false);
+		$this->assertSame($this->jewish->isLeapYear(5784), true);
+		$this->assertSame($this->jewish->isLeapYear(5785), false);
 	}
 
 	/**
@@ -85,11 +87,9 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testDaysInMonth() {
-		$jewish = new JewishCalendar;
-
 		for ($year = 5730; $year <= 5798; ++$year) {
 			for ($month = 1; $month <= 13; ++$month) {
-				$this->assertSame($jewish->daysInMonth($year, $month), cal_days_in_month(CAL_JEWISH, $month, $year));
+				$this->assertSame($this->jewish->daysInMonth($year, $month), cal_days_in_month(CAL_JEWISH, $month, $year));
 			}
 		}
 	}
@@ -105,9 +105,7 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testDaysInMonthMonthZero() {
-		$jewish = new JewishCalendar;
-
-		$jewish->daysInMonth(5001, 0);
+		$this->jewish->daysInMonth(5001, 0);
 	}
 
 	/**
@@ -121,9 +119,7 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testDaysInMonthMonthFourteen() {
-		$jewish = new JewishCalendar;
-
-		$jewish->daysInMonth(5001, 14);
+		$this->jewish->daysInMonth(5001, 14);
 	}
 
 	/**
@@ -137,9 +133,7 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testDaysInMonthYearZero() {
-		$jewish = new JewishCalendar;
-
-		$jewish->daysInMonth(0, 6);
+		$this->jewish->daysInMonth(0, 6);
 	}
 
 	/**
@@ -153,9 +147,7 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testDaysInMonthYearMinusOne() {
-		$jewish = new JewishCalendar;
-
-		$jewish->daysInMonth(-1, 6);
+		$this->jewish->daysInMonth(-1, 6);
 	}
 
 	/**
@@ -169,14 +161,12 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testYmdToJdDays() {
-		$jewish = new JewishCalendar;
-
 		foreach (array(5776, 5777) as $year) {
 			for ($day = 1; $day <= 30; ++$day) {
 				$julian_day = JewishToJD(8, $day, $year);
-				$ymd = $jewish->jdToYmd($julian_day);
+				$ymd = $this->jewish->jdToYmd($julian_day);
 
-				$this->assertSame($jewish->ymdToJd($year, 8, $day), $julian_day);
+				$this->assertSame($this->jewish->ymdToJd($year, 8, $day), $julian_day);
 				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], jdtojewish($julian_day));
 			}
 		}
@@ -193,19 +183,17 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testYmdToJdMonths() {
-		$jewish = new JewishCalendar;
-
 		for ($month=1; $month<=13; ++$month) {
 			$julian_day = JewishToJD($month, 27, 5776);
-			$ymd = $jewish->jdToYmd($julian_day);
+			$ymd = $this->jewish->jdToYmd($julian_day);
 
-			$this->assertSame($jewish->ymdToJd(5776, $month, 27), $julian_day);
+			$this->assertSame($this->jewish->ymdToJd(5776, $month, 27), $julian_day);
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], jdtojewish($julian_day));
 
 			$julian_day = JewishToJD($month, 27, 5777);
-			$ymd = $jewish->jdToYmd($julian_day);
+			$ymd = $this->jewish->jdToYmd($julian_day);
 
-			$this->assertSame($jewish->ymdToJd(5777, $month, 27), $julian_day);
+			$this->assertSame($this->jewish->ymdToJd(5777, $month, 27), $julian_day);
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], jdtojewish($julian_day));
 		}
 	}
@@ -223,13 +211,11 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testYmdToJdYears() {
-		$jewish = new JewishCalendar;
-
 		for ($year=5730; $year<=5798; ++$year) {
 			$julian_day = JewishToJD(8, 9, $year);
-			$ymd = $jewish->jdToYmd($julian_day);
+			$ymd = $this->jewish->jdToYmd($julian_day);
 
-			$this->assertSame($jewish->ymdToJd($year, 8, 9), $julian_day);
+			$this->assertSame($this->jewish->ymdToJd($year, 8, 9), $julian_day);
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], jdtojewish($julian_day));
 		}
 	}
@@ -245,19 +231,17 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testYmdToJdYearsHistoric() {
-		$jewish = new JewishCalendar;
-
 		for ($year=100; $year<=200; ++$year) {
 			$julian_day = JewishToJD(1, 1, $year);
-			$ymd = $jewish->jdToYmd($julian_day);
+			$ymd = $this->jewish->jdToYmd($julian_day);
 
-			$this->assertSame($jewish->ymdToJd($year, 1, 1), $julian_day);
+			$this->assertSame($this->jewish->ymdToJd($year, 1, 1), $julian_day);
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], jdtojewish($julian_day));
 
 			$julian_day = JewishToJD(13, 30, $year);
-			$ymd = $jewish->jdToYmd($julian_day);
+			$ymd = $this->jewish->jdToYmd($julian_day);
 
-			$this->assertSame($jewish->ymdToJd($year, 13, 30), $julian_day);
+			$this->assertSame($this->jewish->ymdToJd($year, 13, 30), $julian_day);
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], jdtojewish($julian_day));
 		}
 	}
@@ -270,8 +254,6 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testJdToHebrewYear() {
-		$jewish = new JewishCalendar;
-
 		foreach (array(
 			1, 15, 16, 17, 234, 987,
 			4010, 4020, 4030, 4040, 4050, 4060, 4070, 4080, 4090,
@@ -282,7 +264,7 @@ class JewishCalendarTest extends TestCase {
 				foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 					foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
 						$this->assertSame(
-							$jewish->jdToHebrew($julian_day, $alafim_geresh, $alafim, $gereshayim),
+							$this->jewish->jdToHebrew($julian_day, $alafim_geresh, $alafim, $gereshayim),
 							jdtojewish($julian_day, true, $alafim_geresh + $alafim + $gereshayim)
 						);
 					}
@@ -300,15 +282,13 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testJdToHebrewDay() {
-		$jewish = new JewishCalendar;
-
 		foreach (array(4, 15, 16, 27) as $day) {
 			$julian_day = JewishToJD(8, $day, 5776);
 			foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
 				foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 					foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
 						$this->assertSame(
-							$jewish->jdToHebrew($julian_day, $alafim_geresh, $alafim, $gereshayim),
+							$this->jewish->jdToHebrew($julian_day, $alafim_geresh, $alafim, $gereshayim),
 							jdtojewish($julian_day, true, $alafim_geresh + $alafim + $gereshayim)
 						);
 					}
@@ -326,8 +306,6 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testJdToHebrewMonth() {
-		$jewish = new JewishCalendar;
-
 		foreach (array(5776, 5777) as $year) {
 			for ($month = 1; $month <= 13; ++$month) {
 				$julian_day = JewishToJD($month, 23, $year);
@@ -335,7 +313,7 @@ class JewishCalendarTest extends TestCase {
 					foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
 						foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {
 							$this->assertSame(
-								bin2hex($jewish->jdToHebrew($julian_day, $alafim_geresh, $alafim, $gereshayim)),
+								bin2hex($this->jewish->jdToHebrew($julian_day, $alafim_geresh, $alafim, $gereshayim)),
 								bin2hex(jdtojewish($julian_day, true, $alafim_geresh + $alafim + $gereshayim))
 							);
 						}

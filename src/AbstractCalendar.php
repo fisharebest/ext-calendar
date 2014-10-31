@@ -37,6 +37,18 @@ abstract class AbstractCalendar {
 	/** Does the calendar start at year 1, or are we allowed negative (BCE) years. */
 	const NEGATIVE_YEARS_ALLOWED = false;
 
+	/** @var mixed[] special behaviour for this calendar */
+	protected $options = array();
+
+	/**
+	 * Some calendars have options that change their behaviour.
+	 *
+	 * @param mixed[] $options
+	 */
+	public function __construct($options = array()) {
+		$this->options = array_merge($this->options, $options);
+	}
+
 	/**
 	 * Calculate the number of days in a month.
 	 *

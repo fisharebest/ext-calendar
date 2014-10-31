@@ -37,6 +37,9 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	/** The maximum number of months in any year. */
 	const MAX_MONTHS_IN_YEAR = 13;
 
+	/** Optional behaviour for this calendar. */
+	const EMULATE_BUG_54254 = 'EMULATE_BUG_54254';
+
 	/** Place this symbol before the final letter of a sequence of numerals. */
 	const GERSHAYIM = '"';  // The gershayim symbol - ״
 
@@ -112,21 +115,21 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 			self::DEFECTIVE_YEAR => array(
 				1 => 0, 30, 59, 88, 117, 147, 147, 176, 206, 235, 265, 294, 324
 			),
-			self::REGULAR_YEAR => array(
+			self::REGULAR_YEAR  => array( // Regular years
 				1 => 0, 30, 59, 89, 118, 148, 148, 177, 207, 236, 266, 295, 325
 			),
-			self::COMPLETE_YEAR => array(
+			self::COMPLETE_YEAR  => array( // Complete years
 				1 => 0, 30, 60, 90, 119, 149, 149, 178, 208, 237, 267, 296, 326
 			),
 		),
 		1 => array( // Leap years
-			self::DEFECTIVE_YEAR => array(
+			self::DEFECTIVE_YEAR => array( // Deficient years
 				1 => 0, 30, 59, 88, 117, 147, 177, 206, 236, 265, 295, 324, 354
 			),
-			self::REGULAR_YEAR => array(
+			self::REGULAR_YEAR  => array( // Regular years
 				1 => 0, 30, 59, 89, 118, 148, 178, 207, 237, 266, 296, 325, 355
 			),
-			self::COMPLETE_YEAR => array(
+			self::COMPLETE_YEAR  => array( // Complete years
 				1 => 0, 30, 60, 90, 119, 149, 179, 208, 238, 267, 297, 326, 356
 			),
 		),
@@ -138,6 +141,11 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	 * @var integer[]
 	 */
 	private static $ROSH_HASHANAH = array(347998, 347997, 347997, 347998, 347997, 347998, 347997);
+
+	/** @var mixed[] special behaviour for this calendar */
+	protected $options = array(
+		self::EMULATE_BUG_54254 => false,
+	);
 
 	/**
 	 * Determine whether a year is a leap year.
@@ -188,7 +196,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 		}
 
 		// PHP 5.4 and earlier converted non leap-year Adar into month 6, instead of month 7.
-		$month -= (Shim::shouldEmulateBug54254() && $month === 7 && !$this->isLeapYear($year)) ? 1 : 0;
+		$month -= ($month === 7 && $this->options[self::EMULATE_BUG_54254] && !$this->isLeapYear($year)) ? 1 : 0;
 
 		return array($year, $month, $day);
 	}
@@ -345,8 +353,8 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 			"\xeb\xf1\xec\xe5", // Kislev - כסלו
 			"\xe8\xe1\xfa", // Tevet - טבת
 			"\xf9\xe1\xe8", // Shevat - שבט
-			$leap_year ? (Shim::shouldEmulateBug54254() ? "\xe0\xe3\xf8" : "\xe0\xe3\xf8 \xe0'") : "\xe0\xe3\xf8", // Adar I - אדר - אדר א׳ - אדר
-			$leap_year ? (Shim::shouldEmulateBug54254() ? "'\xe0\xe3\xf8 \xe1" : "\xe0\xe3\xf8 \xe1'") : "\xe0\xe3\xf8", // Adar II - 'אדר ב - אדר ב׳ - אדר
+			$leap_year ? ($this->options[self::EMULATE_BUG_54254] ? "\xe0\xe3\xf8" : "\xe0\xe3\xf8 \xe0'") : "\xe0\xe3\xf8", // Adar I - אדר - אדר א׳ - אדר
+			$leap_year ? ($this->options[self::EMULATE_BUG_54254] ? "'\xe0\xe3\xf8 \xe1" : "\xe0\xe3\xf8 \xe1'") : "\xe0\xe3\xf8", // Adar II - 'אדר ב - אדר ב׳ - אדר
 			"\xf0\xe9\xf1\xef", // Nisan - ניסן
 			"\xe0\xe9\xe9\xf8", // Iyar - אייר
 			"\xf1\xe9\xe5\xef", // Sivan - סיון
