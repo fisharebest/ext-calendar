@@ -406,9 +406,9 @@ class Shim {
 		$offset_seconds = (int)$date_time->format('Z');
 
 		if ($days < 11) {
-			return Shim::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
+			return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
 		} else {
-			return Shim::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
+			return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
 		}
 	}
 
