@@ -90,27 +90,17 @@ class Shim {
 	);
 
 	/**
-	 * Create the necessary shims to emulate the ext/calendar packate.
-	 *
-	 * @param null|FrenchCalendar    $french_calendar
-	 * @param null|GregorianCalendar $gregorian_calendar
-	 * @param null|JewishCalendar    $jewish_calendar
-	 * @param null|JulianCalendar    $julian_calendar
+	 * Create the necessary shims to emulate the ext/calendar package.
 	 *
 	 * @return void
 	 */
-	public static function create(
-		FrenchCalendar $french_calendar = null,
-		GregorianCalendar $gregorian_calendar = null,
-		JewishCalendar $jewish_calendar = null,
-		JulianCalendar $julian_calendar = null
-	) {
-		self::$french_calendar    = $french_calendar ?: new FrenchCalendar;
-		self::$gregorian_calendar = $gregorian_calendar ?: new GregorianCalendar;
-		self::$jewish_calendar    = $jewish_calendar ?: new JewishCalendar(array(
-				JewishCalendar::EMULATE_BUG_54254 => self::shouldEmulateBug54254(),
+	public static function create() {
+		self::$french_calendar    = new FrenchCalendar;
+		self::$gregorian_calendar = new GregorianCalendar;
+		self::$jewish_calendar    = new JewishCalendar(array(
+			JewishCalendar::EMULATE_BUG_54254 => self::shouldEmulateBug54254(),
 		));
-		self::$julian_calendar    = $julian_calendar ?: new JulianCalendar;
+		self::$julian_calendar    = new JulianCalendar;
 
 		defined('CAL_NUM_CALS') || require __DIR__ . '/shims.php';
 	}
@@ -135,7 +125,7 @@ class Shim {
 	 *
 	 * This bug relates to the constants CAL_DOW_SHORT and CAL_DOW_LONG.
 	 *
-	 * It will hopefully be fixed in PHP 5.6.1
+	 * It was fixed in PHP 5.6.5 and 5.5.21
 	 *
 	 * @link https://bugs.php.net/bug.php?id=67960
 	 * @link https://github.com/php/php-src/pull/806
@@ -143,7 +133,7 @@ class Shim {
 	 * @return boolean
 	 */
 	public static function shouldEmulateBug67960() {
-		return true;
+		return version_compare(PHP_VERSION, '5.5.21', '<') || version_compare(PHP_VERSION, '5.6.0', '>=') && version_compare(PHP_VERSION, '5.6.5', '<') ;
 	}
 
 	/**
