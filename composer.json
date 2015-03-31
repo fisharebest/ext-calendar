@@ -28,14 +28,6 @@
 		"psr-4": {
 			"Fisharebest\\ExtCalendar\\": "src/"
 		}
-	},
-	"scripts": {
-		"post-install-cmd": [
-			"composer dump-autoload --optimize"
-		],
-		"post-update-cmd": [
-			"composer dump-autoload --optimize"
-		]
 	}
 }
 
