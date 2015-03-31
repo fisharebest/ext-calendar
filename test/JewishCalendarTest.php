@@ -8,7 +8,7 @@ use PHPUnit_Framework_TestCase as TestCase;
  *
  * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 webtrees development team
+ * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,7 @@ use PHPUnit_Framework_TestCase as TestCase;
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class JewishCalendarTest extends TestCase {
-	/** @var CalendarJewish */
+	/** @var JewishCalendar */
 	private $jewish;
 
 	/**
@@ -47,7 +47,11 @@ class JewishCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstants() {
-		$this->assertSame(JewishCalendar::GEDCOM_CALENDAR_ESCAPE, '@#DHEBREW@');
+		$this->assertSame('@#DHEBREW@', $this->jewish->gedcomCalendarEscape());
+		$this->assertSame(347998, $this->jewish->jdStart());
+		$this->assertSame(PHP_INT_MAX, $this->jewish->jdEnd());
+		$this->assertSame(7, $this->jewish->daysInWeek());
+		$this->assertSame(13, $this->jewish->monthsInYear());
 	}
 
 	/**
@@ -92,62 +96,6 @@ class JewishCalendarTest extends TestCase {
 				$this->assertSame($this->jewish->daysInMonth($year, $month), cal_days_in_month(CAL_JEWISH, $month, $year));
 			}
 		}
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthZero() {
-		$this->jewish->daysInMonth(5001, 0);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 14 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthFourteen() {
-		$this->jewish->daysInMonth(5001, 14);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Year 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthYearZero() {
-		$this->jewish->daysInMonth(0, 6);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Year -1 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthYearMinusOne() {
-		$this->jewish->daysInMonth(-1, 6);
 	}
 
 	/**

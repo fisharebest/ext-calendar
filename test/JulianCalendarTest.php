@@ -8,7 +8,7 @@ use PHPUnit_Framework_TestCase as TestCase;
  *
  * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 webtrees development team
+ * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
@@ -42,9 +42,13 @@ class JulianCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstants() {
-		$julian = new JulianCalendar;
+		$calendar = new JulianCalendar;
 
-		$this->assertSame($julian::GEDCOM_CALENDAR_ESCAPE, '@#DJULIAN@');
+		$this->assertSame('@#DJULIAN@', $calendar->gedcomCalendarEscape());
+		$this->assertSame(1, $calendar->jdStart());
+		$this->assertSame(PHP_INT_MAX, $calendar->jdEnd());
+		$this->assertSame(7, $calendar->daysInWeek());
+		$this->assertSame(12, $calendar->monthsInYear());
 	}
 
 	/**
@@ -123,54 +127,6 @@ class JulianCalendarTest extends TestCase {
 				$this->assertSame($julian->daysInMonth($year, $month), cal_days_in_month(CAL_JULIAN, $month, $year));
 			}
 		}
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthZero() {
-		$julian = new JulianCalendar;
-
-		$julian->daysInMonth(2001, 0);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 13 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthThirteen() {
-		$julian = new JulianCalendar;
-
-		$julian->daysInMonth(2001, 13);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\JulianCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Year 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthYearZero() {
-		$julian = new JulianCalendar;
-
-		$julian->daysInMonth(0, 6);
 	}
 
 	/**

@@ -9,7 +9,7 @@ use InvalidArgumentException;
  * @link          http://php.net/manual/en/book.calendar.php
  *
  * @author        Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 Greg Roach
+ * @copyright (c) 2014-2015 Greg Roach
  * @license       This program is free software: you can redistribute it and/or modify
  *                it under the terms of the GNU General Public License as published by
  *                the Free Software Foundation, either version 3 of the License, or
@@ -278,9 +278,9 @@ class Shim {
 
 		return array(
 			'date'          => $month . '/' . $day . '/' . $year,
-			'month'         => (int)$month,
-			'day'           => (int)$day,
-			'year'          => (int)$year,
+			'month'         => (int) $month,
+			'day'           => (int) $day,
+			'year'          => (int) $year,
 			'dow'           => self::jdDayOfWeek($julian_day, 0),
 			'abbrevdayname' => self::jdDayOfWeek($julian_day, 2),
 			'dayname'       => self::jdDayOfWeek($julian_day, 1),
@@ -403,7 +403,7 @@ class Shim {
 
 		// Calculate time-zone offset
 		$date_time      = new \DateTime('now', new \DateTimeZone(date_default_timezone_get()));
-		$offset_seconds = (int)$date_time->format('Z');
+		$offset_seconds = (int) $date_time->format('Z');
 
 		if ($days < 11) {
 			return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
@@ -696,7 +696,7 @@ class Shim {
 	 */
 	public static function jdToUnix($julian_day) {
 		if ($julian_day >= 2440588 && $julian_day <= 2465343) {
-			return (int)($julian_day - 2440588) * 86400;
+			return (int) ($julian_day - 2440588) * 86400;
 		} else {
 			return false;
 		}

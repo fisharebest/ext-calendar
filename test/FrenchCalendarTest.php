@@ -8,7 +8,7 @@ use PHPUnit_Framework_TestCase as TestCase;
  *
  * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 webtrees development team
+ * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
@@ -42,9 +42,13 @@ class FrenchCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstants() {
-		$french = new FrenchCalendar;
+		$calendar = new FrenchCalendar;
 
-		$this->assertSame($french::GEDCOM_CALENDAR_ESCAPE, '@#DFRENCH R@');
+		$this->assertSame('@#DFRENCH R@', $calendar->gedcomCalendarEscape());
+		$this->assertSame(2375840, $calendar->jdStart());
+		$this->assertSame(2380687, $calendar->jdEnd());
+		$this->assertSame(10, $calendar->daysInWeek());
+		$this->assertSame(13, $calendar->monthsInYear());
 	}
 
 	/**
@@ -89,54 +93,6 @@ class FrenchCalendarTest extends TestCase {
 				$this->assertSame($french->daysInMonth($year, $month), cal_days_in_month(CAL_FRENCH, $month, $year));
 			}
 		}
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthZero() {
-		$french = new FrenchCalendar;
-
-		$french->daysInMonth(9, 0);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 14 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthFourteen() {
-		$french = new FrenchCalendar;
-
-		$french->daysInMonth(9, 14);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Year 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthYearZero() {
-		$french = new FrenchCalendar;
-
-		$french->daysInMonth(0, 6);
 	}
 
 	/**

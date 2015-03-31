@@ -1,7 +1,6 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -9,7 +8,7 @@ use PHPUnit_Framework_TestCase as TestCase;
  *
  * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 webtrees development team
+ * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
@@ -43,9 +42,13 @@ class ArabicCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstants() {
-		$arabic = new ArabicCalendar;
+		$calendar = new ArabicCalendar;
 
-		$this->assertSame($arabic::GEDCOM_CALENDAR_ESCAPE, '@#DHIJRI@');
+		$this->assertSame('@#DHIJRI@', $calendar->gedcomCalendarEscape());
+		$this->assertSame(1948440, $calendar->jdStart());
+		$this->assertSame(PHP_INT_MAX, $calendar->jdEnd());
+		$this->assertSame(7, $calendar->daysInWeek());
+		$this->assertSame(12, $calendar->monthsInYear());
 	}
 
 	/**
@@ -124,70 +127,6 @@ class ArabicCalendarTest extends TestCase {
 		$this->assertSame($arabic->daysInMonth(1202, 10), 29);
 		$this->assertSame($arabic->daysInMonth(1202, 11), 30);
 		$this->assertSame($arabic->daysInMonth(1202, 12), 30);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthZero() {
-		$arabic = new ArabicCalendar;
-
-		$arabic->daysInMonth(1501, 0);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Month 14 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthMonthFourteen() {
-		$arabic = new ArabicCalendar;
-
-		$arabic->daysInMonth(1501, 14);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Year 0 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthYearZero() {
-		$arabic = new ArabicCalendar;
-
-		$arabic->daysInMonth(0, 6);
-	}
-
-	/**
-	 * Test the calculation of the number of days in each month against the reference implementation.
-	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::daysInMonth
-	 *
-	 * @expectedException        \InvalidArgumentException
-	 * @expectedExceptionMessage Year -1 is invalid for this calendar
-	 *
-	 * @return void
-	 */
-	public function testDaysInMonthYearMinusOne() {
-		$arabic = new ArabicCalendar;
-
-		$arabic->daysInMonth(-1, 6);
 	}
 
 	/**

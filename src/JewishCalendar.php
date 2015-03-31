@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * Hebrew characters in the comments have UTF-8 encoding (and Hebrew punctuation).
  *
  * @author        Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014 Greg Roach
+ * @copyright (c) 2014-2015 Greg Roach
  * @license       This program is free software: you can redistribute it and/or modify
  *                it under the terms of the GNU General Public License as published by
  *                the Free Software Foundation, either version 3 of the License, or
@@ -24,19 +24,7 @@ use InvalidArgumentException;
  *                You should have received a copy of the GNU General Public License
  *                along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class JewishCalendar extends AbstractCalendar implements CalendarInterface {
-	/** See the GEDCOM specification */
-	const GEDCOM_CALENDAR_ESCAPE = '@#DHEBREW@';
-
-	/** The earliest Julian Day number that can be converted into this calendar. */
-	const JD_START = 347998; // 1 Tishri 0001 AM
-
-	/** The latest Julian Day number that can be converted into this calendar. */
-	const JD_END = 324542846;
-
-	/** The maximum number of months in any year. */
-	const MAX_MONTHS_IN_YEAR = 13;
-
+class JewishCalendar implements CalendarInterface {
 	/** Optional behaviour for this calendar. */
 	const EMULATE_BUG_54254 = 'EMULATE_BUG_54254';
 
@@ -148,14 +136,55 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	);
 
 	/**
-	 * Determine whether a year is a leap year.
+	 * Some calendars have options that change their behaviour.
 	 *
-	 * @param integer $year
-	 *
-	 * @return boolean
+	 * @param mixed[] $options
 	 */
+	public function __construct($options = array()) {
+		$this->options = array_merge($this->options, $options);
+	}
+
+	/** {@inheritdoc} */
+	public function daysInMonth($year, $month) {
+		if ($year < 1) {
+			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
+		} elseif ($month < 1 || $month > 13) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		} elseif ($month == 2) {
+			return $this->daysInMonthHeshvan($year);
+		} elseif ($month == 3) {
+			return $this->daysInMonthKislev($year);
+		} elseif ($month == 6) {
+			return $this->daysInMonthAdarI($year);
+		} else {
+			return self::$FIXED_MONTH_LENGTHS[$month];
+		}
+	}
+
+
+	/** {@inheritdoc} */
+	public function daysInWeek() {
+		return 7;
+	}
+
+	/** {@inheritdoc} */
+	public function gedcomCalendarEscape() {
+		return '@#DHEBREW@';
+	}
+
+	/** {@inheritdoc} */
 	public function isLeapYear($year) {
 		return (7 * $year + 1) % 19 < 7;
+	}
+
+	/** {@inheritdoc} */
+	public function jdEnd() {
+		return PHP_INT_MAX;
+	}
+
+	/** {@inheritdoc} */
+	public function jdStart() {
+		return 347998; // 1 Tishri 0001 AM
 	}
 
 	/**
@@ -167,7 +196,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	 */
 	protected function jdToY($julian_day) {
 		// Generate an approximate year - may be out by one either way.  Add one to it.
-		$year = (int)(($julian_day - 347998) / 365) + 1;
+		$year = (int) (($julian_day - 347998) / 365) + 1;
 
 		// Adjust by subtracting years;
 		while ($this->yToJd($year) > $julian_day) {
@@ -177,13 +206,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 		return $year;
 	}
 
-	/**
-	 * Convert a Julian day number into a year/month/day.
-	 *
-	 * @param integer $julian_day
-	 *
-	 * @return integer[]
-	 */
+	/** {@inheritdoc} */
 	public function jdToYmd($julian_day) {
 		// Find the year, by adding one month at a time to use up the remaining days.
 		$year  = $this->jdToY($julian_day);
@@ -201,6 +224,11 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 		return array($year, $month, $day);
 	}
 
+	/** {@inheritdoc} */
+	public function monthsInYear() {
+		return 13;
+	}
+
 	/**
 	 * Calculate the Julian Day number of the first day in a year.
 	 *
@@ -209,14 +237,14 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 	 * @return integer
 	 */
 	protected function yToJd($year) {
-		$div19 = (int)(($year - 1) / 19);
+		$div19 = (int) (($year - 1) / 19);
 		$mod19 = ($year - 1) % 19;
 
-		$months      = 235 * $div19 + 12 * $mod19 + (int)((7 * $mod19 + 1) / 19);
+		$months      = 235 * $div19 + 12 * $mod19 + (int) ((7 * $mod19 + 1) / 19);
 		$parts       = 204 + 793 * ($months % 1080);
-		$hours       = 5 + 12 * $months + 793 * (int)($months / 1080) + (int)($parts / 1080);
+		$hours       = 5 + 12 * $months + 793 * (int) ($months / 1080) + (int) ($parts / 1080);
 		$conjunction = 1080 * ($hours % 24) + ($parts % 1080);
-		$julian_day  = 1 + 29 * $months + (int)($hours / 24);
+		$julian_day  = 1 + 29 * $months + (int) ($hours / 24);
 
 		if (
 			$conjunction >= 19440 ||
@@ -230,15 +258,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 		return $julian_day + self::$ROSH_HASHANAH[$julian_day % 7];
 	}
 
-	/**
-	 * Convert a year/month/day into a Julian day number.
-	 *
-	 * @param integer $year
-	 * @param integer $month
-	 * @param integer $day
-	 *
-	 * @return integer
-	 */
+	/** {@inheritdoc} */
 	public function ymdToJd($year, $month, $day) {
 		return
 			$this->yToJd($year) +
@@ -307,31 +327,6 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 			return 30;
 		} else {
 			return 0;
-		}
-	}
-
-	/**
-	 * Calculate the number of days in a given month.
-	 *
-	 * @param integer $year
-	 * @param integer $month
-	 *
-	 * @return integer
-	 * @throws InvalidArgumentException
-	 */
-	public function daysInMonth($year, $month) {
-		if ($year < 1) {
-			throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
-		} elseif ($month < 1 || $month > self::MAX_MONTHS_IN_YEAR) {
-			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
-		} elseif ($month == 2) {
-			return $this->daysInMonthHeshvan($year);
-		} elseif ($month == 3) {
-			return $this->daysInMonthKislev($year);
-		} elseif ($month == 6) {
-			return $this->daysInMonthAdarI($year);
-		} else {
-			return self::$FIXED_MONTH_LENGTHS[$month];
 		}
 	}
 
@@ -443,7 +438,7 @@ class JewishCalendar extends AbstractCalendar implements CalendarInterface {
 		if ($year < 1000) {
 			return $this->numberToHebrewNumerals($year, $gereshayim);
 		} else {
-			$thousands = $this->numberToHebrewNumerals((int)($year / 1000), false);
+			$thousands = $this->numberToHebrewNumerals((int) ($year / 1000), false);
 			if ($alafim_geresh) {
 				$thousands .= self::GERESH;
 			}
