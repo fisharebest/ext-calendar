@@ -79,9 +79,20 @@ $calendar = new PersianCalendar;
 $julian_day = $calendar->ymdToJd($year, $month, $day);
 list($year, $month, $day) = $calendar->jdToYmd($julian_day);
 
-// Information functions
-$is_leap_year = $calendar->isLeapYear($year);
-$month_length = $calendar->daysInMonth($year, $month);
+// Days, weeks and months
+$is_leap_year  = $calendar->isLeapYear($year);
+$month_length  = $calendar->daysInMonth($year, $month);
+$number_months = $calendar->monthsInYear();  // Including leap-months
+$week_length   = $calendar->daysInWeek();    // Not all calendars have 7!
+
+// Which dates are valid for this calendar?
+$jd = $calendar->jdStart();
+$jd = $calendar->jdEnd();
+
+// Miscellaneous utilities
+$jewish = new JewishCalendar;
+$jewish->numberToHebrewNumerals(5781, false); // "תשפ״א"
+$jewish->numberToHebrewNumerals(5781, true);  // "ה׳תשפ״א"
 ```
 
 Known restrictions and limitations
