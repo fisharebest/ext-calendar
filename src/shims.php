@@ -112,7 +112,7 @@ function easter_days($year = null, $method = CAL_EASTER_DEFAULT) {
  * @return integer
  */
 function FrenchToJD($month, $day, $year) {
-	return Shim::FrenchToJD($month, $day, $year);
+	return Shim::frenchToJd($month, $day, $year);
 }
 
 /**
@@ -123,7 +123,7 @@ function FrenchToJD($month, $day, $year) {
  * @return integer
  */
 function GregorianToJD($month, $day, $year) {
-	return Shim::GregorianToJD($month, $day, $year);
+	return Shim::gregorianToJd($month, $day, $year);
 }
 
 /**
@@ -133,7 +133,7 @@ function GregorianToJD($month, $day, $year) {
  * @return integer|string
  */
 function JDDayOfWeek($julian_day, $mode = CAL_DOW_DAYNO) {
-	return Shim::JDDayOfWeek($julian_day, $mode);
+	return Shim::jdDayOfWeek($julian_day, $mode);
 }
 
 /**
@@ -143,7 +143,7 @@ function JDDayOfWeek($julian_day, $mode = CAL_DOW_DAYNO) {
  * @return string
  */
 function JDMonthName($julian_day, $mode) {
-	return Shim::JDMonthName($julian_day, $mode);
+	return Shim::jdMonthName($julian_day, $mode);
 }
 
 /**
@@ -152,7 +152,7 @@ function JDMonthName($julian_day, $mode) {
  * @return string
  */
 function JDToFrench($julian_day) {
-	return Shim::JDToFrench($julian_day);
+	return Shim::jdToFrench($julian_day);
 }
 
 /**
@@ -161,7 +161,7 @@ function JDToFrench($julian_day) {
  * @return string
  */
 function JDToGregorian($julian_day) {
-	return Shim::JDToGregorian($julian_day);
+	return Shim::jdToGregorian($julian_day);
 }
 
 /**
@@ -172,7 +172,7 @@ function JDToGregorian($julian_day) {
  * @return string|boolean
  */
 function jdtojewish($julian_day, $hebrew = false, $flags = 0) {
-	return Shim::jdtojewish($julian_day, $hebrew, $flags);
+	return Shim::jdToJewish($julian_day, $hebrew, $flags);
 }
 
 /**
@@ -181,7 +181,7 @@ function jdtojewish($julian_day, $hebrew = false, $flags = 0) {
  * @return string
  */
 function JDToJulian($julian_day) {
-	return Shim::JDToJulian($julian_day);
+	return Shim::jdToJulian($julian_day);
 }
 
 /**
@@ -190,7 +190,7 @@ function JDToJulian($julian_day) {
  * @return integer|false
  */
 function jdtounix($julian_day) {
-	return Shim::jdtounix($julian_day);
+	return Shim::jdToUnix($julian_day);
 }
 
 /**
@@ -201,7 +201,7 @@ function jdtounix($julian_day) {
  * @return integer
  */
 function JewishToJD($month, $day, $year) {
-	return Shim::JewishToJD($month, $day, $year);
+	return Shim::jewishToJd($month, $day, $year);
 }
 
 /**
@@ -212,7 +212,7 @@ function JewishToJD($month, $day, $year) {
  * @return integer
  */
 function JulianToJD($month, $day, $year) {
-	return Shim::JulianToJD($month, $day, $year);
+	return Shim::julianToJd($month, $day, $year);
 }
 
 /**
@@ -221,5 +221,5 @@ function JulianToJD($month, $day, $year) {
  * @return false|integer
  */
 function unixtojd($timestamp = null) {
-	return Shim::unixtojd($timestamp ? $timestamp : time());
+	return Shim::unixToJd($timestamp ? $timestamp : time());
 }
