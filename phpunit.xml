@@ -13,4 +13,13 @@
 			<directory>test</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src</directory>
+			<exclude>
+				<!-- HHVM does not provide coverage data (and we know it has 100%) -->
+				<file>src/shims.php</file>
+			</exclude>
+		</whitelist>
+	</filter>
 </phpunit>
