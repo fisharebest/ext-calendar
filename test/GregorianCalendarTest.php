@@ -6,7 +6,6 @@ use PHPUnit_Framework_TestCase as TestCase;
 /**
  * Test harness for the class GregorianCalendar
  *
- * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
@@ -22,7 +21,6 @@ use PHPUnit_Framework_TestCase as TestCase;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class GregorianCalendarTest extends TestCase {
 	/**
 	 * Create the shim functions, so we can run tests on servers which do

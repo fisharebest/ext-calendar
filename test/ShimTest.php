@@ -4,9 +4,8 @@ namespace Fisharebest\ExtCalendar;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * Test harness for the class Shim
+ * Test harness for the class Shim.
  *
- * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
@@ -22,7 +21,6 @@ use PHPUnit_Framework_TestCase as TestCase;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class ShimTest extends TestCase {
 	// Use this many random dates to test date conversion functions.
 	const ITERATIONS = 512;

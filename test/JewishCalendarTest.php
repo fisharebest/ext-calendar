@@ -6,7 +6,6 @@ use PHPUnit_Framework_TestCase as TestCase;
 /**
  * Test harness for the class JewishCalendar
  *
- * @package   fisharebest/ExtCalendar
  * @author    Greg Roach <fisharebest@gmail.com>
  * @copyright (c) 2014-2015 webtrees development team
  * @license   This program is free software: you can redistribute it and/or modify
