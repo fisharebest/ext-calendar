@@ -1,6 +1,6 @@
 {
 	"name": "fisharebest/ext-calendar",
-	"description": "Implementation of the Arabic (Hijri), French, Gregorian, Jewish, Julian and Persian (Jalali) calendars.  Optional PHP shims for servers without the ext/calendar extension.",
+	"description": "Implementation of the Arabic (Hijri), French, Gregorian, Jewish, Julian and Persian (Jalali) calendars.  Also provides a replacement for the PHP ext/calendar extension.",
 	"type": "library",
 	"keywords": [
 		"calendar", "ext-calendar", "julian day", "julian day number",
@@ -25,6 +25,9 @@
 		"satooshi/php-coveralls": "*"
 	},
 	"autoload": {
+		"files": [
+			"src/shims.php"
+		],
 		"psr-4": {
 			"Fisharebest\\ExtCalendar\\": "src/"
 		}

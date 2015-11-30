@@ -101,8 +101,6 @@ class Shim {
 			JewishCalendar::EMULATE_BUG_54254 => self::shouldEmulateBug54254(),
 		));
 		self::$julian_calendar    = new JulianCalendar;
-
-		defined('CAL_NUM_CALS') || require __DIR__ . '/shims.php';
 	}
 
 	/**

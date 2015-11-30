@@ -1,6 +1,9 @@
 CHANGE LOG
 ==========
 
+##
+ - Autoload shim functions
+
 ## 2.1.1 (2015-09-21)
  - Test against PHP 7.0
 

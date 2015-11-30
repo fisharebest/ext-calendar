@@ -27,8 +27,7 @@ class JewishCalendarTest extends TestCase {
 	private $jewish;
 
 	/**
-	 * Create the shim functions, so we can run tests on servers which do
-	 * not have the ext/calendar library installed.  For example HHVM.
+	 * Make sure we emulate the correct version of ext/calendar.
 	 *
 	 * @return void
 	 */

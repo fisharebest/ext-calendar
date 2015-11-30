@@ -33,16 +33,6 @@ class ShimTest extends TestCase {
 	const LARGE_PRIME = 235741;
 
 	/**
-	 * Create the shim functions, so we can run tests on servers which do
-	 * not have the ext/calendar library installed.  For example HHVM.
-	 *
-	 * @return void
-	 */
-	public function setUp() {
-		Shim::create();
-	}
-
-	/**
 	 * Test that the shim defines all the necessary constants.
 	 *
 	 * @return void
