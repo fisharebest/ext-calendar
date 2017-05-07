@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * Hebrew characters in the comments have UTF-8 encoding.
  *
  * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014-2015 Greg Roach
+ * @copyright (c) 2014-2017 Greg Roach
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
@@ -187,7 +187,6 @@ class JewishCalendar implements CalendarInterface {
 		}
 	}
 
-
 	public function daysInWeek() {
 		return 7;
 	}
@@ -214,19 +213,18 @@ class JewishCalendar implements CalendarInterface {
 	 * @param integer $julian_day
 	 *
 	 * @return integer
-	 */
+	 */	
 	protected function jdToY($julian_day) {
-		// Generate an approximate year - may be out by one either way.  Add one to it.
-		$year = (int) (($julian_day - 347998) / 365) + 1;
-
-		// Adjust by subtracting years;
-		while ($this->yToJd($year) > $julian_day) {
-			$year--;
+		// Estimate the year, and underestimate it, it will be refined after
+		$year = max( (int) ((($julian_day - 347998) * 98496 ) / 35975351) - 1, 1);
+		// Adjust by adding years;
+		while ($julian_day >= $this->yToJd($year + 1)) {
+			$year++;
 		}
 
 		return $year;
 	}
-
+	
 	public function jdToYmd($julian_day) {
 		// Find the year, by adding one month at a time to use up the remaining days.
 		$year  = $this->jdToY($julian_day);
@@ -243,7 +241,7 @@ class JewishCalendar implements CalendarInterface {
 
 		return array($year, $month, $day);
 	}
-
+	
 	public function monthsInYear() {
 		return 13;
 	}
@@ -291,18 +289,18 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer defective (-1), normal (0) or complete (1)
 	 */
-	private function yearType($year) {
+	protected function yearType($year) {
 		$year_length = $this->yToJd($year + 1) - $this->yToJd($year);
 
 		if ($year_length === 353 || $year_length === 383) {
 			return self::DEFECTIVE_YEAR;
 		} elseif ($year_length === 355 || $year_length === 385) {
 			return self::COMPLETE_YEAR;
-		} else {
-			return self::REGULAR_YEAR;
 		}
-	}
 
+		return self::REGULAR_YEAR;
+	}
+	
 	/**
 	 * Calculate the number of days in Heshvan.
 	 *
@@ -310,14 +308,14 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */
-	private function daysInMonthHeshvan($year) {
+	protected function daysInMonthHeshvan($year) {
 		if ($this->yearType($year) === self::COMPLETE_YEAR) {
 			return 30;
-		} else {
-			return 29;
 		}
-	}
 
+		return 29;
+	}
+	
 	/**
 	 * Calculate the number of days in Kislev.
 	 *
@@ -325,14 +323,15 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */
-	private function daysInMonthKislev($year) {
+	protected function daysInMonthKislev($year) {
 		if ($this->yearType($year) === self::DEFECTIVE_YEAR) {
 			return 29;
-		} else {
-			return 30;
 		}
+
+		return 30;
 	}
 
+	
 	/**
 	 * Calculate the number of days in Adar I.
 	 *
@@ -340,12 +339,12 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */
-	private function daysInMonthAdarI($year) {
+	protected function daysInMonthAdarI($year) {
 		if ($this->isLeapYear($year)) {
 			return 30;
-		} else {
-			return 0;
 		}
+
+		return 0;
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class GregorianCalendar
@@ -217,5 +217,35 @@ class GregorianCalendarTest extends TestCase {
 				$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToGregorian($julian_day));
 			}
 		}
+	}
+
+	/**
+	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::jdToYmd
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
+	 *
+	 * @return void
+	 */
+	public function testJdToYmdReciprocity() {
+		$calendar = new GregorianCalendar;
+
+		for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd+=16) {
+			list($y, $m, $d) = $calendar->jdToYmd($jd);
+			$this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+		}
+	}
+
+	/**
+	 * Test the conversion of a YMD date to JD when the month is not a valid number.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 */
+	public function testYmdToJdInvalidMonth() {
+	    $calendar = new ArabicCalendar;
+	    $calendar->ymdToJd(4, 14, 1);
 	}
 }
