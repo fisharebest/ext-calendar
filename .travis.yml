@@ -3,6 +3,7 @@ language: php
 sudo: false
 
 php:
+  - 7.1
   - 7.0
   - 5.6
   - 5.5
@@ -15,7 +16,7 @@ install:
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - php vendor/bin/coveralls -v

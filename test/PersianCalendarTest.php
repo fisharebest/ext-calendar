@@ -52,7 +52,7 @@ class PersianCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers Fisharebest\ExtCalendar\PersianCalendar::isLeapYear
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
@@ -289,7 +289,7 @@ class PersianCalendarTest extends TestCase {
 		$this->assertSame($persian->ymdToJd(3294, 12, 31), 3151429);
 		$this->assertSame($persian->ymdToJd(3295, 1, 1), 3151429);
 	}
-	
+
 	/**
 	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
 	 *
