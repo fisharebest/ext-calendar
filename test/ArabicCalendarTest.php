@@ -1,7 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class ArabicCalendar
@@ -138,53 +138,72 @@ class ArabicCalendarTest extends TestCase {
 	public function testYmdTojd() {
 		$arabic = new ArabicCalendar;
 
-		$this->assertSame($arabic->ymdToJd(1201, 1, 30), 2373708);
-		$this->assertSame($arabic->jdToYmd(2373708), array(1201,1,30));
-		$this->assertSame($arabic->ymdToJd(1201, 2, 28), 2373736);
-		$this->assertSame($arabic->jdToYmd(2373736), array(1201,2,28));
-		$this->assertSame($arabic->ymdToJd(1201, 3, 30), 2373767);
-		$this->assertSame($arabic->jdToYmd(2373767), array(1201,3,30));
-		$this->assertSame($arabic->ymdToJd(1201, 4, 29), 2373796);
-		$this->assertSame($arabic->jdToYmd(2373796), array(1201,4,29));
-		$this->assertSame($arabic->ymdToJd(1201, 5, 30), 2373826);
-		$this->assertSame($arabic->jdToYmd(2373826), array(1201,5,30));
-		$this->assertSame($arabic->ymdToJd(1201, 6, 29), 2373855);
-		$this->assertSame($arabic->jdToYmd(2373855), array(1201,6,29));
-		$this->assertSame($arabic->ymdToJd(1201, 7, 30), 2373885);
-		$this->assertSame($arabic->jdToYmd(2373885), array(1201,7,30));
-		$this->assertSame($arabic->ymdToJd(1201, 8, 29), 2373914);
-		$this->assertSame($arabic->jdToYmd(2373914), array(1201,8,29));
-		$this->assertSame($arabic->ymdToJd(1201, 9, 30), 2373944);
-		$this->assertSame($arabic->jdToYmd(2373944), array(1201,9,30));
-		$this->assertSame($arabic->ymdToJd(1201, 10, 29), 2373973);
-		$this->assertSame($arabic->jdToYmd(2373973), array(1201,10,29));
-		$this->assertSame($arabic->ymdToJd(1201, 11, 30), 2374003);
-		$this->assertSame($arabic->jdToYmd(2374003), array(1201,11,30));
-		$this->assertSame($arabic->ymdToJd(1201, 12, 29), 2374032);
-		$this->assertSame($arabic->jdToYmd(2374032), array(1201,12,29));
-		$this->assertSame($arabic->ymdToJd(1202, 1, 30), 2374062);
-		$this->assertSame($arabic->jdToYmd(2374062), array(1202,1,30));
-		$this->assertSame($arabic->ymdToJd(1202, 2, 28), 2374090);
-		$this->assertSame($arabic->jdToYmd(2374090), array(1202,2,28));
-		$this->assertSame($arabic->ymdToJd(1202, 3, 30), 2374121);
-		$this->assertSame($arabic->jdToYmd(2374121), array(1202,3,30));
-		$this->assertSame($arabic->ymdToJd(1202, 4, 29), 2374150);
-		$this->assertSame($arabic->jdToYmd(2374150), array(1202,4,29));
-		$this->assertSame($arabic->ymdToJd(1202, 5, 30), 2374180);
-		$this->assertSame($arabic->jdToYmd(2374180), array(1202,5,30));
-		$this->assertSame($arabic->ymdToJd(1202, 6, 29), 2374209);
-		$this->assertSame($arabic->jdToYmd(2374209), array(1202,6,29));
-		$this->assertSame($arabic->ymdToJd(1202, 7, 30), 2374239);
-		$this->assertSame($arabic->jdToYmd(2374239), array(1202,7,30));
-		$this->assertSame($arabic->ymdToJd(1202, 8, 29), 2374268);
-		$this->assertSame($arabic->jdToYmd(2374268), array(1202,8,29));
-		$this->assertSame($arabic->ymdToJd(1202, 9, 30), 2374298);
-		$this->assertSame($arabic->jdToYmd(2374298), array(1202,9,30));
-		$this->assertSame($arabic->ymdToJd(1202, 10, 29), 2374327);
-		$this->assertSame($arabic->jdToYmd(2374327), array(1202,10,29));
-		$this->assertSame($arabic->ymdToJd(1202, 11, 30), 2374357);
-		$this->assertSame($arabic->jdToYmd(2374357), array(1202,11,30));
-		$this->assertSame($arabic->ymdToJd(1202, 12, 30), 2374387);
-		$this->assertSame($arabic->jdToYmd(2374387), array(1202,12,30));
+		$this->assertSame($arabic->ymdToJd(1, 1, 1), 1948440);  // 19 JUL 622 (Gregorian)
+		$this->assertSame($arabic->jdToYmd(1948440), array(1, 1, 1));
+		$this->assertSame($arabic->ymdToJd(1201, 1, 30), 2373709);
+		$this->assertSame($arabic->jdToYmd(2373709), array(1201,1,30));
+		$this->assertSame($arabic->ymdToJd(1201, 2, 28), 2373737);
+		$this->assertSame($arabic->jdToYmd(2373737), array(1201,2,28));
+		$this->assertSame($arabic->ymdToJd(1201, 3, 30), 2373768);
+		$this->assertSame($arabic->jdToYmd(2373768), array(1201,3,30));
+		$this->assertSame($arabic->ymdToJd(1201, 4, 29), 2373797);
+		$this->assertSame($arabic->jdToYmd(2373797), array(1201,4,29));
+		$this->assertSame($arabic->ymdToJd(1201, 5, 30), 2373827);
+		$this->assertSame($arabic->jdToYmd(2373827), array(1201,5,30));
+		$this->assertSame($arabic->ymdToJd(1201, 6, 29), 2373856);
+		$this->assertSame($arabic->jdToYmd(2373856), array(1201,6,29));
+		$this->assertSame($arabic->ymdToJd(1201, 7, 30), 2373886);
+		$this->assertSame($arabic->jdToYmd(2373886), array(1201,7,30));
+		$this->assertSame($arabic->ymdToJd(1201, 8, 29), 2373915);
+		$this->assertSame($arabic->jdToYmd(2373915), array(1201,8,29));
+		$this->assertSame($arabic->ymdToJd(1201, 9, 30), 2373945);
+		$this->assertSame($arabic->jdToYmd(2373945), array(1201,9,30));
+		$this->assertSame($arabic->ymdToJd(1201, 10, 29), 2373974);
+		$this->assertSame($arabic->jdToYmd(2373974), array(1201,10,29));
+		$this->assertSame($arabic->ymdToJd(1201, 11, 30), 2374004);
+		$this->assertSame($arabic->jdToYmd(2374004), array(1201,11,30));
+		$this->assertSame($arabic->ymdToJd(1201, 12, 29), 2374033);
+		$this->assertSame($arabic->jdToYmd(2374033), array(1201,12,29));
+		$this->assertSame($arabic->ymdToJd(1202, 1, 30), 2374063);
+		$this->assertSame($arabic->jdToYmd(2374063), array(1202,1,30));
+		$this->assertSame($arabic->ymdToJd(1202, 2, 28), 2374091);
+		$this->assertSame($arabic->jdToYmd(2374091), array(1202,2,28));
+		$this->assertSame($arabic->ymdToJd(1202, 3, 30), 2374122);
+		$this->assertSame($arabic->jdToYmd(2374122), array(1202,3,30));
+		$this->assertSame($arabic->ymdToJd(1202, 4, 29), 2374151);
+		$this->assertSame($arabic->jdToYmd(2374151), array(1202,4,29));
+		$this->assertSame($arabic->ymdToJd(1202, 5, 30), 2374181);
+		$this->assertSame($arabic->jdToYmd(2374181), array(1202,5,30));
+		$this->assertSame($arabic->ymdToJd(1202, 6, 29), 2374210);
+		$this->assertSame($arabic->jdToYmd(2374210), array(1202,6,29));
+		$this->assertSame($arabic->ymdToJd(1202, 7, 30), 2374240);
+		$this->assertSame($arabic->jdToYmd(2374240), array(1202,7,30));
+		$this->assertSame($arabic->ymdToJd(1202, 8, 29), 2374269);
+		$this->assertSame($arabic->jdToYmd(2374269), array(1202,8,29));
+		$this->assertSame($arabic->ymdToJd(1202, 9, 30), 2374299);
+		$this->assertSame($arabic->jdToYmd(2374299), array(1202,9,30));
+		$this->assertSame($arabic->ymdToJd(1202, 10, 29), 2374328);
+		$this->assertSame($arabic->jdToYmd(2374328), array(1202,10,29));
+		$this->assertSame($arabic->ymdToJd(1202, 11, 30), 2374358);
+		$this->assertSame($arabic->jdToYmd(2374358), array(1202,11,30));
+		$this->assertSame($arabic->ymdToJd(1202, 12, 30), 2374388);
+		$this->assertSame($arabic->jdToYmd(2374388), array(1202,12,30));
+	}
+	
+	/**
+	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::jdToYmd
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 *
+	 * @return void
+	 */
+	public function testJdToYmdReciprocity() {
+	    $calendar = new ArabicCalendar;
+	    
+	    for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd++) {
+	        list($y, $m, $d) = $calendar->jdToYmd($jd);
+	        $this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+	    }
 	}
 }

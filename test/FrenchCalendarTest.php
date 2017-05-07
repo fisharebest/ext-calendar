@@ -1,7 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class FrenchCalendar
@@ -178,4 +178,22 @@ class FrenchCalendarTest extends TestCase {
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($julian_day));
 		}
 	}
+	
+	/**
+	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::jdToYmd
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
+	 *
+	 * @return void
+	 */
+	public function testJdToYmdReciprocity() {
+	    $calendar = new FrenchCalendar;
+	    
+	    for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd++) {
+	        list($y, $m, $d) = $calendar->jdToYmd($jd);
+	        $this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+	    }
+	}
+	
 }

@@ -27,6 +27,8 @@ $gregorian = new GregorianCalendar;
 $julian    = new JulianCalendar;
 $french    = new FrenchCalendar;
 $jewish    = new JewishCalendar;
+$arabic    = new ArabicCalendar;
+$persian   = new PersianCalendar;
 
 $loop_overhead = microtime(true);
 for ($i = 0; $i < $ITERATIONS; ++$i) { }
@@ -96,7 +98,7 @@ $t1 = microtime(true); for ($i = 0; $i < $ITERATIONS; ++$i) {
 $t1 = microtime(true) - $t1 - $loop_overhead;
 
 $t2 = microtime(true); for ($i = 0; $i < $ITERATIONS; ++$i) {
-	$french->ymdToJd(12, 30, 14);
+	$french->ymdToJd(31, 12, 14);
 }
 $t2 = microtime(true) - $t2 - $loop_overhead;
 
@@ -200,3 +202,38 @@ $t2 = microtime(true) - $t2 - $loop_overhead;
 
 printf($FORMAT, 'cal_days_in_month(CAL_JULIAN)', 'JulianCalendar->daysInMonth()', $t2 / $t1);
 
+// Average calculation times
+
+printf(PHP_EOL);
+printf('Average calculation time (in ns)' . PHP_EOL);
+
+$today_jd = gregoriantojd(date('m'), date('d'), date('Y'));
+$FORMAT2 = '    %-24s %8d %8d %8d' . PHP_EOL;
+printf('    %-24s %8s %8s %8s' . PHP_EOL, 'Calendar', 'Elements', 'jdToYmd', 'ymdToJd');
+
+function testAverageTime(CalendarInterface $calendar, $end_jd, $nb_iterations, $format) {
+    $rand_jd = range($calendar->jdStart(), min($end_jd, $calendar->jdEnd()));
+    $nb_elements = min($nb_iterations, count($rand_jd));
+    $rand_jd_keys = array_rand($rand_jd, $nb_elements);
+    $rand_ymd = array();
+    
+    $t1 = microtime(true); foreach ($rand_jd_keys as $key) {
+        $rand_ymd[] = $calendar->jdToYmd($rand_jd[$key]);
+    }
+    $t1 = microtime(true) - $t1;
+    
+    $t2 = microtime(true); foreach ($rand_ymd as $ymd) {
+        $calendar->ymdToJd($ymd[0], $ymd[1], $ymd[2]);
+    }
+    $t2 = microtime(true) - $t2;
+    printf($format, 
+        (new \ReflectionClass($calendar))->getShortName(),
+        $nb_elements, (1000000 * $t1) / $nb_elements, (1000000 * $t2) / $nb_elements);
+}
+
+testAverageTime($gregorian, $today_jd, $ITERATIONS, $FORMAT2);
+testAverageTime($julian, $today_jd, $ITERATIONS, $FORMAT2);
+testAverageTime($jewish, $today_jd, $ITERATIONS, $FORMAT2);
+testAverageTime($french, $today_jd, $ITERATIONS, $FORMAT2);
+testAverageTime($arabic, $today_jd, $ITERATIONS, $FORMAT2);
+testAverageTime($persian, $today_jd, $ITERATIONS, $FORMAT2);

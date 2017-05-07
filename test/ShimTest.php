@@ -1,7 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class Shim.
@@ -30,6 +30,12 @@ class ShimTest extends TestCase {
 	 */
 	const LARGE_PRIME = 235741;
 
+	
+	protected function setUp()
+	{
+	    //$this->markTestSkipped('The MySQLi extension is not available.');
+	}
+	
 	/**
 	 * Test that the shim defines all the necessary constants.
 	 *
@@ -131,7 +137,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -142,7 +148,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -153,7 +159,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -164,7 +170,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -175,7 +181,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -186,7 +192,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -197,7 +203,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -208,7 +214,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -236,7 +242,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -247,7 +253,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -258,7 +264,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -269,7 +275,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -312,7 +318,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -323,7 +329,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -334,7 +340,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -345,7 +351,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -356,7 +362,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -367,7 +373,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -378,7 +384,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -389,7 +395,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid date.
 	 * @return                   void
 	 */
@@ -400,7 +406,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -411,7 +417,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -482,7 +488,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -493,7 +499,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -525,7 +531,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calInfo() against cal_info()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -536,7 +542,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calInfo() against cal_info()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -547,7 +553,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -558,7 +564,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::calToJd() against cal_to_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage invalid calendar ID 999
 	 * @return                   void
 	 */
@@ -579,7 +585,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
@@ -591,7 +597,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
@@ -603,7 +609,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
@@ -615,7 +621,7 @@ class ShimTest extends TestCase {
 	/**
 	 * Test the implementation of Shim::easterDate() against easter_date()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
 	 *
 	 * @return void
@@ -1085,7 +1091,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
@@ -1099,7 +1105,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
@@ -1113,7 +1119,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
@@ -1127,7 +1133,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::jdToJewish() against jdtojewish()
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
-	 * @expectedException        \PHPUnit_Framework_Error_Warning
+	 * @expectedException        \PHPUnit\Framework\Error\Warning
 	 * @expectedExceptionMessage Year out of range (0-9999).
 	 * @return                   void
 	 */
@@ -1284,4 +1290,15 @@ class ShimTest extends TestCase {
 		$this->assertSame(Shim::unixToJd(2147483647), 2465443);
 		$this->assertSame(Shim::unixToJd(2147483647), unixtojd(2147483647));
 	}
+	
+	public function testMod() {
+	    $this->assertSame(Shim::mod(0, 0), 0);
+	    $this->assertSame(Shim::mod(0, 4), 0);
+	    $this->assertSame(Shim::mod(3, 4), 3);
+	    $this->assertSame(Shim::mod(6, 4), 2);
+	    $this->assertSame(Shim::mod(17, 4), 1);
+	    $this->assertSame(Shim::mod(-3, 4), 1);
+	    $this->assertSame(Shim::mod(-10, 4), 2);
+	}
+	
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class JewishCalendar
@@ -267,6 +267,23 @@ class JewishCalendarTest extends TestCase {
 			}
 		}
 	}
+		
+	/**
+	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToYmd
+	 * @covers \Fisharebest\ExtCalendar\JewishCalendar::ymdToJd
+	 *
+	 * @return void
+	 */
+	public function testJdToYmdReciprocity() {
+	    $calendar = new JewishCalendar;
+	    
+	    for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd+=16) {
+	        list($y, $m, $d) = $calendar->jdToYmd($jd);
+	        $this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+	    }
+	}	
 
 	/**
 	 * Test the conversion of numbers into Hebrew numerals.
