@@ -52,7 +52,7 @@ class ArabicCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers Fisharebest\ExtCalendar\ArabicCalendar::isLeapYear
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
@@ -189,7 +189,7 @@ class ArabicCalendarTest extends TestCase {
 		$this->assertSame($arabic->ymdToJd(1202, 12, 30), 2374388);
 		$this->assertSame($arabic->jdToYmd(2374388), array(1202,12,30));
 	}
-	
+
 	/**
 	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
 	 *
@@ -209,9 +209,9 @@ class ArabicCalendarTest extends TestCase {
 
 	/**
 	 * Test the conversion of a YMD date to JD when the month is not a valid number.
-	 * 
+	 *
 	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
-	 * 
+	 *
 	 * @expectedException        \InvalidArgumentException
 	 * @expectedExceptionMessage Month 14 is invalid for this calendar
 	 */

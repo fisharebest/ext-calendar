@@ -213,10 +213,11 @@ class JewishCalendar implements CalendarInterface {
 	 * @param integer $julian_day
 	 *
 	 * @return integer
-	 */	
+	 */
 	protected function jdToY($julian_day) {
 		// Estimate the year, and underestimate it, it will be refined after
 		$year = max( (int) ((($julian_day - 347998) * 98496 ) / 35975351) - 1, 1);
+
 		// Adjust by adding years;
 		while ($julian_day >= $this->yToJd($year + 1)) {
 			$year++;
@@ -224,7 +225,7 @@ class JewishCalendar implements CalendarInterface {
 
 		return $year;
 	}
-	
+
 	public function jdToYmd($julian_day) {
 		// Find the year, by adding one month at a time to use up the remaining days.
 		$year  = $this->jdToY($julian_day);
@@ -241,7 +242,7 @@ class JewishCalendar implements CalendarInterface {
 
 		return array($year, $month, $day);
 	}
-	
+
 	public function monthsInYear() {
 		return 13;
 	}
@@ -289,18 +290,18 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer defective (-1), normal (0) or complete (1)
 	 */
-	protected function yearType($year) {
+	private function yearType($year) {
 		$year_length = $this->yToJd($year + 1) - $this->yToJd($year);
 
 		if ($year_length === 353 || $year_length === 383) {
 			return self::DEFECTIVE_YEAR;
 		} elseif ($year_length === 355 || $year_length === 385) {
 			return self::COMPLETE_YEAR;
+		} else {
+			return self::REGULAR_YEAR;
 		}
-
-		return self::REGULAR_YEAR;
 	}
-	
+
 	/**
 	 * Calculate the number of days in Heshvan.
 	 *
@@ -308,14 +309,14 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */
-	protected function daysInMonthHeshvan($year) {
+	private function daysInMonthHeshvan($year) {
 		if ($this->yearType($year) === self::COMPLETE_YEAR) {
 			return 30;
+		} else {
+			return 29;
 		}
-
-		return 29;
 	}
-	
+
 	/**
 	 * Calculate the number of days in Kislev.
 	 *
@@ -323,15 +324,14 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */
-	protected function daysInMonthKislev($year) {
+	private function daysInMonthKislev($year) {
 		if ($this->yearType($year) === self::DEFECTIVE_YEAR) {
 			return 29;
+		} else {
+			return 30;
 		}
-
-		return 30;
 	}
 
-	
 	/**
 	 * Calculate the number of days in Adar I.
 	 *
@@ -339,12 +339,12 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */
-	protected function daysInMonthAdarI($year) {
+	private function daysInMonthAdarI($year) {
 		if ($this->isLeapYear($year)) {
 			return 30;
+		} else {
+			return 0;
 		}
-
-		return 0;
 	}
 
 	/**

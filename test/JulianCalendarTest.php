@@ -218,7 +218,7 @@ class JulianCalendarTest extends TestCase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
 	 *

@@ -267,7 +267,7 @@ class JewishCalendarTest extends TestCase {
 			}
 		}
 	}
-		
+
 	/**
 	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
 	 *
@@ -294,8 +294,8 @@ class JewishCalendarTest extends TestCase {
 	 * @expectedExceptionMessage Month 14 is invalid for this calendar
 	 */
 	public function testYmdToJdInvalidMonth() {
-	    $calendar = new ArabicCalendar;
-	    $calendar->ymdToJd(4, 14, 1);
+		$calendar = new ArabicCalendar;
+		$calendar->ymdToJd(4, 14, 1);
 	}
 
 	/**

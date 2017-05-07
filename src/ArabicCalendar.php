@@ -71,4 +71,23 @@ class ArabicCalendar implements CalendarInterface {
 
 		return $day + 29 * ($month - 1) + (int) ((6 * $month - 1) / 11) + $year * 354 + (int) ((3 + 11 * $year) / 30) + 1948085;
 	}
+
+	/**
+	 * The algorithm used above require a mod() function that always returns a positive
+	 * modules.  The native PHP function returns a negative modulus for a negative dividend.
+	 *
+	 * @param number $dividend
+	 * @param number $divisor
+	 * @return number
+	 */
+	public static function mod($dividend, $divisor) {
+		if ($divisor === 0) return 0;
+
+		$modulus = $dividend % $divisor;
+		if($modulus < 0) {
+			$modulus += $divisor;
+		}
+
+		return $modulus;
+	}
 }

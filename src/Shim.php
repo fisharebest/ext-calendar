@@ -751,29 +751,4 @@ class Shim {
 			return self::GregorianToJd(gmdate('n', $timestamp), gmdate('j', $timestamp), gmdate('Y', $timestamp));
 		}
 	}
-	
-	/**
-	 * By default, the result of A % B will be of the sign of A.
-	 * This is not necessarily the agreed version of the mod operator by other languages.
-	 * This mod function returns always the positive result of the modulo operation.
-	 * 
-	 * For example: 
-	 *    (Standard PHP)   -3 % 4 = -3
-	 *    (Shim)           Shim::mod(-3, 4) = 1
-	 * 
-	 * @param number $dividend
-	 * @param number $divisor
-	 * @return number
-	 */
-	public static function mod($dividend, $divisor) {
-		if ($divisor === 0) return 0;
-
-		$modulus = $dividend % $divisor;
-		if($modulus < 0) {
-			$modulus += $divisor;
-		}
-
-		return $modulus;
-	}
-	
 }

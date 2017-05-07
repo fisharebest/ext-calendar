@@ -52,7 +52,7 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the leap year calculations.
 	 *
-	 * @covers Fisharebest\ExtCalendar\FrenchCalendar::isLeapYear
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::isLeapYear
 	 *
 	 * @return void
 	 */
@@ -178,7 +178,7 @@ class FrenchCalendarTest extends TestCase {
 			$this->assertSame($ymd[1] . '/' . $ymd[2] . '/' . $ymd[0], JDToFrench($julian_day));
 		}
 	}
-	
+
 	/**
 	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
 	 *

@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 /**
  * Class PersianCalendar - calculations for the Persian (Jalali) calendar.
- *  
+ *
  * Algorithms for Julian days based on https://www.fourmilab.ch/documents/calendar/
  *
  * @author    Greg Roach <fisharebest@gmail.com>
@@ -66,7 +66,7 @@ class PersianCalendar implements CalendarInterface {
 	public function jdToYmd($julian_day) {
 		$depoch = $julian_day - 2121446; // 1 Farvardīn 475
 		$cycle  = (int) floor($depoch / 1029983);
-		$cyear  = Shim::mod($depoch, 1029983);
+		$cyear  = $this->mod($depoch, 1029983);
 		if ($cyear == 1029982) {
 			$ycycle = 2820;
 		} else {
@@ -94,14 +94,34 @@ class PersianCalendar implements CalendarInterface {
 		}
 
 		$epbase = $year - (($year >= 0) ? 474 : 473);
-		$epyear = 474 + Shim::mod($epbase, 2820);
+		$epyear = 474 + $this->mod($epbase, 2820);
 
 		return
-			($day +
+			$day +
 			(($month <= 7) ? (($month - 1) * 31) : ((($month - 1) * 30) + 6)) +
 			(int) ((($epyear * 682) - 110) / 2816) +
 			($epyear - 1) * 365 +
 			(int) (floor($epbase / 2820)) * 1029983 +
-			$this->jdStart() - 1);
+			$this->jdStart() - 1;
+	}
+
+	/**
+	 * The PHP modulus function returns a negative modulus for a negative dividend.
+	 * This algorithm requires a "traditional" modulus function where the modulus is
+	 * always positive.
+	 *
+	 * @param number $dividend
+	 * @param number $divisor
+	 * @return number
+	 */
+	public function mod($dividend, $divisor) {
+		if ($divisor === 0) return 0;
+
+		$modulus = $dividend % $divisor;
+		if($modulus < 0) {
+			$modulus += $divisor;
+		}
+
+		return $modulus;
 	}
 }
