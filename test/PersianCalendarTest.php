@@ -230,6 +230,7 @@ class PersianCalendarTest extends TestCase {
 	 *
 	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::ymdToJd
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::mod
 	 *
 	 * @return void
 	 */
@@ -295,6 +296,7 @@ class PersianCalendarTest extends TestCase {
 	 *
 	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::jdToYmd
 	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::ymdToJd
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::mod
 	 *
 	 * @return void
 	 */
@@ -310,7 +312,7 @@ class PersianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of a YMD date to JD when the month is not a valid number.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::ymdToJd
 	 *
 	 * @expectedException        \InvalidArgumentException
 	 * @expectedExceptionMessage Month 14 is invalid for this calendar

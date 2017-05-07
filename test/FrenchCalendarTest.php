@@ -199,7 +199,7 @@ class FrenchCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of a YMD date to JD when the month is not a valid number.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
 	 *
 	 * @expectedException        \InvalidArgumentException
 	 * @expectedExceptionMessage Month 14 is invalid for this calendar

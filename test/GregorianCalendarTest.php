@@ -239,7 +239,7 @@ class GregorianCalendarTest extends TestCase {
 	/**
 	 * Test the conversion of a YMD date to JD when the month is not a valid number.
 	 *
-	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 * @covers \Fisharebest\ExtCalendar\GregorianCalendar::ymdToJd
 	 *
 	 * @expectedException        \InvalidArgumentException
 	 * @expectedExceptionMessage Month 14 is invalid for this calendar
