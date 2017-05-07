@@ -279,7 +279,7 @@ class JewishCalendarTest extends TestCase {
 	public function testJdToYmdReciprocity() {
 		$calendar = new JewishCalendar;
 
-		for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd+=16) {
+		for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd += 79) {
 			list($y, $m, $d) = $calendar->jdToYmd($jd);
 			$this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
 		}
