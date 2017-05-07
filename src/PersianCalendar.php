@@ -64,7 +64,7 @@ class PersianCalendar implements CalendarInterface {
 	}
 
 	public function jdToYmd($julian_day) {
-	    $depoch = $julian_day - 2121446; // 1 Farvardīn 475
+		$depoch = $julian_day - 2121446; // 1 Farvardīn 475
 		$cycle  = (int) floor($depoch / 1029983);
 		$cyear  = Shim::mod($depoch, 1029983);
 		if ($cyear == 1029982) {
@@ -89,8 +89,10 @@ class PersianCalendar implements CalendarInterface {
 	}
 
 	public function ymdToJd($year, $month, $day) {
-	    if($month < 1 || $month > $this->monthsInYear())
-	        throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		if ($month < 1 || $month > $this->monthsInYear()) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		}
+
 		$epbase = $year - (($year >= 0) ? 474 : 473);
 		$epyear = 474 + Shim::mod($epbase, 2820);
 

@@ -122,7 +122,7 @@ class JewishCalendar implements CalendarInterface {
 
 	/** @var integer[] These months have fixed lengths.  Others are variable. */
 	private static $FIXED_MONTH_LENGTHS = array(
-	    1 => 30, 4 => 29, 5 => 30, 7 => 29, 8 => 30, 9 => 29, 10 => 30, 11 => 29, 12 => 30, 13 => 29	    
+		1 => 30, 4 => 29, 5 => 30, 7 => 29, 8 => 30, 9 => 29, 10 => 30, 11 => 29, 12 => 30, 13 => 29
 	);
 
 	/**
@@ -181,7 +181,7 @@ class JewishCalendar implements CalendarInterface {
 		} elseif ($month == 3) {
 			return $this->daysInMonthKislev($year);
 		} elseif ($month == 6) {
-		    return $this->daysInMonthAdarI($year);
+			return $this->daysInMonthAdarI($year);
 		} else {
 			return self::$FIXED_MONTH_LENGTHS[$month];
 		}
@@ -214,12 +214,15 @@ class JewishCalendar implements CalendarInterface {
 	 *
 	 * @return integer
 	 */	
-	protected function jdToY($julian_day) {	   
-	    // Estimate the year, and underestimate it, it will be refined after
-	    $year = max( (int) ((($julian_day - 347998) * 98496 ) / 35975351) - 1, 1);
-	    // Adjust by adding years;
-	    while($julian_day >= $this->yToJd($year + 1)) $year++;
-	    return $year;
+	protected function jdToY($julian_day) {
+		// Estimate the year, and underestimate it, it will be refined after
+		$year = max( (int) ((($julian_day - 347998) * 98496 ) / 35975351) - 1, 1);
+		// Adjust by adding years;
+		while ($julian_day >= $this->yToJd($year + 1)) {
+			$year++;
+		}
+
+		return $year;
 	}
 	
 	public function jdToYmd($julian_day) {
@@ -235,11 +238,12 @@ class JewishCalendar implements CalendarInterface {
 
 		// PHP 5.4 and earlier converted non leap-year Adar into month 6, instead of month 7.
 		$month -= ($month === 7 && $this->options[self::EMULATE_BUG_54254] && !$this->isLeapYear($year)) ? 1 : 0;
+
 		return array($year, $month, $day);
 	}
 	
 	public function monthsInYear() {
-	    return 13;
+		return 13;
 	}
 
 	/**
@@ -286,14 +290,15 @@ class JewishCalendar implements CalendarInterface {
 	 * @return integer defective (-1), normal (0) or complete (1)
 	 */
 	protected function yearType($year) {
-	    $year_length = $this->yToJd($year + 1) - $this->yToJd($year);
-	    
-	    if ($year_length === 353 || $year_length === 383) {
-	        return self::DEFECTIVE_YEAR;
-	    } elseif ($year_length === 355 || $year_length === 385) {
-	        return self::COMPLETE_YEAR;
-	    }
-	    return self::REGULAR_YEAR;
+		$year_length = $this->yToJd($year + 1) - $this->yToJd($year);
+
+		if ($year_length === 353 || $year_length === 383) {
+			return self::DEFECTIVE_YEAR;
+		} elseif ($year_length === 355 || $year_length === 385) {
+			return self::COMPLETE_YEAR;
+		}
+
+		return self::REGULAR_YEAR;
 	}
 	
 	/**
@@ -304,10 +309,11 @@ class JewishCalendar implements CalendarInterface {
 	 * @return integer
 	 */
 	protected function daysInMonthHeshvan($year) {
-	    if ($this->yearType($year) === self::COMPLETE_YEAR) {
-	        return 30;
-	    }
-	    return 29;
+		if ($this->yearType($year) === self::COMPLETE_YEAR) {
+			return 30;
+		}
+
+		return 29;
 	}
 	
 	/**
@@ -318,10 +324,11 @@ class JewishCalendar implements CalendarInterface {
 	 * @return integer
 	 */
 	protected function daysInMonthKislev($year) {
-	    if ($this->yearType($year) === self::DEFECTIVE_YEAR) {
-	        return 29;
-	    }
-	    return 30;
+		if ($this->yearType($year) === self::DEFECTIVE_YEAR) {
+			return 29;
+		}
+
+		return 30;
 	}
 
 	
@@ -333,10 +340,11 @@ class JewishCalendar implements CalendarInterface {
 	 * @return integer
 	 */
 	protected function daysInMonthAdarI($year) {
-	    if ($this->isLeapYear($year)) {
-	        return 30;
-	    }
-	    return 0;
+		if ($this->isLeapYear($year)) {
+			return 30;
+		}
+
+		return 0;
 	}
 
 	/**

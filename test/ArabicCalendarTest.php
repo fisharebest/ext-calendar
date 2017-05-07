@@ -199,11 +199,24 @@ class ArabicCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testJdToYmdReciprocity() {
-	    $calendar = new ArabicCalendar;
-	    
-	    for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd++) {
-	        list($y, $m, $d) = $calendar->jdToYmd($jd);
-	        $this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
-	    }
+		$calendar = new ArabicCalendar;
+
+		for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd++) {
+			list($y, $m, $d) = $calendar->jdToYmd($jd);
+			$this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+		}
+	}
+
+	/**
+	 * Test the conversion of a YMD date to JD when the month is not a valid number.
+	 * 
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 * 
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 */
+	public function testYmdToJdInvalidMonth() {
+		$calendar = new ArabicCalendar;
+		$calendar->ymdToJd(4, 14, 1);
 	}
 }

@@ -766,13 +766,14 @@ class Shim {
 	 * @return number
 	 */
 	public static function mod($dividend, $divisor) {
-	    if ($dividend == 0 || $divisor == 0) return 0;
-	    	    
-	    // negative case
-	    while ($dividend < 0) {
-	        $dividend += $divisor;
-	    }
-	    return $dividend % $divisor;
+		if ($divisor === 0) return 0;
+
+		$modulus = $dividend % $divisor;
+		if($modulus < 0) {
+			$modulus += $divisor;
+		}
+
+		return $modulus;
 	}
 	
 }

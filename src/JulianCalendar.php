@@ -84,8 +84,10 @@ class JulianCalendar implements CalendarInterface {
 	}
 
 	public function ymdToJd($year, $month, $day) {
-	    if($month < 1 || $month > $this->monthsInYear())
-	        throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		if ($month < 1 || $month > $this->monthsInYear()) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		}
+
 		if ($year < 0) {
 			// 1 BCE is 0, 2 BCE is -1, etc.
 			++$year;

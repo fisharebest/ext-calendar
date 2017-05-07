@@ -218,7 +218,7 @@ class GregorianCalendarTest extends TestCase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
 	 *
@@ -228,11 +228,24 @@ class GregorianCalendarTest extends TestCase {
 	 * @return void
 	 */
 	public function testJdToYmdReciprocity() {
-	    $calendar = new GregorianCalendar;
-	    
-	    for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd+=16) {
-	        list($y, $m, $d) = $calendar->jdToYmd($jd);
-	        $this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
-	    }
+		$calendar = new GregorianCalendar;
+
+		for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd+=16) {
+			list($y, $m, $d) = $calendar->jdToYmd($jd);
+			$this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+		}
+	}
+
+	/**
+	 * Test the conversion of a YMD date to JD when the month is not a valid number.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 */
+	public function testYmdToJdInvalidMonth() {
+	    $calendar = new ArabicCalendar;
+	    $calendar->ymdToJd(4, 14, 1);
 	}
 }

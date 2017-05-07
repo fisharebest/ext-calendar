@@ -85,8 +85,10 @@ class GregorianCalendar extends JulianCalendar implements CalendarInterface {
 	 * @return integer
 	 */
 	public function ymdToJd($year, $month, $day) {
-	    if($month < 1 || $month > $this->monthsInYear())
-	        throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		if ($month < 1 || $month > $this->monthsInYear()) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		}
+
 		if ($year < 0) {
 			// 1 B.C.E. => 0, 2 B.C.E> => 1, etc.
 			++$year;

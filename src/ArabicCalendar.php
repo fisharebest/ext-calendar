@@ -65,9 +65,10 @@ class ArabicCalendar implements CalendarInterface {
 	}
 
 	public function ymdToJd($year, $month, $day) {
-	    if($month < 1 || $month > $this->monthsInYear())
-	        throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
-	    
+		if ($month < 1 || $month > $this->monthsInYear()) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		}
+
 		return $day + 29 * ($month - 1) + (int) ((6 * $month - 1) / 11) + $year * 354 + (int) ((3 + 11 * $year) / 30) + 1948085;
 	}
 }

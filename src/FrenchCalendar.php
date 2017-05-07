@@ -75,8 +75,10 @@ class FrenchCalendar implements CalendarInterface {
 	}
 
 	public function ymdToJd($year, $month, $day) {
-	    if($month < 1 || $month > $this->monthsInYear())
-	        throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		if ($month < 1 || $month > $this->monthsInYear()) {
+			throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+		}
+
 		return 2375444 + $day + $month * 30 + $year * 365 + (int) ($year / 4);
 	}
 }

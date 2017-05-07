@@ -29,12 +29,6 @@ class ShimTest extends TestCase {
 	 * avoid any synchronisation problems.
 	 */
 	const LARGE_PRIME = 235741;
-
-	
-	protected function setUp()
-	{
-	    //$this->markTestSkipped('The MySQLi extension is not available.');
-	}
 	
 	/**
 	 * Test that the shim defines all the necessary constants.
@@ -1291,14 +1285,17 @@ class ShimTest extends TestCase {
 		$this->assertSame(Shim::unixToJd(2147483647), unixtojd(2147483647));
 	}
 	
+	/**
+	 * Test the modulus function returning a positive integer, even if dividend is negative.
+	 */
 	public function testMod() {
-	    $this->assertSame(Shim::mod(0, 0), 0);
-	    $this->assertSame(Shim::mod(0, 4), 0);
-	    $this->assertSame(Shim::mod(3, 4), 3);
-	    $this->assertSame(Shim::mod(6, 4), 2);
-	    $this->assertSame(Shim::mod(17, 4), 1);
-	    $this->assertSame(Shim::mod(-3, 4), 1);
-	    $this->assertSame(Shim::mod(-10, 4), 2);
+		$this->assertSame(Shim::mod(0, 0), 0);
+		$this->assertSame(Shim::mod(0, 4), 0);
+		$this->assertSame(Shim::mod(3, 4), 3);
+		$this->assertSame(Shim::mod(6, 4), 2);
+		$this->assertSame(Shim::mod(17, 4), 1);
+		$this->assertSame(Shim::mod(-3, 4), 1);
+		$this->assertSame(Shim::mod(-10, 4), 2);
 	}
 	
 }
