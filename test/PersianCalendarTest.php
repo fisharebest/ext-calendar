@@ -1,7 +1,7 @@
 <?php
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class PersianCalendar
@@ -43,7 +43,7 @@ class PersianCalendarTest extends TestCase {
 		$calendar = new PersianCalendar;
 
 		$this->assertSame('@#DJALALI@', $calendar->gedcomCalendarEscape());
-		$this->assertSame(1948320, $calendar->jdStart());
+		$this->assertSame(1948321, $calendar->jdStart());
 		$this->assertSame(PHP_INT_MAX, $calendar->jdEnd());
 		$this->assertSame(7, $calendar->daysInWeek());
 		$this->assertSame(12, $calendar->monthsInYear());
@@ -236,9 +236,8 @@ class PersianCalendarTest extends TestCase {
 	public function testYmdTojd() {
 		$persian = new PersianCalendar;
 
-		// The reverse calculation does not appear to work.
-		$this->assertSame($persian->ymdToJd(1, 1, 1), 1948321);
-
+		$this->assertSame($persian->ymdToJd(1, 1, 1), 1948321);  // 22 MAR 622 (Gregorian)
+		$this->assertSame($persian->jdToYmd(1948321), array(1, 1, 1));
 		$this->assertSame($persian->ymdToJd(1201, 1, 31), 2386641);
 		$this->assertSame($persian->jdToYmd(2386641), array(1201, 1, 31));
 		$this->assertSame($persian->ymdToJd(1201, 2, 31), 2386672);
@@ -287,10 +286,37 @@ class PersianCalendarTest extends TestCase {
 		$this->assertSame($persian->jdToYmd(2387312), array(1202, 11, 30));
 		$this->assertSame($persian->ymdToJd(1202, 12, 29), 2387341);
 		$this->assertSame($persian->jdToYmd(2387341), array(1202, 12, 29));
-
-		// Cover a special-case branch in the code, even though the data is not quite right...
-		$this->assertSame($persian->jdToYmd(3151429), array(3294, 13, 1));
 		$this->assertSame($persian->ymdToJd(3294, 12, 31), 3151429);
 		$this->assertSame($persian->ymdToJd(3295, 1, 1), 3151429);
+	}
+	
+	/**
+	 * Test the conversion of calendar dates into Julian days, and vice versa, returns the same result.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::jdToYmd
+	 * @covers \Fisharebest\ExtCalendar\PersianCalendar::ymdToJd
+	 *
+	 * @return void
+	 */
+	public function testJdToYmdReciprocity() {
+		$calendar = new PersianCalendar;
+
+		for ($jd = $calendar->jdStart(); $jd < min(2457755, $calendar->jdEnd()); $jd++) {
+			list($y, $m, $d) = $calendar->jdToYmd($jd);
+			$this->assertSame($jd, $calendar->ymdToJd($y, $m, $d));
+		}
+	}
+
+	/**
+	 * Test the conversion of a YMD date to JD when the month is not a valid number.
+	 *
+	 * @covers \Fisharebest\ExtCalendar\ArabicCalendar::ymdToJd
+	 *
+	 * @expectedException        \InvalidArgumentException
+	 * @expectedExceptionMessage Month 14 is invalid for this calendar
+	 */
+	public function testYmdToJdInvalidMonth() {
+	    $calendar = new ArabicCalendar;
+	    $calendar->ymdToJd(4, 14, 1);
 	}
 }
