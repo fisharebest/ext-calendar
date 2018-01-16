@@ -132,7 +132,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchInvalidMonth1() {
@@ -143,7 +143,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchInvalidMonth2() {
@@ -154,7 +154,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchZeroYear1() {
@@ -165,7 +165,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchZeroYear2() {
@@ -176,7 +176,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchNegativeYear1() {
@@ -187,7 +187,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchNegativeYear2() {
@@ -198,7 +198,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchHighYear1() {
@@ -209,7 +209,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthFrenchHighYear2() {
@@ -237,7 +237,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthGregorianInvalidMonth1() {
@@ -248,7 +248,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthGregorianInvalidMonth2() {
@@ -259,7 +259,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthGregorianInvalidYear1() {
@@ -270,7 +270,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthGregorianInvalidYear2() {
@@ -313,7 +313,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJewishInvalidMonth1() {
@@ -324,7 +324,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJewishInvalidMonth2() {
@@ -335,7 +335,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJewishInvalidYear1() {
@@ -346,7 +346,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJewishInvalidYear2() {
@@ -357,7 +357,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJulianInvalidMonth1() {
@@ -368,7 +368,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJulianInvalidMonth2() {
@@ -379,7 +379,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJulianInvalidYear1() {
@@ -390,7 +390,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage invalid date.
+	 * @expectedExceptionMessage invalid date
 	 * @return                   void
 	 */
 	public function testCalDaysInMonthJulianInvalidYear2() {
@@ -1086,7 +1086,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @expectedExceptionMessage Year out of range (0-9999)
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeLow1() {
@@ -1100,7 +1100,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @expectedExceptionMessage Year out of range (0-9999)
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeLow2() {
@@ -1114,7 +1114,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @expectedExceptionMessage Year out of range (0-9999)
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeHigh1() {
@@ -1128,7 +1128,7 @@ class ShimTest extends TestCase {
 	 * Test the implementation of Shim::calFromJd() against cal_from_jd()
 	 *
 	 * @expectedException        \PHPUnit_Framework_Error_Warning
-	 * @expectedExceptionMessage Year out of range (0-9999).
+	 * @expectedExceptionMessage Year out of range (0-9999)
 	 * @return                   void
 	 */
 	public function testJdToJewishHebrewOutOfRangeHigh2() {
