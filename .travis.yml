@@ -2,22 +2,24 @@ language: php
 
 sudo: false
 
-php:
-  - 7.1
-  - 7.0
-  - 5.6
-  - 5.5
-  - 5.4
-  - 5.3
-  - hhvm
+matrix:
+  include:
+    - php: 7.2
+    - php: 7.1
+    - php: 7.0
+    - php: 5.6
+    - php: 5.5
+    - php: 5.4
+    - php: 5.3
+      dist: precise
 
 install:
-  - composer install --dev --no-interaction
+  - composer install --no-interaction
 
 script:
   - mkdir -p build/logs
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
-  - php vendor/bin/coveralls -v
+  - php vendor/bin/coveralls --verbose
   - CODECLIMATE_REPO_TOKEN=4a5c02026c25f24ff6314ad888d40491ad64b2347c9ea3e985b541389404d438 ./vendor/bin/test-reporter
