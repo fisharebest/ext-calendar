@@ -59,15 +59,15 @@ print_r(cal_info(CAL_GREGORIAN)); // Works in HHVM, or if ext-calendar is not in
 Alternatively, just use the calendar classes directly.
 
 ``` php
-use Fisharebest\ExtCalendar;
+require 'vendor/autoload.php';
 
-// Create a calendar
-$calendar = new ArabicCalendar;
-$calendar = new FrenchCalendar;
-$calendar = new GregorianCalendar;
-$calendar = new JewishCalendar;
-$calendar = new JulianCalendar;
-$calendar = new PersianCalendar;
+// Create calendars
+$calendar = new Fisharebest\ExtCalendar\ArabicCalendar;
+$calendar = new Fisharebest\ExtCalendar\FrenchCalendar;
+$calendar = new Fisharebest\ExtCalendar\GregorianCalendar;
+$calendar = new Fisharebest\ExtCalendar\JewishCalendar;
+$calendar = new Fisharebest\ExtCalendar\JulianCalendar;
+$calendar = new Fisharebest\ExtCalendar\PersianCalendar;
 
 // Date conversions
 $julian_day = $calendar->ymdToJd($year, $month, $day);
