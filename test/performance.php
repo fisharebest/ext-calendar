@@ -219,12 +219,14 @@ function testAverageTime(CalendarInterface $calendar, $end_jd, $nb_iterations, $
     $rand_jd_keys = array_rand($rand_jd, $nb_elements);
     $rand_ymd = array();
 
-    $t1 = microtime(true); foreach ($rand_jd_keys as $key) {
+    $t1 = microtime(true);
+    foreach ($rand_jd_keys as $key) {
         $rand_ymd[] = $calendar->jdToYmd($rand_jd[$key]);
     }
     $t1 = microtime(true) - $t1;
 
-    $t2 = microtime(true); foreach ($rand_ymd as $ymd) {
+    $t2 = microtime(true);
+    foreach ($rand_ymd as $ymd) {
         $calendar->ymdToJd($ymd[0], $ymd[1], $ymd[2]);
     }
     $t2 = microtime(true) - $t2;

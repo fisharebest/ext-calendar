@@ -262,7 +262,7 @@ class JewishCalendar implements CalendarInterface
     protected function jdToY($julian_day)
     {
         // Estimate the year, and underestimate it, it will be refined after
-        $year = max((int) ((($julian_day - 347998) * 98496 ) / 35975351) - 1, 1);
+        $year = max((int) ((($julian_day - 347998) * 98496) / 35975351) - 1, 1);
 
         // Adjust by adding years;
         while ($julian_day >= $this->yToJd($year + 1)) {
