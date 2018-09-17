@@ -311,13 +311,13 @@ class JewishCalendarTest extends TestCase
         }
     }
 
-   /**
-     * Test the conversion of numbers into Hebrew numerals.
-     *
-     * @large This test can take several seconds to run.
-     *
-     * @return void
-     */
+    /**
+      * Test the conversion of numbers into Hebrew numerals.
+      *
+      * @large This test can take several seconds to run.
+      *
+      * @return void
+      */
     public function testNumberToHebrewNumeralsShort()
     {
         $calendar = new JewishCalendar();
