@@ -45,7 +45,7 @@ Add the package as a dependency in your `composer.json` file:
 
 ``` javascript
 require {
-    "fisharebest/ext-calendar": "2.*"
+    "fisharebest/ext-calendar": "~2.5"
 }
 ```
 
@@ -77,8 +77,9 @@ list($year, $month, $day) = $calendar->jdToYmd($julian_day);
 // Information about days, weeks and months
 $is_leap_year   = $calendar->isLeapYear($year);
 $days_in_month  = $calendar->daysInMonth($year, $month);
-$months_in_year = $calendar->monthsInYear();  // Includes leap-months
-$days_in_week   = $calendar->daysInWeek();    // Not all calendars have 7!
+$months_in_year = $calendar->monthsInYear();       // Not all calendars have 12
+$months_in_year = $calendar->monthsInYear($year);  // In a specific year
+$days_in_week   = $calendar->daysInWeek();         // Not all calendars have 7
 
 // Which dates are valid for this calendar?
 $jd = $calendar->jdStart();
