@@ -130,11 +130,14 @@ class JulianCalendar implements CalendarInterface
     }
 
     /**
-     * Determine the number of months in a year.
+     * Determine the number of months in a year (if given),
+     * or the maximum number of months in any year.
+     *
+     * @param int|null $year
      *
      * @return int
      */
-    public function monthsInYear()
+    public function monthsInYear($year = null)
     {
         return 12;
     }

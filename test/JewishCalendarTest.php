@@ -52,7 +52,20 @@ class JewishCalendarTest extends TestCase
         $this->assertSame(347998, $this->jewish->jdStart());
         $this->assertSame(PHP_INT_MAX, $this->jewish->jdEnd());
         $this->assertSame(7, $this->jewish->daysInWeek());
+    }
+
+    /**
+     * Test the leap year calculations.
+     *
+     * @covers \Fisharebest\ExtCalendar\JewishCalendar::monthsInYear
+     *
+     * @return void
+     */
+    public function testMonthsInYear()
+    {
         $this->assertSame(13, $this->jewish->monthsInYear());
+        $this->assertSame(12, $this->jewish->monthsInYear(5767));
+        $this->assertSame(13, $this->jewish->monthsInYear(5768));
     }
 
     /**
@@ -298,21 +311,7 @@ class JewishCalendarTest extends TestCase
         }
     }
 
-    /**
-     * Test the conversion of a YMD date to JD when the month is not a valid number.
-     *
-     * @covers \Fisharebest\ExtCalendar\JewishCalendar::ymdToJd
-     *
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Month 14 is invalid for this calendar
-     */
-    public function testYmdToJdInvalidMonth()
-    {
-        $calendar = new ArabicCalendar();
-        $calendar->ymdToJd(4, 14, 1);
-    }
-
-    /**
+   /**
      * Test the conversion of numbers into Hebrew numerals.
      *
      * @large This test can take several seconds to run.

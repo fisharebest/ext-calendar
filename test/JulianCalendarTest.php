@@ -258,7 +258,7 @@ class JulianCalendarTest extends TestCase
      */
     public function testYmdToJdInvalidMonth()
     {
-        $calendar = new ArabicCalendar();
+        $calendar = new JulianCalendar();
         $calendar->ymdToJd(4, 14, 1);
     }
 }

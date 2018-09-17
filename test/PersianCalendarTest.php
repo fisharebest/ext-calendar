@@ -326,7 +326,7 @@ class PersianCalendarTest extends TestCase
      */
     public function testYmdToJdInvalidMonth()
     {
-        $calendar = new ArabicCalendar();
+        $calendar = new PersianCalendar();
         $calendar->ymdToJd(4, 14, 1);
     }
 }
