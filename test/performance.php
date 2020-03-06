@@ -4,8 +4,8 @@ namespace Fisharebest\ExtCalendar;
 /**
  * Compare the performance of the native PHP functions with our implementation.
  *
- * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014-2015 webtrees development team
+ * @author    Greg Roach <greg@subaqua.co.uk>
+ * @copyright (c) 2014-2020 Greg Roach
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or

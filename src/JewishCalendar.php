@@ -9,8 +9,8 @@ use InvalidArgumentException;
  * Hebrew characters in the code have either ISO-8859-8 or UTF_8 encoding.
  * Hebrew characters in the comments have UTF-8 encoding.
  *
- * @author    Greg Roach <fisharebest@gmail.com>
- * @copyright (c) 2014-2017 Greg Roach
+ * @author    Greg Roach <greg@subaqua.co.uk>
+ * @copyright (c) 2014-2020 Greg Roach
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
