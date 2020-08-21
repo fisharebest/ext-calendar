@@ -8,7 +8,7 @@
 		"gregorian", "julian", "jewish", "hebrew", "french"
 	],
 	"homepage": "https://github.com/fisharebest/ext-calendar",
-	"license": "GPL-3.0+",
+	"license": "GPL-3.0-or-later",
 	"authors": [{
 			"name": "Greg Roach",
 			"email": "greg@subaqua.co.uk",
@@ -23,6 +23,9 @@
 	"require-dev": {
 		"phpunit/phpunit": "<6",
 		"satooshi/php-coveralls": "*"
+	},
+	"provide": {
+		"ext-calendar": "1"
 	},
 	"autoload": {
 		"files": [
