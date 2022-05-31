@@ -120,7 +120,7 @@ class Shim
      */
     public static function shouldEmulateBug54254()
     {
-        return version_compare(PHP_VERSION, '5.5.0', '<');
+        return PHP_VERSION_ID < 50500;
     }
 
     /**
@@ -137,7 +137,7 @@ class Shim
      */
     public static function shouldEmulateBug67960()
     {
-        return version_compare(PHP_VERSION, '5.5.21', '<') || version_compare(PHP_VERSION, '5.6.0', '>=') && version_compare(PHP_VERSION, '5.6.5', '<');
+        return PHP_VERSION_ID < 50521 || PHP_VERSION_ID >= 50600 && PHP_VERSION_ID < 50605;
     }
 
     /**
@@ -154,7 +154,7 @@ class Shim
      */
     public static function shouldEmulateBug67976()
     {
-        return version_compare(PHP_VERSION, '5.6.25', '<') || version_compare(PHP_VERSION, '7.0.0', '>=') && version_compare(PHP_VERSION, '7.0.10', '<') ;
+        return PHP_VERSION_ID < 50625 || PHP_VERSION_ID >= 70000 && PHP_VERSION_ID < 70010;
     }
 
     /**
