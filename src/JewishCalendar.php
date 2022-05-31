@@ -1,7 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
-
-use InvalidArgumentException;
 
 /**
  * Class JewishCalendar - calculations for the Jewish calendar.
@@ -24,6 +21,11 @@ use InvalidArgumentException;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
+use InvalidArgumentException;
+
 class JewishCalendar implements CalendarInterface
 {
     /** Optional behaviour for this calendar. */
@@ -332,7 +334,8 @@ class JewishCalendar implements CalendarInterface
         $conjunction = 1080 * ($hours % 24) + ($parts % 1080);
         $julian_day  = 1 + 29 * $months + (int) ($hours / 24);
 
-        if ($conjunction >= 19440 ||
+        if (
+            $conjunction >= 19440 ||
             $julian_day % 7 === 2 && $conjunction >= 9924 && !$this->isLeapYear($year) ||
             $julian_day % 7 === 1 && $conjunction >= 16789 && $this->isLeapYear($year - 1)
         ) {

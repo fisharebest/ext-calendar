@@ -1,7 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
-
-use InvalidArgumentException;
 
 /**
  * Class ArabicCalendar - calculations for the Arabic (Hijri) calendar.
@@ -21,6 +18,11 @@ use InvalidArgumentException;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
+use InvalidArgumentException;
+
 class ArabicCalendar implements CalendarInterface
 {
     /**

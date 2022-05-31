@@ -1,5 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
 
 /**
  * Compare the performance of the native PHP functions with our implementation.
@@ -19,6 +18,9 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $FORMAT = "    %-32s %-32s %4.1f\n";

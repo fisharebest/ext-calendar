@@ -1,7 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
-
-use InvalidArgumentException;
 
 /**
  * class Shim - PHP implementations of functions from the PHP calendar extension.
@@ -23,6 +20,11 @@ use InvalidArgumentException;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
+use InvalidArgumentException;
+
 class Shim
 {
     /** @var FrenchCalendar */
@@ -135,7 +137,7 @@ class Shim
      */
     public static function shouldEmulateBug67960()
     {
-        return version_compare(PHP_VERSION, '5.5.21', '<') || version_compare(PHP_VERSION, '5.6.0', '>=') && version_compare(PHP_VERSION, '5.6.5', '<') ;
+        return version_compare(PHP_VERSION, '5.5.21', '<') || version_compare(PHP_VERSION, '5.6.0', '>=') && version_compare(PHP_VERSION, '5.6.5', '<');
     }
 
     /**
@@ -331,11 +333,11 @@ class Shim
 
             case -1:
                 return array(
-                CAL_GREGORIAN => self::calInfo(CAL_GREGORIAN),
-                CAL_JULIAN    => self::calInfo(CAL_JULIAN),
-                CAL_JEWISH    => self::calInfo(CAL_JEWISH),
-                CAL_FRENCH    => self::calInfo(CAL_FRENCH),
-            );
+                    CAL_GREGORIAN => self::calInfo(CAL_GREGORIAN),
+                    CAL_JULIAN    => self::calInfo(CAL_JULIAN),
+                    CAL_JEWISH    => self::calInfo(CAL_JEWISH),
+                    CAL_FRENCH    => self::calInfo(CAL_FRENCH),
+                );
 
             default:
                 return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
@@ -442,7 +444,8 @@ class Shim
      */
     public static function easterDays($year, $method)
     {
-        if ($method == CAL_EASTER_ALWAYS_JULIAN ||
+        if (
+            $method == CAL_EASTER_ALWAYS_JULIAN ||
             $method == CAL_EASTER_ROMAN && $year <= 1582 ||
             $year <= 1752 && $method != CAL_EASTER_ROMAN && $method != CAL_EASTER_ALWAYS_GREGORIAN
         ) {

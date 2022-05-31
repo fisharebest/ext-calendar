@@ -1,5 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
 
 /**
  * Interface CalendarInterface - each calendar implementation needs to provide
@@ -22,6 +21,9 @@ namespace Fisharebest\ExtCalendar;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
 interface CalendarInterface
 {
     /**

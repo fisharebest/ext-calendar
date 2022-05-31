@@ -1,7 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class JulianCalendar
@@ -21,6 +18,11 @@ use PHPUnit\Framework\TestCase;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
+use PHPUnit\Framework\TestCase;
+
 class JulianCalendarTest extends TestCase
 {
     /**

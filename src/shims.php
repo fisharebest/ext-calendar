@@ -1,4 +1,5 @@
 <?php
+
 /**
  * If ext/calendar is not installed, then provide the necessary shims.
  *

@@ -1,7 +1,4 @@
 <?php
-namespace Fisharebest\ExtCalendar;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test harness for the class JewishCalendar
@@ -21,6 +18,11 @@ use PHPUnit\Framework\TestCase;
  *            You should have received a copy of the GNU General Public License
  *            along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace Fisharebest\ExtCalendar;
+
+use PHPUnit\Framework\TestCase;
+
 class JewishCalendarTest extends TestCase
 {
     /** @var JewishCalendar */
@@ -223,11 +225,13 @@ class JewishCalendarTest extends TestCase
      */
     public function testJdToHebrewYear()
     {
-        foreach (array(
+        $years = array(
             1, 15, 16, 17, 234, 987,
             4010, 4020, 4030, 4040, 4050, 4060, 4070, 4080, 4090,
             5000, 5100, 5150, 5110, 5776, 5777, 9999
-        ) as $year) {
+        );
+
+        foreach ($years as $year) {
             $julian_day = JewishToJD(13, 15, $year);
             foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
                 foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
