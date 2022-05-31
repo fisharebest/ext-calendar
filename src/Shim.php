@@ -6,7 +6,7 @@
  * @link      http://php.net/manual/en/book.calendar.php
  *
  * @author    Greg Roach <greg@subaqua.co.uk>
- * @copyright (c) 2014-2020 Greg Roach
+ * @copyright (c) 2014-2021 Greg Roach
  * @license   This program is free software: you can redistribute it and/or modify
  *            it under the terms of the GNU General Public License as published by
  *            the Free Software Foundation, either version 3 of the License, or
