@@ -24,11 +24,7 @@
 namespace Fisharebest\ExtCalendar;
 
 use InvalidArgumentException;
-
 use ValueError;
-
-use const PHP_INT_SIZE;
-use const PHP_VERSION_ID;
 
 class Shim
 {
@@ -192,7 +188,11 @@ class Shim
                 return self::calDaysInMonthCalendar(self::$julian_calendar, $year, $month);
 
             default:
-                return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                if (PHP_VERSION_ID < 80000) {
+                    return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                }
+
+                throw new ValueError('cal_days_in_month(): Argument #1 ($calendar) must be a valid calendar ID');
         }
     }
 
@@ -210,9 +210,14 @@ class Shim
         try {
             return $calendar->daysInMonth($year, $month);
         } catch (InvalidArgumentException $ex) {
-            $error_msg = PHP_VERSION_ID < 70200 ? 'invalid date.' : 'invalid date';
+            if (PHP_VERSION_ID < 70200) {
+                return trigger_error('invalid date.', E_USER_WARNING);
+            }
+            if (PHP_VERSION_ID < 80000) {
+                return trigger_error('invalid date', E_USER_WARNING);
+            }
 
-            return trigger_error($error_msg, E_USER_WARNING);
+            throw new ValueError('Invalid date');
         }
     }
 
@@ -233,9 +238,14 @@ class Shim
         }
 
         if ($year > 14) {
-            $error_msg = PHP_VERSION_ID < 70200 ? 'invalid date.' : 'invalid date';
+            if (PHP_VERSION_ID < 70200) {
+                return trigger_error('invalid date.', E_USER_WARNING);
+            }
+            if (PHP_VERSION_ID < 80000) {
+                return trigger_error('invalid date', E_USER_WARNING);
+            }
 
-            return trigger_error($error_msg, E_USER_WARNING);
+            throw new ValueError('Invalid date');
         }
 
         return self::calDaysInMonthCalendar(self::$french_calendar, $year, $month);
@@ -279,7 +289,11 @@ class Shim
                 return self::calFromJdCalendar($julian_day, self::jdToJulian($julian_day), self::$MONTH_NAMES, self::$MONTH_NAMES_SHORT);
 
             default:
-                return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                if (PHP_VERSION_ID < 80000) {
+                    return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                }
+
+                throw new ValueError('cal_from_jd(): Argument #2 ($calendar) must be a valid calendar ID');
         }
     }
 
@@ -347,7 +361,11 @@ class Shim
                 );
 
             default:
-                return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                if (PHP_VERSION_ID < 80000) {
+                    return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                }
+
+                throw new ValueError('cal_info(): Argument #1 ($calendar) must be a valid calendar ID');
         }
     }
 
@@ -403,7 +421,11 @@ class Shim
                 return self::julianToJd($month, $day, $year);
 
             default:
-                return trigger_error('invalid calendar ID ' . $calendar_id . '.', E_USER_WARNING);
+                if (PHP_VERSION_ID < 80000) {
+                    return trigger_error('invalid calendar ID ' . $calendar_id, E_USER_WARNING);
+                }
+
+                throw new ValueError('cal_to_jd(): Argument #1 ($calendar) must be a valid calendar ID');
         }
     }
 
@@ -421,6 +443,9 @@ class Shim
     public static function easterDate($year)
     {
         if ($year < 1970 || $year > 2037) {
+            if (PHP_VERSION_ID >= 80000) {
+                throw new ValueError('easter_date(): Argument #1 ($year) must be between 1970 and 2037 (inclusive)');
+            }
             return trigger_error('This function is only valid for years between 1970 and 2037 inclusive', E_USER_WARNING);
         }
 
@@ -742,11 +767,11 @@ class Shim
             return ($julian_day - 2440588) * 86400;
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            throw new ValueError('jday must be between 2440588 and ' . $upper_limit);
+        if (PHP_VERSION_ID < 80000) {
+            return false;
         }
 
-        return false;
+        throw new ValueError('jday must be between 2440588 and ' . $upper_limit);
     }
 
     /**
@@ -759,7 +784,7 @@ class Shim
     public static function jdToUnixUpperLimit()
     {
         if (PHP_INT_SIZE === 2 || PHP_VERSION_ID < 70324 || PHP_VERSION_ID >= 70400 && PHP_VERSION_ID < 70412) {
-            return 2465443;
+            return 2465343;
         }
 
         return 106751993607888;
@@ -823,7 +848,11 @@ class Shim
     public static function unixToJd($timestamp)
     {
         if ($timestamp < 0) {
-            return false;
+            if (PHP_VERSION_ID < 80000) {
+                return false;
+            }
+
+            throw new ValueError('unixtojd(): Argument #1 ($timestamp) must be greater than or equal to 0');
         }
 
         // Convert timestamp based on local timezone
