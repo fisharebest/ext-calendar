@@ -48,11 +48,13 @@ class PersianCalendar implements CalendarInterface
     {
         if ($month <= 6) {
             return 31;
-        } elseif ($month <= 11 || $this->isLeapYear($year)) {
-            return 30;
-        } else {
-            return 29;
         }
+
+        if ($month <= 11 || $this->isLeapYear($year)) {
+            return 30;
+        }
+
+        return 29;
     }
 
     /**

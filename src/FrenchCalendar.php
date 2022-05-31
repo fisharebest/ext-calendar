@@ -55,15 +55,21 @@ class FrenchCalendar implements CalendarInterface
     {
         if ($year <= 0) {
             throw new InvalidArgumentException('Year ' . $year . ' is invalid for this calendar');
-        } elseif ($month < 1 || $month > 13) {
-            throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
-        } elseif ($month !== 13) {
-            return 30;
-        } elseif ($this->isLeapYear($year)) {
-            return 6;
-        } else {
-            return 5;
         }
+
+        if ($month < 1 || $month > 13) {
+            throw new InvalidArgumentException('Month ' . $month . ' is invalid for this calendar');
+        }
+
+        if ($month !== 13) {
+            return 30;
+        }
+
+        if ($this->isLeapYear($year)) {
+            return 6;
+        }
+
+        return 5;
     }
 
     /**

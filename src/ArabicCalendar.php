@@ -37,11 +37,13 @@ class ArabicCalendar implements CalendarInterface
     {
         if ($month === 2) {
             return 28;
-        } elseif ($month % 2 === 1 || $month === 12 && $this->isLeapYear($year)) {
-            return 30;
-        } else {
-            return 29;
         }
+
+        if ($month % 2 === 1 || $month === 12 && $this->isLeapYear($year)) {
+            return 30;
+        }
+
+        return 29;
     }
 
     /**

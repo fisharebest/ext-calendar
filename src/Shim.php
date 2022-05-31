@@ -225,13 +225,15 @@ class Shim
     {
         if ($month == 13 && $year == 14 && self::shouldEmulateBug67976()) {
             return -2380948;
-        } elseif ($year > 14) {
+        }
+
+        if ($year > 14) {
             $error_msg = PHP_VERSION_ID < 70200 ? 'invalid date.' : 'invalid date';
 
             return trigger_error($error_msg, E_USER_WARNING);
-        } else {
-            return self::calDaysInMonthCalendar(self::$french_calendar, $year, $month);
         }
+
+        return self::calDaysInMonthCalendar(self::$french_calendar, $year, $month);
     }
 
     /**
@@ -425,9 +427,9 @@ class Shim
 
         if ($days < 11) {
             return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
-        } else {
-            return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
         }
+
+        return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
     }
 
     /**
@@ -450,9 +452,9 @@ class Shim
             $year <= 1752 && $method != CAL_EASTER_ROMAN && $method != CAL_EASTER_ALWAYS_GREGORIAN
         ) {
             return self::$julian_calendar->easterDays($year);
-        } else {
-            return self::$gregorian_calendar->easterDays($year);
         }
+
+        return self::$gregorian_calendar->easterDays($year);
     }
 
     /**
@@ -472,9 +474,9 @@ class Shim
     {
         if ($year <= 0) {
             return 0;
-        } else {
-            return self::$french_calendar->ymdToJd($year, $month, $day);
         }
+
+        return self::$french_calendar->ymdToJd($year, $month, $day);
     }
 
     /**
@@ -494,9 +496,9 @@ class Shim
     {
         if ($year == 0) {
             return 0;
-        } else {
-            return self::$gregorian_calendar->ymdToJd($year, $month, $day);
         }
+
+        return self::$gregorian_calendar->ymdToJd($year, $month, $day);
     }
 
     /**
@@ -597,9 +599,9 @@ class Shim
 
         if (self::$jewish_calendar->isLeapYear($year)) {
             return self::shouldEmulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH_LEAP_YEAR;
-        } else {
-            return self::shouldEmulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH;
         }
+
+        return self::shouldEmulateBug54254() ? self::$MONTH_NAMES_JEWISH_54254 : self::$MONTH_NAMES_JEWISH;
     }
 
     /**
@@ -620,9 +622,9 @@ class Shim
             list($year, $month, $day) = $calendar->jdToYmd($julian_day);
 
             return $month . '/' . $day . '/' . $year;
-        } else {
-            return '0/0/0';
         }
+
+        return '0/0/0';
     }
 
     /**
@@ -690,10 +692,10 @@ class Shim
                 (bool)($fl & CAL_JEWISH_ADD_ALAFIM),
                 (bool)($fl & CAL_JEWISH_ADD_GERESHAYIM)
             );
-        } else {
-            // The upper limit is hard-coded into PHP to prevent numeric overflow on 32 bit systems.
-            return self::jdToCalendar(self::$jewish_calendar, $julian_day, 347998, 324542846);
         }
+
+        // The upper limit is hard-coded into PHP to prevent numeric overflow on 32 bit systems.
+        return self::jdToCalendar(self::$jewish_calendar, $julian_day, 347998, 324542846);
     }
 
     /**
@@ -730,9 +732,9 @@ class Shim
     {
         if ($julian_day >= 2440588 && $julian_day <= 2465343) {
             return (int) ($julian_day - 2440588) * 86400;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -752,9 +754,9 @@ class Shim
     {
         if ($year <= 0) {
             return 0;
-        } else {
-            return self::$jewish_calendar->ymdToJd($year, $month, $day);
         }
+
+        return self::$jewish_calendar->ymdToJd($year, $month, $day);
     }
 
     /**
@@ -774,9 +776,9 @@ class Shim
     {
         if ($year == 0) {
             return 0;
-        } else {
-            return self::$julian_calendar->ymdToJd($year, $month, $day);
         }
+
+        return self::$julian_calendar->ymdToJd($year, $month, $day);
     }
 
     /**
@@ -794,9 +796,9 @@ class Shim
     {
         if ($timestamp < 0) {
             return false;
-        } else {
-            // Convert timestamp based on local timezone
-            return self::GregorianToJd(gmdate('n', $timestamp), gmdate('j', $timestamp), gmdate('Y', $timestamp));
         }
+
+        // Convert timestamp based on local timezone
+        return self::GregorianToJd(gmdate('n', $timestamp), gmdate('j', $timestamp), gmdate('Y', $timestamp));
     }
 }
