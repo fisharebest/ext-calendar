@@ -21,7 +21,7 @@
 
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit\Framework\TestCase;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 class JewishCalendarTest extends TestCase
 {
@@ -33,7 +33,7 @@ class JewishCalendarTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function set_up()
     {
         Shim::create();
         $this->jewish = new JewishCalendar(array(
@@ -44,7 +44,7 @@ class JewishCalendarTest extends TestCase
     /**
      * Test the class constants.
      *
-     * @coversNone
+     * @coversNothing
      *
      * @return void
      */
@@ -219,6 +219,7 @@ class JewishCalendarTest extends TestCase
     /**
      * Test the conversion of calendar dates into Julian days against the reference implementation.
      *
+     * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToHebrew
      * @large This test can take several seconds to run.
      *
      * @return void
@@ -250,6 +251,7 @@ class JewishCalendarTest extends TestCase
     /**
      * Test the conversion of calendar dates into Julian days against the reference implementation.
      *
+     * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToHebrew
      * @large This test can take several seconds to run.
      *
      * @return void
@@ -274,6 +276,7 @@ class JewishCalendarTest extends TestCase
     /**
      * Test the conversion of calendar dates into Julian days against the reference implementation.
      *
+     * @covers \Fisharebest\ExtCalendar\JewishCalendar::jdToHebrew
      * @large This test can take several seconds to run.
      *
      * @return void
@@ -316,12 +319,13 @@ class JewishCalendarTest extends TestCase
     }
 
     /**
-      * Test the conversion of numbers into Hebrew numerals.
-      *
-      * @large This test can take several seconds to run.
-      *
-      * @return void
-      */
+     * Test the conversion of numbers into Hebrew numerals.
+     *
+     * @covers \Fisharebest\ExtCalendar\JewishCalendar::numberToHebrewNumerals
+     * @large This test can take several seconds to run.
+     *
+     * @return void
+     */
     public function testNumberToHebrewNumeralsShort()
     {
         $calendar = new JewishCalendar();
@@ -1068,6 +1072,7 @@ class JewishCalendarTest extends TestCase
     /**
      * Test the conversion of numbers into Hebrew numerals.
      *
+     * @covers \Fisharebest\ExtCalendar\JewishCalendar::numberToHebrewNumerals
      * @large This test can take several seconds to run.
      *
      * @return void

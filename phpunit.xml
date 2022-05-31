@@ -1,24 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <phpunit
-	beStrictAboutOutputDuringTests="true"
-	beStrictAboutTestsThatDoNotTestAnything="true"
-	beStrictAboutTestSize="true"
-	bootstrap="vendor/autoload.php"
-	colors="true"
-	xmlns=""
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+  bootstrap="vendor/autoload.php"
+  colors="true"
+  forceCoversAnnotation="true"
 >
-	<testsuites>
-		<testsuite name="Default test suite">
-			<directory>test</directory>
-		</testsuite>
-	</testsuites>
-	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">src</directory>
-			<exclude>
-				<!-- HHVM does not provide coverage data (and we know it has 100%) -->
-				<file>src/shims.php</file>
-			</exclude>
-		</whitelist>
-	</filter>
+  <testsuites>
+    <testsuite name="Unit tests">
+      <directory>test</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </coverage>
 </phpunit>

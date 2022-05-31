@@ -21,7 +21,7 @@
 
 namespace Fisharebest\ExtCalendar;
 
-use PHPUnit\Framework\TestCase;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 class FrenchCalendarTest extends TestCase
 {
@@ -31,7 +31,7 @@ class FrenchCalendarTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function set_up()
     {
         Shim::create();
     }
@@ -39,7 +39,7 @@ class FrenchCalendarTest extends TestCase
     /**
      * Test the class constants.
      *
-     * @coversNone
+     * @coversNothing
      *
      * @return void
      */
@@ -212,12 +212,12 @@ class FrenchCalendarTest extends TestCase
      * Test the conversion of a YMD date to JD when the month is not a valid number.
      *
      * @covers \Fisharebest\ExtCalendar\FrenchCalendar::ymdToJd
-     *
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Month 14 is invalid for this calendar
      */
     public function testYmdToJdInvalidMonth()
     {
+        $this->expectExceptionMessage('Month 14 is invalid for this calendar');
+        $this->expectException('InvalidArgumentException');
+
         $calendar = new FrenchCalendar();
         $calendar->ymdToJd(4, 14, 1);
     }

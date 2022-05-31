@@ -36,6 +36,8 @@ class ShimTest extends TestCase
     /**
      * Test that the shim defines all the necessary constants.
      *
+     * @coversNothing
+     *
      * @return void
      */
     public function testConstantsExist()
@@ -88,6 +90,8 @@ class ShimTest extends TestCase
     /**
      * Test that the shim defines all the necessary functions.
      *
+     * @coversNothing
+     *
      * @return void
      */
     public function testFunctionsExist()
@@ -114,6 +118,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
      * @return void
      */
     public function testCalDaysInMonthFrench()
@@ -128,6 +134,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
      * @return void
      */
     public function testCalDaysInMonthFrenchBug67976()
@@ -138,102 +146,127 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchInvalidMonth1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_FRENCH, 14, 10);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchInvalidMonth2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_FRENCH, 14, 10);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchZeroYear1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_FRENCH, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchZeroYear2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_FRENCH, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchNegativeYear1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_FRENCH, 1, -1);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchNegativeYear2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_FRENCH, 1, -1);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchHighYear1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_FRENCH, 1, 15);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthFrenchHighYear2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_FRENCH, 1, 15);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
      * @large
      *
      * @return void
@@ -252,54 +285,67 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthGregorianInvalidMonth1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_GREGORIAN, 13, 2014);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthGregorianInvalidMonth2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_GREGORIAN, 13, 2014);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthGregorianInvalidYear1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_GREGORIAN, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthGregorianInvalidYear2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_GREGORIAN, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
      * @large
      *
      * @return void
@@ -318,6 +364,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
      * @large
      *
      * @return void
@@ -334,125 +381,157 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthJewishInvalidMonth1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_JEWISH, 14, 2014);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthJewishInvalidMonth2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_JEWISH, 14, 2014);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthJewishInvalidYear1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_JEWISH, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthJewishInvalidYear2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_JEWISH, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthJulianInvalidMonth1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_JULIAN, 13, 2014);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthJulianInvalidMonth2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_JULIAN, 13, 2014);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthJulianInvalidYear1()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         Shim::calDaysInMonth(CAL_JULIAN, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid date
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthJulianInvalidYear2()
     {
+        $this->expectErrorMessage('invalid date');
+        $this->expectError();
+
         cal_days_in_month(CAL_JULIAN, 1, 0);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
      */
     public function testCalDaysInMonthInvalidCalendar1()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         Shim::calDaysInMonth(999, 1, 1);
     }
 
     /**
      * Test the implementation of Shim::calDaysInMonth() against cal_days_in_month()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalDaysInMonthInvalidCalendar2()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         cal_days_in_month(999, 1, 1);
     }
 
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
      *
      * @return void
      */
@@ -471,6 +550,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     *
      * @return void
      */
     public function testCalFromJdGregorian()
@@ -488,6 +569,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     *
      * @return void
      */
     public function testCalFromJdJewish()
@@ -500,6 +583,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
      *
      * @return void
      */
@@ -518,29 +603,37 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     *
+     * @return void
      */
     public function testCalFromJdInvalidCalendar1()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         Shim::calFromJd(2345678, 999);
     }
 
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalFromJdInvalidCalendar2()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         cal_from_jd(2345678, 999);
     }
 
     /**
      * Test the implementation of Shim::calInfo() against cal_info()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::calInfo
      *
      * @return void
      */
@@ -555,6 +648,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calInfo() against cal_info()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calInfo
+     *
      * @return void
      */
     public function testCalInfoAll()
@@ -565,53 +660,67 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calInfo() against cal_info()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calInfo
+     *
+     * @return void
      */
     public function testCalInfoInvalid1()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         Shim::calInfo(999);
     }
 
     /**
      * Test the implementation of Shim::calInfo() against cal_info()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalInfoInvalid2()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         cal_info(999);
     }
 
     /**
      * Test the implementation of Shim::calToJd() against cal_to_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::calToJd
+     *
+     * @return void
      */
     public function testCalToJdInvalidCalendar1()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         Shim::calToJd(999, 1, 1, 1);
     }
 
     /**
      * Test the implementation of Shim::calToJd() against cal_to_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage invalid calendar ID 999
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testCalToJdInvalidCalendar2()
     {
+        $this->expectErrorMessage('invalid calendar ID 999');
+        $this->expectError();
+
         cal_to_jd(999, 1, 1, 1);
     }
 
     /**
      * Test the implementation of Shim::easterDate() against easter_date()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::easterDate
      *
      * @return void
      */
@@ -624,57 +733,67 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::easterDate() against easter_date()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
+     * @covers \Fisharebest\ExtCalendar\Shim::easterDate
      *
      * @return void
      */
     public function testEasterDateHighYear1()
     {
+        $this->expectErrorMessage('This function is only valid for years between 1970 and 2037 inclusive');
+        $this->expectError();
+
         Shim::easterDate(2038);
     }
 
     /**
      * Test the implementation of Shim::easterDate() against easter_date()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
+     * @coversNothing
      *
      * @return void
      */
     public function testEasterDateHighYear2()
     {
+        $this->expectErrorMessage('This function is only valid for years between 1970 and 2037 inclusive');
+        $this->expectError();
+
         easter_date(2038);
     }
 
     /**
      * Test the implementation of Shim::easterDate() against easter_date()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
+     * @covers \Fisharebest\ExtCalendar\Shim::easterDate
      *
      * @return void
      */
     public function testEasterDateLowYear1()
     {
+        $this->expectErrorMessage('This function is only valid for years between 1970 and 2037 inclusive');
+        $this->expectError();
+
         Shim::easterDate(1969);
     }
 
     /**
      * Test the implementation of Shim::easterDate() against easter_date()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage This function is only valid for years between 1970 and 2037 inclusive
+     * @coversNothing
      *
      * @return void
      */
     public function testEasterDateLowYear2()
     {
+        $this->expectErrorMessage('This function is only valid for years between 1970 and 2037 inclusive');
+        $this->expectError();
+
         easter_date(1969);
     }
 
     /**
      * Test the implementation of Shim::easterDays() against easter_days()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::easterDays
      *
      * @return void
      */
@@ -693,6 +812,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::frenchToJd() against FrenchToJd()
      * Test the implementation of Shim::calToJd() against cal_to_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calToJd
+     * @covers \Fisharebest\ExtCalendar\Shim::frenchToJd
      * @large
      *
      * @return void
@@ -712,6 +833,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::frenchToJd() against FrenchToJd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::frenchToJd
+     *
      * @return void
      */
     public function testFrenchToJdOutOfRange()
@@ -723,6 +846,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::gregorianToJd() against GregorianToJD()
      * Test the implementation of Shim::calToJd() against cal_to_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calToJd
+     * @covers \Fisharebest\ExtCalendar\Shim::gregorianToJd
      * @large
      *
      * @return void
@@ -744,6 +869,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
+     * @covers \Fisharebest\ExtCalendar\Shim::shouldEmulateBug67960
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -766,6 +893,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -786,6 +914,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -806,6 +935,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -826,6 +956,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -846,6 +977,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -866,6 +998,7 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      * @link https://bugs.php.net/bug.php?id=67960
      *
      * @return void
@@ -886,6 +1019,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
+     *
      * @return void
      */
     public function testJdDayOfWeekNegative()
@@ -895,6 +1030,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::jdDayOfWeek() against JDDayOfWeek()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdDayOfWeek
      *
      * @return void
      */
@@ -909,6 +1046,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdMonthName() against JDMonthName()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdMonthName
+     *
      * @return void
      */
     public function testJdMonthNameFrench()
@@ -921,6 +1060,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::jdMonthName() against JDMonthName()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdMonthName
      *
      * @return void
      */
@@ -935,6 +1076,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::jdMonthName() against JDMonthName()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdMonthName
      *
      * @return void
      */
@@ -952,6 +1095,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdMonthName() against JDMonthName()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdMonthName
+     *
      * @return void
      */
     public function testJdMonthNameJulian()
@@ -965,6 +1110,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::jdMonthName() against JDMonthName()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdMonthName
      *
      * @return void
      */
@@ -980,6 +1127,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToFrench() against JDToFrench()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToFrench
      * @large
      *
      * @return void
@@ -996,6 +1145,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      * Test the implementation of Shim::jdToFrench() against JDToFrench()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToFrench
      *
      * @return void
      */
@@ -1022,6 +1173,9 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToFrench() against JDToFrench()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToFrench
+     *
      * @return void
      */
     public function testJdToFrenchOutOfRange()
@@ -1039,6 +1193,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToGregorian() against JDToGregorian()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToGregorian
      * @large
      *
      * @return void
@@ -1056,6 +1212,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      * Test the implementation of Shim::jdToGregorian() against JDToGregorian()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToGregorian
      *
      * @return void
      */
@@ -1090,6 +1248,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToJewish() against jdtojewish()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJewish
      * @large
      *
      * @return void
@@ -1108,6 +1268,7 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToJewish() against jdtojewish()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJewish
      * @large
      *
      * @return void
@@ -1144,6 +1305,7 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
      * @large
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJewish
      *
      * @return void
      */
@@ -1160,12 +1322,15 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToJewish() against jdtojewish()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage Year out of range (0-9999)
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJewish
+     *
+     * @return void
      */
     public function testJdToJewishHebrewOutOfRangeLow1()
     {
+        $this->expectErrorMessage('Year out of range (0-9999)');
+        $this->expectError();
+
         $julian_day = JewishToJd(1, 1, 1) - 1;
 
         Shim::jdToJewish($julian_day, true, 0);
@@ -1175,12 +1340,15 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToJewish() against jdtojewish()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage Year out of range (0-9999)
-     * @return                   void
+     * @coversNothing
+     *
+     * @return void
      */
     public function testJdToJewishHebrewOutOfRangeLow2()
     {
+        $this->expectErrorMessage('Year out of range (0-9999)');
+        $this->expectError();
+
         $julian_day = JewishToJd(1, 1, 1) - 1;
 
         JdToJewish($julian_day, true, 0);
@@ -1190,12 +1358,15 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToJewish() against jdtojewish()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage Year out of range (0-9999)
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJewish
+     *
+     * @return void
      */
     public function testJdToJewishHebrewOutOfRangeHigh1()
     {
+        $this->expectErrorMessage('Year out of range (0-9999)');
+        $this->expectError();
+
         $julian_day = JewishToJd(13, 29, 9999) + 1;
 
         Shim::jdToJewish($julian_day, true, 0);
@@ -1205,12 +1376,15 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToJewish() against jdtojewish()
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      *
-     * @expectedException        \PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage Year out of range (0-9999)
-     * @return                   void
+     * @covers \Fisharebest\ExtCalendar\Shim::jewishToJd
+     *
+     * @return void
      */
     public function testJdToJewishHebrewOutOfRangeHigh2()
     {
+        $this->expectErrorMessage('Year out of range (0-9999)');
+        $this->expectError();
+
         $julian_day = JewishToJd(13, 29, 9999) + 1;
 
         JdToJewish($julian_day, true, 0);
@@ -1219,6 +1393,9 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      * Test the implementation of Shim::jdToJulian() against JDToJulian()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::calFromJd
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJulian
      *
      * @return void
      */
@@ -1236,6 +1413,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::calFromJd() against cal_from_jd()
      * Test the implementation of Shim::jdToJulian() against JDToJulian()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToJulian
      *
      * @return void
      */
@@ -1269,6 +1448,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::jdToUnix() against jdtojunix()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToUnix
+     *
      * @return void
      */
     public function testJdToUnix()
@@ -1283,6 +1464,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::jdToUnix() against jdtojunix()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToUnix
      *
      * @return void
      */
@@ -1305,6 +1488,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jewishToJD() against JewishToJD()
      * Test the implementation of Shim::calToJd() against cal_to_jd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::calToJd
+     * @covers \Fisharebest\ExtCalendar\Shim::jewishToJd
      * @large
      *
      * @return void
@@ -1328,6 +1513,8 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::calToJd() against cal_to_jd()
      *
      * @large
+     * @covers \Fisharebest\ExtCalendar\Shim::calToJd
+     * @covers \Fisharebest\ExtCalendar\Shim::julianToJd
      *
      * @return void
      */
@@ -1348,6 +1535,8 @@ class ShimTest extends TestCase
     /**
      * Test the implementation of Shim::unixToJd() against unixtojd()
      *
+     * @covers \Fisharebest\ExtCalendar\Shim::unixToJd
+     *
      * @return void
      */
     public function testUnixToJd()
@@ -1360,6 +1549,8 @@ class ShimTest extends TestCase
 
     /**
      * Test the implementation of Shim::unixToJd() against unixtojd()
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::unixToJd
      *
      * @return void
      */
