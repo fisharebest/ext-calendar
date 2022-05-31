@@ -25,6 +25,11 @@ namespace Fisharebest\ExtCalendar;
 
 use InvalidArgumentException;
 
+use ValueError;
+
+use const PHP_INT_SIZE;
+use const PHP_VERSION_ID;
+
 class Shim
 {
     /** @var FrenchCalendar */
@@ -727,14 +732,37 @@ class Shim
      * @param int $julian_day
      *
      * @return int|false
+     * @throws ValueError
      */
     public static function jdToUnix($julian_day)
     {
-        if ($julian_day >= 2440588 && $julian_day <= 2465343) {
-            return (int) ($julian_day - 2440588) * 86400;
+        $upper_limit = self::jdToUnixUpperLimit();
+
+        if ($julian_day >= 2440588 && $julian_day <= $upper_limit) {
+            return ($julian_day - 2440588) * 86400;
+        }
+
+        if (PHP_VERSION_ID >= 80000) {
+            throw new ValueError('jday must be between 2440588 and ' . $upper_limit);
         }
 
         return false;
+    }
+
+    /**
+     * What is the maximum value acceptable to jdtounix()
+     *
+     * @internal
+     *
+     * @return int
+     */
+    public static function jdToUnixUpperLimit()
+    {
+        if (PHP_INT_SIZE === 2 || PHP_VERSION_ID < 70324 || PHP_VERSION_ID >= 70400 && PHP_VERSION_ID < 70412) {
+            return 2465443;
+        }
+
+        return 106751993607888;
     }
 
     /**

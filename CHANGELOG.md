@@ -1,6 +1,9 @@
 CHANGE LOG
 ==========
 
+## 2.6.0 (????-??-??)
+ - Update jdtounix() for PHP 7.3
+
 ## 2.5.0 (2018-09-17)
  - Calculate number of months in a given year
 

@@ -23,6 +23,8 @@ namespace Fisharebest\ExtCalendar;
 
 use PHPUnit\Framework\TestCase;
 
+use const PHP_VERSION_ID;
+
 class ShimTest extends TestCase
 {
     // Use this many random dates to test date conversion functions.
@@ -1466,22 +1468,32 @@ class ShimTest extends TestCase
      * Test the implementation of Shim::jdToUnix() against jdtojunix()
      *
      * @covers \Fisharebest\ExtCalendar\Shim::jdToUnix
+     * @covers \Fisharebest\ExtCalendar\Shim::jdToUnixUpperLimit
      *
      * @return void
      */
     public function testJdToUnixEdgeCases()
     {
-        $this->assertSame(Shim::jdToUnix(2440587), false);
-        $this->assertSame(Shim::jdToUnix(2440587), jdtounix(2440587));
+        $lower_limit = 2440588;
+        $upper_limit = Shim::jdToUnixUpperLimit();
 
-        $this->assertSame(Shim::jdToUnix(2440588), 0);
-        $this->assertSame(Shim::jdToUnix(2440588), jdtounix(2440588));
+        $this->assertFalse(Shim::jdToUnix($lower_limit - 1));
+        $this->assertSame(Shim::jdToUnix($lower_limit - 1), jdtounix($lower_limit - 1));
 
-        $this->assertSame(Shim::jdToUnix(2465343), 2138832000);
-        $this->assertSame(Shim::jdToUnix(2465343), jdtounix(2465343));
+        $this->assertisInteger(Shim::jdToUnix($lower_limit));
+        $this->assertSame(Shim::jdToUnix($lower_limit), jdtounix($lower_limit));
 
-        $this->assertSame(Shim::jdToUnix(2465344), false);
-        $this->assertSame(Shim::jdToUnix(2465344), jdtounix(2465344));
+        $this->assertisInteger(Shim::jdToUnix($upper_limit));
+        $this->assertSame(Shim::jdToUnix($upper_limit), jdtounix($upper_limit));
+
+        if (PHP_VERSION_ID < 80000) {
+            $this->assertFalse(Shim::jdToUnix($upper_limit + 1));
+            $this->assertSame(Shim::jdToUnix($upper_limit + 1), jdtounix($upper_limit + 1));
+        } else {
+            $this->expectException('ValueError');
+
+            Shim::jdToUnix($upper_limit + 1);
+        }
     }
 
     /**
