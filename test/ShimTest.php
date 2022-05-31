@@ -1826,4 +1826,44 @@ class ShimTest extends TestCase
             Shim::unixToJd(-1);
         }
     }
+
+    /**
+     * Tests for issue #14
+     *
+     * @covers \Fisharebest\ExtCalendar\Shim::calDaysInMonth
+     *
+     * @return void
+     */
+    public function testNonIntegerParameters()
+    {
+        $this->assertSame(
+            Shim::calDaysInMonth(CAL_GREGORIAN, '04', '2022'),
+            Shim::calDaysInMonth(CAL_GREGORIAN, 4, 2022)
+        );
+
+        $this->assertSame(
+            Shim::calToJd(CAL_GREGORIAN, '04', '03', '2022'),
+            Shim::calToJd(CAL_GREGORIAN, 4, 3, 2022)
+        );
+
+        $this->assertSame(
+            Shim::frenchToJd('04', '03', '13'),
+            Shim::frenchToJd(4, 3, 13)
+        );
+
+        $this->assertSame(
+            Shim::gregorianToJd('04', '03', '2022'),
+            Shim::gregorianToJd(4, 3, 2022)
+        );
+
+        $this->assertSame(
+            Shim::jewishToJd('04', '03', '4321'),
+            Shim::jewishToJd(4, 3, 4321)
+        );
+
+        $this->assertSame(
+            Shim::julianToJd('04', '03', '2022'),
+            Shim::julianToJd(4, 3, 2022)
+        );
+    }
 }
