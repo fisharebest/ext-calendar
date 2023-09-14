@@ -28,4 +28,4 @@ jobs:
 
       - run: composer install --no-progress
 
-      - run: ~/.composer/vendor/bin/phpstan analyze --no-progress --level=max app index.php
+      - run: ~/.composer/vendor/bin/phpstan analyze --no-progress --level=max src test
