@@ -233,7 +233,7 @@ class JewishCalendarTest extends TestCase
         );
 
         foreach ($years as $year) {
-            $julian_day = JewishToJD(13, 15, $year);
+            $julian_day = $this->jewish->ymdToJd($year, 13, 15);
             foreach (array(0, CAL_JEWISH_ADD_ALAFIM_GERESH) as $alafim_geresh) {
                 foreach (array(0, CAL_JEWISH_ADD_ALAFIM) as $alafim) {
                     foreach (array(0, CAL_JEWISH_ADD_GERESHAYIM) as $gereshayim) {

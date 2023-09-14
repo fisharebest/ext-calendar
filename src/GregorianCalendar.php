@@ -126,7 +126,7 @@ class GregorianCalendar extends JulianCalendar implements CalendarInterface
         $solar = (int) (($year - 1600) / 100) - (int) (($year - 1600) / 400);
 
         // The lunar correction
-        $lunar = (int) ((int) (($year - 1400) / 100) * 8) / 25;
+        $lunar = (int) (((int) (($year - 1400) / 100) * 8) / 25);
 
         // The uncorrected “Paschal full moon” date
         $pfm = (3 - 11 * $golden + $solar - $lunar) % 30;
