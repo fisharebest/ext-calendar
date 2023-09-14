@@ -185,6 +185,15 @@ class Shim
                 return self::calDaysInMonthCalendar(self::$gregorian_calendar, $year, $month);
 
             case CAL_JEWISH:
+                if (PHP_VERSION_ID >= 80300 && PHP_VERSION_ID < 80400) {
+                    if ($year >= 6000) {
+                        throw new ValueError('Invalid date');
+                    }
+                    if ($year === 5999 && $month === 13) {
+                        // The native function subtracts this month's JD from the rejected first day of year 6000.
+                        return -self::jewishToJd($month, 1, $year);
+                    }
+                }
                 return self::calDaysInMonthCalendar(self::$jewish_calendar, $year, $month);
 
             case CAL_JULIAN:
@@ -453,7 +462,21 @@ class Shim
     {
         $year = (int) $year;
 
-        if ($year < 1970 || $year > 2037) {
+        if (PHP_VERSION_ID >= 80200) {
+            $max_year = PHP_INT_SIZE === 8 ? 7378697629483820644 : 1717986916;
+            if ($year <= 0 || $year > $max_year) {
+                throw new ValueError('easter_date(): Argument #1 ($year) must be between 1 and ' . $max_year);
+            }
+        }
+
+        if (PHP_VERSION_ID >= 80300 && PHP_INT_SIZE === 8) {
+            if ($year < 1970) {
+                throw new ValueError('easter_date(): Argument #1 ($year) must be a year after 1970 (inclusive)');
+            }
+            if ($year > 2000000000) {
+                throw new ValueError('easter_date(): Argument #1 ($year) must be a year before 2.000.000.000 (inclusive)');
+            }
+        } elseif ($year < 1970 || $year > 2037) {
             if (PHP_VERSION_ID >= 80000) {
                 throw new ValueError('easter_date(): Argument #1 ($year) must be between 1970 and 2037 (inclusive)');
             }
@@ -489,6 +512,13 @@ class Shim
     {
         $year   = (int) $year;
         $method = (int) $method;
+
+        if (PHP_VERSION_ID >= 80200) {
+            $max_year = PHP_INT_SIZE === 8 ? 7378697629483820644 : 1717986916;
+            if ($year <= 0 || $year > $max_year) {
+                throw new ValueError('easter_days(): Argument #1 ($year) must be between 1 and ' . $max_year);
+            }
+        }
 
         if (
             $method === CAL_EASTER_ALWAYS_JULIAN ||
@@ -743,6 +773,10 @@ class Shim
             if ($julian_day < 347998 || $julian_day > 4000075) {
                 $error_msg = PHP_VERSION_ID < 70200 ? 'Year out of range (0-9999).' : 'Year out of range (0-9999)';
 
+                if (PHP_VERSION_ID >= 80000) {
+                    throw new ValueError($error_msg);
+                }
+
                 return trigger_error($error_msg, E_USER_WARNING);
             }
 
@@ -817,7 +851,7 @@ class Shim
      */
     public static function jdToUnixUpperLimit()
     {
-        if (PHP_INT_SIZE === 2 || PHP_VERSION_ID < 70324 || PHP_VERSION_ID >= 70400 && PHP_VERSION_ID < 70412) {
+        if (PHP_INT_SIZE === 4 || PHP_VERSION_ID < 70324 || PHP_VERSION_ID >= 70400 && PHP_VERSION_ID < 70412) {
             return 2465343;
         }
 
@@ -843,7 +877,7 @@ class Shim
         $month = (int) $month;
         $year  = (int) $year;
 
-        if ($year <= 0) {
+        if ($year <= 0 || PHP_VERSION_ID >= 80300 && PHP_VERSION_ID < 80400 && $year >= 6000) {
             return 0;
         }
 
@@ -900,6 +934,10 @@ class Shim
         }
 
         // Convert timestamp based on local timezone
-        return self::GregorianToJd(gmdate('n', $timestamp), gmdate('j', $timestamp), gmdate('Y', $timestamp));
+        return self::GregorianToJd(
+            (int) gmdate('n', $timestamp),
+            (int) gmdate('j', $timestamp),
+            (int) gmdate('Y', $timestamp)
+        );
     }
 }
