@@ -13,11 +13,11 @@ jobs:
         php-version: ['8.2']
 
     steps:
-      - uses: shivammathur/setup-php@latest
+      - uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php-version }}
 
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@master
 
       - run: composer validate
 
