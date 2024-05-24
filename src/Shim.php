@@ -462,15 +462,15 @@ class Shim
 
         $days = self::$gregorian_calendar->easterDays($year);
 
-        // Calculate time-zone offset
-        $date_time      = new \DateTime('now', new \DateTimeZone(date_default_timezone_get()));
-        $offset_seconds = (int) $date_time->format('Z');
-
         if ($days < 11) {
-            return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 3, $days + 21)) - $offset_seconds;
+            $easter_date_str = $year . "-3-" . ($days + 21);
+        } else {
+            $easter_date_str = $year . "-4-" . ($days - 10);
         }
 
-        return self::jdtounix(self::$gregorian_calendar->ymdToJd($year, 4, $days - 10)) - $offset_seconds;
+        $easter_date = new \DateTime($easter_date_str, new \DateTimeZone(date_default_timezone_get()));
+
+        return $easter_date->getTimestamp();
     }
 
     /**
