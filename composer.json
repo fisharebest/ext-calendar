@@ -1,11 +1,11 @@
 {
 	"name": "fisharebest/ext-calendar",
-	"description": "Implementation of the Arabic (Hijri), French, Gregorian, Jewish, Julian and Persian (Jalali) calendars.  Also provides a replacement for the PHP ext/calendar extension.",
+	"description": "Implementation of the Arabic (Hijri), French, Gregorian, Jewish, Julian, Persian (Jalali) and Swedish calendars.  Also provides a replacement for the PHP ext/calendar extension.",
 	"type": "library",
 	"keywords": [
 		"calendar", "ext-calendar", "julian day", "julian day number",
 		"arabic", "hijri", "persian", "jalali", "shamsi",
-		"gregorian", "julian", "jewish", "hebrew", "french"
+		"gregorian", "julian", "jewish", "hebrew", "french", "swedish"
 	],
 	"homepage": "https://github.com/fisharebest/ext-calendar",
 	"license": "GPL-3.0-or-later",

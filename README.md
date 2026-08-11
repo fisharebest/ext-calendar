@@ -13,8 +13,9 @@ This package provides an implementation of the
 [French Republican](https://en.wikipedia.org/wiki/French_Republican_Calendar),
 [Gregorian](https://en.wikipedia.org/wiki/Gregorian_calendar),
 [Julian](https://en.wikipedia.org/wiki/Julian_calendar),
-[Jewish](https://en.wikipedia.org/wiki/Hebrew_calendar) and
-[Persian (Jalali)](https://en.wikipedia.org/wiki/Iranian_calendars) calendars, plus
+[Jewish](https://en.wikipedia.org/wiki/Hebrew_calendar),
+[Persian (Jalali)](https://en.wikipedia.org/wiki/Iranian_calendars) and
+[Swedish](https://en.wikipedia.org/wiki/Swedish_calendar) calendars, plus
 a replacement for PHP‘s [ext/calendar](https://php.net/calendar) extension.
 It allows you to use the following PHP functions on servers that do not have the
 ext/calendar extension installed (such as HHVM).
@@ -69,6 +70,7 @@ $calendar = new Fisharebest\ExtCalendar\GregorianCalendar;
 $calendar = new Fisharebest\ExtCalendar\JewishCalendar;
 $calendar = new Fisharebest\ExtCalendar\JulianCalendar;
 $calendar = new Fisharebest\ExtCalendar\PersianCalendar;
+$calendar = new Fisharebest\ExtCalendar\SwedishCalendar;
 
 // Date conversions
 $julian_day = $calendar->ymdToJd($year, $month, $day);

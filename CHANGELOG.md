@@ -1,6 +1,9 @@
 CHANGE LOG
 ==========
 
+## Unreleased
+ - Add Swedish calendar support (1700-03-01 through 1712-02-30).
+
 ## 2.6.0 (2022-05-31)
  - Update error handling to match latest versions of PHP.
  - Add PHP 8 to the test matrix, and remove PHP 5.3 from it.
