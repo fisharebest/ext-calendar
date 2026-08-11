@@ -48,7 +48,7 @@ class SwedishCalendarTest extends TestCase
         $calendar = new SwedishCalendar();
 
         $this->assertSame('@#DSWEDISH@', $calendar->gedcomCalendarEscape());
-        $this->assertSame(2342041, $calendar->jdStart());
+        $this->assertSame(2342042, $calendar->jdStart());
         $this->assertSame(2346425, $calendar->jdEnd());
         $this->assertSame(7, $calendar->daysInWeek());
         $this->assertSame(12, $calendar->monthsInYear());
@@ -104,11 +104,11 @@ class SwedishCalendarTest extends TestCase
     {
         $swedish = new SwedishCalendar();
 
-        $this->assertSame(JulianToJD(2, 28, 1700), $swedish->ymdToJd(1700, 3, 1));
+        $this->assertSame(JulianToJD(2, 29, 1700), $swedish->ymdToJd(1700, 3, 1));
         $this->assertSame(JulianToJD(2, 28, 1712), $swedish->ymdToJd(1712, 2, 29));
         $this->assertSame(JulianToJD(2, 29, 1712), $swedish->ymdToJd(1712, 2, 30));
 
-        $this->assertSame(array(1700, 3, 1), $swedish->jdToYmd(JulianToJD(2, 28, 1700)));
+        $this->assertSame(array(1700, 3, 1), $swedish->jdToYmd(JulianToJD(2, 29, 1700)));
         $this->assertSame(array(1712, 2, 29), $swedish->jdToYmd(JulianToJD(2, 28, 1712)));
         $this->assertSame(array(1712, 2, 30), $swedish->jdToYmd(JulianToJD(2, 29, 1712)));
     }

@@ -111,7 +111,7 @@ class SwedishCalendar extends JulianCalendar implements CalendarInterface
      */
     public function jdStart()
     {
-        return 2342041; // 01 MAR 1700 = 28 FEB 1700 (Julian)
+        return 2342042; // 01 MAR 1700 = 29 FEB 1700 (Julian)
     }
 
     /**
